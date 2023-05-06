@@ -2,6 +2,7 @@ import authOptions from "@/lib/nextAuthOptions";
 import { GetServerSidePropsContext } from "next";
 import { getServerSession } from "next-auth";
 const AdminPage = () => {
+  //for auth testing
   return <div>admin</div>;
 };
 

@@ -8,11 +8,18 @@ import "@/styles/primeReactTheme.scss";
 
 import MainLayout from "@/layouts/MainLayout";
 import type { AppProps } from "next/app";
+import { SessionProvider } from "next-auth/react";
+import { Session } from "next-auth";
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps) {
   return (
-    <MainLayout>
-      <Component {...pageProps} />
-    </MainLayout>
+    <SessionProvider session={session}>
+      <MainLayout>
+        <Component {...pageProps} />
+      </MainLayout>
+    </SessionProvider>
   );
 }
