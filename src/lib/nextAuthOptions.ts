@@ -14,18 +14,12 @@ const authOptions: NextAuthOptions = {
     }),
   ],
   pages: {
+    signIn: "/auth/signin",
+    newUser: "/auth/signup",
     // signIn: '/auth/signin', // custom route for sign in, if not provided, next-auth uses its own UI
   },
   callbacks: {
     signIn: async ({ user, account, profile }) => {
-      // account contains information about providers, token, etc.
-      // user & profile contains information about the user: email, username, image, etc.
-      // User is returned fromm credentials provider
-      // Profile is returned from OAuth provider
-
-      // ==================================================
-      // ONLY MODIFY THIS IF CHANGE TO CREDENTIALS PROVIDER
-      // ==================================================
       return true;
       // Return true means success, false means failure
     },
