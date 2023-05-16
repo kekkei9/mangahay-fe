@@ -16,7 +16,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return {
       redirect: {
         destination: `/api/auth/signin?callbackUrl=${encodeURIComponent(
-          "http://localhost:3000/admin"
+          "http://localhost:8080/admin"
         )}`,
         permanent: false,
       },

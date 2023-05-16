@@ -6,11 +6,22 @@ import { PrimeIcons } from "primereact/api";
 import { getServerSession } from "next-auth";
 import { getCsrfToken, getProviders, signIn } from "next-auth/react";
 import authOptions from "@/lib/nextAuthOptions";
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
-import SignInWithProviders from "@/containers/AuthContainer/SignInWithProviders";
-import { AppProvider } from "next-auth/providers";
+import { GetServerSidePropsContext } from "next";
+import axiosClient from "@/services/backend/axiosClient";
+import { useForm } from "react-hook-form";
 
-const SignInPage = ({ providers, csrfToken }: any) => {
+const onSubmit = (formData: any) => {
+  const { email, password, csrfToken } = formData;
+  signIn("emailLogin", {
+    email,
+    password,
+    csrfToken,
+  });
+};
+
+const SignInPage = ({ csrfToken }: any) => {
+  const { register, handleSubmit } = useForm();
+
   return (
     <div className="bg-gradient-to-tr from-[#e0c3fc] to-[#8ec5fc]">
       <Layout className="h-[calc(100vh-2.5rem)] flex justify-center items-center">
@@ -28,19 +39,33 @@ const SignInPage = ({ providers, csrfToken }: any) => {
               <div className="font-bold text-2xl self-start">
                 Đăng nhập để tiếp tục
               </div>
-              <form className="flex flex-col gap-5 w-[30rem]">
+              <form
+                className="flex flex-col gap-5 w-[30rem]"
+                onSubmit={handleSubmit(onSubmit)}
+              >
                 <input
+                  {...register("csrfToken")}
                   name="csrfToken"
                   type="hidden"
                   defaultValue={csrfToken}
                 />
                 <span className="p-input-icon-left">
                   <i className={PrimeIcons.ENVELOPE} />
-                  <InputText placeholder="Email đăng nhập" className="w-full" />
+                  <InputText
+                    {...register("email")}
+                    placeholder="Email đăng nhập"
+                    className="w-full"
+                    name="email"
+                  />
                 </span>
                 <span className="p-input-icon-left">
                   <i className={PrimeIcons.KEY} />
-                  <InputText placeholder="Mật khẩu" className="w-full" />
+                  <InputText
+                    {...register("password")}
+                    placeholder="Mật khẩu"
+                    className="w-full"
+                    name="password"
+                  />
                 </span>
                 <Button
                   className="rounded-xl !bg-mangahay-700 flex justify-center"
@@ -52,11 +77,6 @@ const SignInPage = ({ providers, csrfToken }: any) => {
                   </div>
                 </Button>
               </form>
-              <SignInWithProviders
-                providers={Object.keys(providers).map((key) => ({
-                  ...(providers[key] as AppProvider),
-                }))}
-              />
               <div className="flex gap-10 font-bold">
                 <div className="cursor-pointer text-mangahay-500">
                   Tạo tài khoản mới
@@ -76,7 +96,11 @@ const SignInPage = ({ providers, csrfToken }: any) => {
 export default SignInPage;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerSession(context.req, context.res, authOptions);
+  const session = await getServerSession(
+    context.req,
+    context.res,
+    authOptions(axiosClient)
+  );
 
   // If the user is already logged in, redirect.
   // Note: Make sure not to redirect to the same page

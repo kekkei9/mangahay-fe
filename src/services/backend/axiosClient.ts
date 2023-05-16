@@ -1,8 +1,4 @@
-import axios, {
-  AxiosRequestConfig,
-  AxiosResponse,
-  InternalAxiosRequestConfig,
-} from "axios";
+import axios, { AxiosResponse } from "axios";
 import Cookies from "js-cookie";
 import { refreshTokenAPI } from "./AuthController";
 
