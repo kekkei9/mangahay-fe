@@ -16,7 +16,7 @@ const CommentBox =(props:any)=>{
     const [comment,setComment] = useState('')
     const [currentPage,setCurrentPage]= useState(1)
     const [totalPages,setTotalPage]= useState(5)
-    const [reportIsShown,setReportIsShown] = useState(true)
+    const [reportIsShown,setReportIsShown] = useState(false)
     const [reportId,setReportID] = useState('')
 
     const handlePost = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>)=>{

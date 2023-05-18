@@ -10,7 +10,7 @@ const chapterDetail = (props:any)=>{
         <div className="container mx-auto flex justify-center items-center flex-col bg-white">
             <ComicImages images={images}></ComicImages>
             <div className="w-4/5 border-t border-black py-2 ">
-                <CommentBox></CommentBox>
+                <CommentBox/>
             </div>
         </div>
         
