@@ -9,18 +9,23 @@ import authOptions from "@/lib/nextAuthOptions";
 import { GetServerSidePropsContext } from "next";
 import axiosClient from "@/services/backend/axiosClient";
 import { useForm } from "react-hook-form";
-
-const onSubmit = (formData: any) => {
-  const { email, password, csrfToken } = formData;
-  signIn("emailLogin", {
-    email,
-    password,
-    csrfToken,
-  });
-};
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 const SignInPage = ({ csrfToken }: any) => {
   const { register, handleSubmit } = useForm();
+  const route = useRouter();
+
+  const onSubmit = async (formData: any) => {
+    const { email, password, csrfToken } = formData;
+    signIn("emailLogin", {
+      email,
+      password,
+      csrfToken,
+      redirect: true,
+      callbackUrl: route.query.callbackUrl as string,
+    });
+  };
 
   return (
     <div className="bg-gradient-to-tr from-[#e0c3fc] to-[#8ec5fc]">
@@ -41,7 +46,10 @@ const SignInPage = ({ csrfToken }: any) => {
               </div>
               <form
                 className="flex flex-col gap-5 w-[30rem]"
-                onSubmit={handleSubmit(onSubmit)}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSubmit(onSubmit)(e);
+                }}
               >
                 <input
                   {...register("csrfToken")}
@@ -78,9 +86,12 @@ const SignInPage = ({ csrfToken }: any) => {
                 </Button>
               </form>
               <div className="flex gap-10 font-bold">
-                <div className="cursor-pointer text-mangahay-500">
+                <Link
+                  className="cursor-pointer text-mangahay-500"
+                  href="/auth/signup"
+                >
                   Tạo tài khoản mới
-                </div>
+                </Link>
                 <div className="cursor-pointer text-mangahay-500">
                   Quên mật khẩu
                 </div>

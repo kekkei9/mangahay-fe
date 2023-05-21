@@ -1,4 +1,5 @@
 import authOptions from "@/lib/nextAuthOptions";
+import axiosClient from "@/services/backend/axiosClient";
 import { GetServerSidePropsContext } from "next";
 import { getServerSession } from "next-auth";
 const AdminPage = () => {
@@ -10,7 +11,7 @@ export default AdminPage;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { req, res } = context;
-  const session = await getServerSession(req, res, authOptions);
+  const session = await getServerSession(req, res, authOptions(axiosClient));
 
   if (!session) {
     return {

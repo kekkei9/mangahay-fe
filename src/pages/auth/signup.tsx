@@ -3,13 +3,11 @@ import Image from "next/image";
 import { PrimeIcons } from "primereact/api";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
-import { Carousel } from "primereact/carousel";
-import SignInWithProviders from "@/containers/AuthContainer/SignInWithProviders";
-import { AppProvider } from "next-auth/providers";
 import { getServerSession } from "next-auth";
 import { getCsrfToken, getProviders } from "next-auth/react";
 import { GetServerSidePropsContext } from "next";
 import authOptions from "@/lib/nextAuthOptions";
+import axiosClient from "@/services/backend/axiosClient";
 
 const SinUpPage = ({ providers, csrfToken }: any) => {
   return (
@@ -36,16 +34,36 @@ const SinUpPage = ({ providers, csrfToken }: any) => {
                   defaultValue={csrfToken}
                 />
                 <span className="p-input-icon-left">
+                  <i className={PrimeIcons.USER} />
+                  <InputText
+                    placeholder="Tên"
+                    className="w-full"
+                    name="fullname"
+                  />
+                </span>
+                <span className="p-input-icon-left">
                   <i className={PrimeIcons.ENVELOPE} />
-                  <InputText placeholder="Email đăng nhập" className="w-full" />
+                  <InputText
+                    placeholder="Email đăng nhập"
+                    className="w-full"
+                    name="email"
+                  />
                 </span>
                 <span className="p-input-icon-left">
                   <i className={PrimeIcons.KEY} />
-                  <InputText placeholder="Mật khẩu" className="w-full" />
+                  <InputText
+                    placeholder="Mật khẩu"
+                    className="w-full"
+                    name="password"
+                  />
                 </span>
                 <span className="p-input-icon-left">
-                  <i className={PrimeIcons.HASHTAG} />
-                  <InputText placeholder="Mã OTP" className="w-full" />
+                  <i className={PrimeIcons.KEY} />
+                  <InputText
+                    placeholder="Nhập lại mật khẩu"
+                    className="w-full"
+                    name="retypePassword"
+                  />
                 </span>
                 <Button className="rounded-xl !bg-mangahay-700 flex justify-center">
                   <div className="flex gap-3 items-center text-white">
@@ -54,11 +72,6 @@ const SinUpPage = ({ providers, csrfToken }: any) => {
                   </div>
                 </Button>
               </form>
-              <SignInWithProviders
-                providers={Object.keys(providers).map((key) => ({
-                  ...(providers[key] as AppProvider),
-                }))}
-              />
             </div>
           </div>
         </div>
@@ -70,7 +83,11 @@ const SinUpPage = ({ providers, csrfToken }: any) => {
 export default SinUpPage;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerSession(context.req, context.res, authOptions);
+  const session = await getServerSession(
+    context.req,
+    context.res,
+    authOptions(axiosClient)
+  );
 
   // If the user is already logged in, redirect.
   // Note: Make sure not to redirect to the same page
