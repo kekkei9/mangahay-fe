@@ -6,6 +6,7 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { setAuthToken } from "@/services/backend/axiosClient";
 import { Account, Login, Response } from "@/types/Response.type";
+import { signOut } from "next-auth/react";
 
 const authOptions = (axiosClient: AxiosInstance) => ({
   providers: [

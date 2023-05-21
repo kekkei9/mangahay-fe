@@ -8,8 +8,40 @@ import { getCsrfToken, getProviders } from "next-auth/react";
 import { GetServerSidePropsContext } from "next";
 import authOptions from "@/lib/nextAuthOptions";
 import axiosClient from "@/services/backend/axiosClient";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
 
-const SinUpPage = ({ providers, csrfToken }: any) => {
+const onSubmit = (formData: any) => {
+  console.log(formData);
+};
+
+const signUpFormFields = [
+  {
+    icon: PrimeIcons.USER,
+    placeholder: "Tên",
+    name: "fullname",
+  },
+  {
+    icon: PrimeIcons.ENVELOPE,
+    placeholder: "Email đăng nhập",
+    name: "email",
+  },
+  {
+    icon: PrimeIcons.KEY,
+    placeholder: "Mật khẩu",
+    name: "password",
+  },
+  {
+    icon: PrimeIcons.KEY,
+    placeholder: "Nhập lại mật khẩu",
+    name: "retypePassword",
+  },
+];
+
+const SinUpPage = ({ providers }: any) => {
+  const { register, handleSubmit } = useForm();
+  const route = useRouter();
+
   return (
     <div className="bg-gradient-to-tr from-[#e0c3fc] to-[#8ec5fc]">
       <Layout className="h-[calc(100vh-2.5rem)] flex justify-center items-center">
@@ -27,44 +59,21 @@ const SinUpPage = ({ providers, csrfToken }: any) => {
               <div className="font-bold text-2xl self-start">
                 Đăng kí tài khoản
               </div>
-              <form className="flex flex-col gap-5 w-[30rem]">
-                <input
-                  name="csrfToken"
-                  type="hidden"
-                  defaultValue={csrfToken}
-                />
-                <span className="p-input-icon-left">
-                  <i className={PrimeIcons.USER} />
-                  <InputText
-                    placeholder="Tên"
-                    className="w-full"
-                    name="fullname"
-                  />
-                </span>
-                <span className="p-input-icon-left">
-                  <i className={PrimeIcons.ENVELOPE} />
-                  <InputText
-                    placeholder="Email đăng nhập"
-                    className="w-full"
-                    name="email"
-                  />
-                </span>
-                <span className="p-input-icon-left">
-                  <i className={PrimeIcons.KEY} />
-                  <InputText
-                    placeholder="Mật khẩu"
-                    className="w-full"
-                    name="password"
-                  />
-                </span>
-                <span className="p-input-icon-left">
-                  <i className={PrimeIcons.KEY} />
-                  <InputText
-                    placeholder="Nhập lại mật khẩu"
-                    className="w-full"
-                    name="retypePassword"
-                  />
-                </span>
+              <form
+                className="flex flex-col gap-5 w-[30rem]"
+                onSubmit={handleSubmit(onSubmit)}
+              >
+                {signUpFormFields.map(({ icon, name, placeholder }, index) => (
+                  <span className="p-input-icon-left" key={index}>
+                    <i className={icon} />
+                    <InputText
+                      {...register(name)}
+                      placeholder={placeholder}
+                      className="w-full"
+                      name={name}
+                    />
+                  </span>
+                ))}
                 <Button className="rounded-xl !bg-mangahay-700 flex justify-center">
                   <div className="flex gap-3 items-center text-white">
                     <div className="text-white font-bold">Đăng kí</div>

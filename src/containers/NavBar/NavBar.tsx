@@ -1,8 +1,13 @@
+import { signOutRequest } from "@/services/backend/AuthController";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { Button } from "primereact/button";
 import { Menu } from "primereact/menu";
 import { useRef } from "react";
+
+const handleSignOut = () => {
+  signOut();
+};
 
 const NavBar = () => {
   const { data } = useSession();
@@ -28,7 +33,7 @@ const NavBar = () => {
                   label: "My account",
                   command: () => router.push("/auth/account"),
                 },
-                { label: "Log out", command: () => signOut() },
+                { label: "Log out", command: handleSignOut },
               ]}
             />
           </>

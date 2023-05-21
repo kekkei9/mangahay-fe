@@ -1,6 +1,7 @@
 import axios from "axios";
+import axiosClient from "../axiosClient";
 
-export const signUp = ({
+export const signUpAPI = ({
   email,
   password,
   fullname,
@@ -10,6 +11,10 @@ export const signUp = ({
   fullname: string;
 }) => {
   return axios.post<any>("/api/auth/register", { email, password, fullname });
+};
+
+export const signOutRequest = () => {
+  return axiosClient.get<any>("/api/auth/logout");
 };
 
 export function refreshTokenAPI(refreshToken: string) {

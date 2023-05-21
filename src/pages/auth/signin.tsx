@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-const SignInPage = ({ csrfToken }: any) => {
+const SignInPage = ({ csrfToken }: { csrfToken: string }) => {
   const { register, handleSubmit } = useForm();
   const route = useRouter();
 
@@ -46,10 +46,7 @@ const SignInPage = ({ csrfToken }: any) => {
               </div>
               <form
                 className="flex flex-col gap-5 w-[30rem]"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSubmit(onSubmit)(e);
-                }}
+                onSubmit={handleSubmit(onSubmit)}
               >
                 <input
                   {...register("csrfToken")}
