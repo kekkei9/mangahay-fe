@@ -59,7 +59,7 @@ const SinUpPage = ({ providers }: any) => {
     <div className="bg-gradient-to-tr from-[#e0c3fc] to-[#8ec5fc]">
       <Layout className="h-[calc(100vh-2.5rem)] flex justify-center items-center">
         <div className="rounded-[1.875rem] bg-white bg-opacity-70 overflow-hidden flex flex-col md:flex-row">
-          <div className="relative aspect-[5/6] h-[34rem] w-1/2 max-md:hidden">
+          <div className="relative aspect-[5/6] h-[28rem] w-1/2 max-md:hidden">
             <Image
               src="/assets/authpage/demopngs/doraemon.png"
               alt="doraemon.png"
