@@ -1,30 +1,39 @@
 import Layout from "@/layouts/Layout";
 import Image from "next/image";
-import { InputText } from "primereact/inputtext";
-import { Button } from "primereact/button";
 import { PrimeIcons } from "primereact/api";
+import { Button } from "primereact/button";
+import { InputText } from "primereact/inputtext";
 import { getServerSession } from "next-auth";
-import { getCsrfToken, getProviders, signIn } from "next-auth/react";
-import authOptions from "@/lib/nextAuthOptions";
+import { getCsrfToken, getProviders } from "next-auth/react";
 import { GetServerSidePropsContext } from "next";
+import authOptions from "@/lib/nextAuthOptions";
 import axiosClient from "@/services/backend/axiosClient";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-import Link from "next/link";
+import {
+  requestChangePasswordAPI,
+  signUpAPI,
+} from "@/services/backend/AuthController";
 
-const SignInPage = ({ csrfToken }: { csrfToken: string }) => {
-  const { register, handleSubmit } = useForm();
-  const route = useRouter();
+const ForgotPasswordPage = ({ providers }: any) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const router = useRouter();
 
   const onSubmit = async (formData: any) => {
-    const { email, password, csrfToken } = formData;
-    signIn("emailLogin", {
-      email,
-      password,
-      csrfToken,
-      redirect: true,
-      callbackUrl: route.query.callbackUrl as string,
-    });
+    try {
+      const res = await requestChangePasswordAPI(formData);
+
+      if (res.data.success) {
+        router.push("/auth/forgot/change");
+      }
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
@@ -39,63 +48,34 @@ const SignInPage = ({ csrfToken }: { csrfToken: string }) => {
               className="object-fill"
             />
           </div>
-          <div className="w-full p-8 flex flex-col items-center justify-center">
+          <div className="w-full p-8 flex flex-col items-center justify-center bg-opacity-70">
             <div className="w-full flex flex-col items-center gap-5">
               <div className="font-bold text-2xl self-start">
-                Đăng nhập để tiếp tục
+                Đăng kí tài khoản
               </div>
               <form
                 className="flex flex-col gap-5 w-[30rem]"
                 onSubmit={handleSubmit(onSubmit)}
               >
-                <input
-                  {...register("csrfToken")}
-                  name="csrfToken"
-                  type="hidden"
-                  defaultValue={csrfToken}
-                />
                 <span className="p-input-icon-left">
                   <i className={PrimeIcons.ENVELOPE} />
                   <InputText
-                    {...register("email")}
-                    placeholder="Email đăng nhập"
+                    {...register("email", { required: true })}
+                    placeholder="Email"
                     className="w-full"
                     name="email"
                   />
+                  <div>{errors?.["email"] && `Email is required!`}</div>
                 </span>
-                <span className="p-input-icon-left">
-                  <i className={PrimeIcons.KEY} />
-                  <InputText
-                    {...register("password")}
-                    placeholder="Mật khẩu"
-                    className="w-full"
-                    name="password"
-                  />
-                </span>
-                <Button
-                  className="rounded-xl !bg-mangahay-700 flex justify-center"
-                  type="submit"
-                >
+                <Button className="rounded-xl !bg-mangahay-700 flex justify-center">
                   <div className="flex gap-3 items-center text-white">
-                    <div className="text-white font-bold">Đăng nhập</div>
-                    <i className={PrimeIcons.SIGN_IN} />
+                    <div className="text-white font-bold">
+                      Gửi email xác nhận
+                    </div>
+                    <i className={PrimeIcons.ENVELOPE} />
                   </div>
                 </Button>
               </form>
-              <div className="flex gap-10 font-bold">
-                <Link
-                  className="cursor-pointer text-mangahay-500"
-                  href="/auth/signup"
-                >
-                  Tạo tài khoản mới
-                </Link>
-                <Link
-                  className="cursor-pointer text-mangahay-500"
-                  href="/auth/forgot"
-                >
-                  Quên mật khẩu
-                </Link>
-              </div>
             </div>
           </div>
         </div>
@@ -104,7 +84,7 @@ const SignInPage = ({ csrfToken }: { csrfToken: string }) => {
   );
 };
 
-export default SignInPage;
+export default ForgotPasswordPage;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(

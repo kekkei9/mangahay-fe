@@ -10,6 +10,8 @@ export type Login = {
   refresh_token: string;
 };
 
+export type SignUp = {};
+
 export type Account = {
   id: number;
   email: string;

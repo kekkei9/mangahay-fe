@@ -1,5 +1,17 @@
-import axios from "axios";
 import axiosClient from "../axiosClient";
+import { Response, SignUp } from "@/types/Response.type";
+
+export const requestChangePasswordAPI = ({ email }: { email: string }) => {
+  return axiosClient.post<Response<any>>("/api/auth/forget-password", {
+    email,
+  });
+};
+
+export const changePasswordAPI = ({ password }: { password: string }) => {
+  return axiosClient.post<Response<any>>("/api/auth/change-password", {
+    password,
+  });
+};
 
 export const signUpAPI = ({
   email,
@@ -10,7 +22,11 @@ export const signUpAPI = ({
   password: string;
   fullname: string;
 }) => {
-  return axios.post<any>("/api/auth/register", { email, password, fullname });
+  return axiosClient.post<Response<SignUp>>("/api/auth/register", {
+    email,
+    password,
+    fullname,
+  });
 };
 
 export const signOutRequest = () => {
@@ -18,7 +34,7 @@ export const signOutRequest = () => {
 };
 
 export function refreshTokenAPI(refreshToken: string) {
-  return axios.post<any>("/api/v1/auth/refresh", {
+  return axiosClient.post<any>("/api/v1/auth/refresh", {
     refreshToken,
   });
 }

@@ -10,19 +10,12 @@ import authOptions from "@/lib/nextAuthOptions";
 import axiosClient from "@/services/backend/axiosClient";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-import { signUpAPI } from "@/services/backend/AuthController";
+import {
+  changePasswordAPI,
+  signUpAPI,
+} from "@/services/backend/AuthController";
 
 const signUpFormFields = [
-  {
-    icon: PrimeIcons.USER,
-    placeholder: "Tên",
-    name: "fullname",
-  },
-  {
-    icon: PrimeIcons.ENVELOPE,
-    placeholder: "Email đăng nhập",
-    name: "email",
-  },
   {
     icon: PrimeIcons.KEY,
     placeholder: "Mật khẩu",
@@ -35,7 +28,7 @@ const signUpFormFields = [
   },
 ];
 
-const SinUpPage = ({ providers }: any) => {
+const ChangePasswordPage = ({ providers }: any) => {
   const {
     register,
     handleSubmit,
@@ -46,12 +39,13 @@ const SinUpPage = ({ providers }: any) => {
 
   const onSubmit = async (formData: any) => {
     try {
-      const res = await signUpAPI(formData);
-      console.log(res);
+      const res = await changePasswordAPI(formData);
+
+      if (res.data.success) {
+        router.push("/auth/signin");
+      }
     } catch (e) {
       console.error(e);
-    } finally {
-      router.push("/auth/signin");
     }
   };
 
@@ -90,8 +84,8 @@ const SinUpPage = ({ providers }: any) => {
                 ))}
                 <Button className="rounded-xl !bg-mangahay-700 flex justify-center">
                   <div className="flex gap-3 items-center text-white">
-                    <div className="text-white font-bold">Đăng kí</div>
-                    <i className={PrimeIcons.USER_PLUS} />
+                    <div className="text-white font-bold">Đổi mật khẩu</div>
+                    <i className={PrimeIcons.SYNC} />
                   </div>
                 </Button>
               </form>
@@ -103,7 +97,7 @@ const SinUpPage = ({ providers }: any) => {
   );
 };
 
-export default SinUpPage;
+export default ChangePasswordPage;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(
