@@ -14,6 +14,8 @@ import {
   requestChangePasswordAPI,
   signUpAPI,
 } from "@/services/backend/AuthController";
+import AuthPageLayout from "@/layouts/AuthPageLayout";
+import { useState } from "react";
 
 const ForgotPasswordPage = ({ providers }: any) => {
   const {
@@ -23,62 +25,48 @@ const ForgotPasswordPage = ({ providers }: any) => {
   } = useForm();
 
   const router = useRouter();
+  const [isSent, setIsSent] = useState(false);
 
   const onSubmit = async (formData: any) => {
     try {
       const res = await requestChangePasswordAPI(formData);
 
-      if (res.data.success) {
-        router.push("/auth/forgot/change");
-      }
+      setIsSent(res.data.success);
     } catch (e) {
       console.error(e);
     }
   };
 
   return (
-    <div className="bg-gradient-to-tr from-[#e0c3fc] to-[#8ec5fc]">
-      <Layout className="h-[calc(100vh-2.5rem)] flex justify-center items-center">
-        <div className="rounded-[1.875rem] bg-white bg-opacity-70 overflow-hidden flex flex-col md:flex-row">
-          <div className="relative aspect-[5/6] h-[28rem] w-1/2 max-md:hidden">
-            <Image
-              src="/assets/authpage/demopngs/doraemon.png"
-              alt="doraemon.png"
-              fill
-              className="object-fill"
-            />
+    <AuthPageLayout>
+      <div className="font-bold text-2xl self-start">Quên mật khẩu</div>
+      <form
+        className="flex flex-col gap-5 w-[30rem]"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <span className="p-input-icon-left">
+          <i className={PrimeIcons.ENVELOPE} />
+          <InputText
+            {...register("email", { required: true })}
+            placeholder="Email"
+            className={errors?.["email"] && "p-invalid"}
+            name="email"
+          />
+        </span>
+
+        {isSent && (
+          <div className="font-semibold text-red-400">
+            Email đã được gửi, vui lòng kiểm tra
           </div>
-          <div className="w-full p-8 flex flex-col items-center justify-center bg-opacity-70">
-            <div className="w-full flex flex-col items-center gap-5">
-              <div className="font-bold text-2xl self-start">Quên mật khẩu</div>
-              <form
-                className="flex flex-col gap-5 w-[30rem]"
-                onSubmit={handleSubmit(onSubmit)}
-              >
-                <span className="p-input-icon-left">
-                  <i className={PrimeIcons.ENVELOPE} />
-                  <InputText
-                    {...register("email", { required: true })}
-                    placeholder="Email"
-                    className="w-full"
-                    name="email"
-                  />
-                  <div>{errors?.["email"] && `Email is required!`}</div>
-                </span>
-                <Button className="rounded-xl !bg-mangahay-700 flex justify-center">
-                  <div className="flex gap-3 items-center text-white">
-                    <div className="text-white font-bold">
-                      Gửi email xác nhận
-                    </div>
-                    <i className={PrimeIcons.ENVELOPE} />
-                  </div>
-                </Button>
-              </form>
-            </div>
+        )}
+        <Button className="rounded-xl !bg-mangahay-700 flex justify-center">
+          <div className="flex gap-3 items-center text-white">
+            <div className="text-white font-bold">Gửi email xác nhận</div>
+            <i className={PrimeIcons.ENVELOPE} />
           </div>
-        </div>
-      </Layout>
-    </div>
+        </Button>
+      </form>
+    </AuthPageLayout>
   );
 };
 

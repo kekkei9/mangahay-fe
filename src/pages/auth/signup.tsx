@@ -11,6 +11,9 @@ import axiosClient from "@/services/backend/axiosClient";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { signUpAPI } from "@/services/backend/AuthController";
+import { useRef } from "react";
+import { Toast } from "primereact/toast";
+import AuthPageLayout from "@/layouts/AuthPageLayout";
 
 const signUpFormFields = [
   {
@@ -36,70 +39,71 @@ const signUpFormFields = [
 ];
 
 const SinUpPage = ({ providers }: any) => {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
-
-  const router = useRouter();
+  const toastRef = useRef<Toast>(null);
 
   const onSubmit = async (formData: any) => {
     try {
       const res = await signUpAPI(formData);
-      console.log(res);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      router.push("/auth/signin");
+    } catch (e: any) {
+      const { message, success, statusCode } = e.response.data;
+      if (success) {
+        router.push("/auth/signin");
+        return;
+      }
+      toastRef.current?.show({
+        severity: "error",
+        summary: "Đăng kí thất bại",
+        detail: message,
+        life: 3000,
+      });
     }
   };
 
   return (
-    <div className="bg-gradient-to-tr from-[#e0c3fc] to-[#8ec5fc]">
-      <Layout className="h-[calc(100vh-2.5rem)] flex justify-center items-center">
-        <div className="rounded-[1.875rem] bg-white bg-opacity-70 overflow-hidden flex flex-col md:flex-row">
-          <div className="relative aspect-[5/6] h-[28rem] w-1/2 max-md:hidden">
-            <Image
-              src="/assets/authpage/demopngs/doraemon.png"
-              alt="doraemon.png"
-              fill
-              className="object-fill"
-            />
-          </div>
-          <div className="w-full p-8 flex flex-col items-center justify-center bg-opacity-70">
-            <div className="w-full flex flex-col items-center gap-5">
-              <div className="font-bold text-2xl self-start">
-                Đăng kí tài khoản
-              </div>
-              <form
-                className="flex flex-col gap-5 w-[30rem]"
-                onSubmit={handleSubmit(onSubmit)}
-              >
-                {signUpFormFields.map(({ icon, name, placeholder }, index) => (
-                  <span className="p-input-icon-left" key={index}>
-                    <i className={icon} />
-                    <InputText
-                      {...register(name, { required: true })}
-                      placeholder={placeholder}
-                      className="w-full"
-                      name={name}
-                    />
-                    <div>{errors?.[name] && `${name} is required!`}</div>
-                  </span>
-                ))}
-                <Button className="rounded-xl !bg-mangahay-700 flex justify-center">
-                  <div className="flex gap-3 items-center text-white">
-                    <div className="text-white font-bold">Đăng kí</div>
-                    <i className={PrimeIcons.USER_PLUS} />
-                  </div>
-                </Button>
-              </form>
+    <>
+      <Toast ref={toastRef} />
+      <AuthPageLayout>
+        <div className="font-bold text-2xl self-start">Đăng kí tài khoản</div>
+        <form
+          className="flex flex-col gap-5 w-[30rem]"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          {signUpFormFields.map(({ icon, name, placeholder }, index) => (
+            <span className="p-input-icon-left" key={index}>
+              <i className={icon} />
+              <InputText
+                {...register(name, {
+                  required: true,
+                  validate: (val: string) => {
+                    if (name !== "retypePassword") return true;
+                    if (watch("password") != val) {
+                      return "Your passwords do no match";
+                    }
+                  },
+                })}
+                placeholder={placeholder}
+                className={errors?.[name] && "p-invalid"}
+                name={name}
+              />
+            </span>
+          ))}
+          <Button className="rounded-xl !bg-mangahay-700 flex justify-center">
+            <div className="flex gap-3 items-center text-white">
+              <div className="text-white font-bold">Đăng kí</div>
+              <i className={PrimeIcons.USER_PLUS} />
             </div>
-          </div>
-        </div>
-      </Layout>
-    </div>
+          </Button>
+        </form>
+      </AuthPageLayout>
+    </>
   );
 };
 

@@ -7,10 +7,13 @@ export const requestChangePasswordAPI = ({ email }: { email: string }) => {
   });
 };
 
-export const changePasswordAPI = ({ password }: { password: string }) => {
-  return axiosClient.post<Response<any>>("/api/auth/change-password", {
-    password,
-  });
+export const changePasswordAPI = (password: string, token: string) => {
+  return axiosClient.post<Response<any>>(
+    `/api/auth/change-password?token=${token}`,
+    {
+      password,
+    }
+  );
 };
 
 export const signUpAPI = ({

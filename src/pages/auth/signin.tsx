@@ -1,5 +1,3 @@
-import Layout from "@/layouts/Layout";
-import Image from "next/image";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { PrimeIcons } from "primereact/api";
@@ -11,6 +9,7 @@ import axiosClient from "@/services/backend/axiosClient";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import AuthPageLayout from "@/layouts/AuthPageLayout";
 
 const SignInPage = ({ csrfToken }: { csrfToken: string }) => {
   const { register, handleSubmit } = useForm();
@@ -28,79 +27,55 @@ const SignInPage = ({ csrfToken }: { csrfToken: string }) => {
   };
 
   return (
-    <div className="bg-gradient-to-tr from-[#e0c3fc] to-[#8ec5fc]">
-      <Layout className="h-[calc(100vh-2.5rem)] flex justify-center items-center">
-        <div className="rounded-[1.875rem] bg-white bg-opacity-70 overflow-hidden flex flex-col md:flex-row">
-          <div className="relative aspect-[5/6] h-[28rem] w-1/2 max-md:hidden">
-            <Image
-              src="/assets/authpage/demopngs/doraemon.png"
-              alt="doraemon.png"
-              fill
-              className="object-fill"
-            />
+    <AuthPageLayout>
+      <div className="font-bold text-2xl self-start">Đăng nhập để tiếp tục</div>
+      <form
+        className="flex flex-col gap-5 w-[30rem]"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <input
+          {...register("csrfToken")}
+          name="csrfToken"
+          type="hidden"
+          defaultValue={csrfToken}
+        />
+        <span className="p-input-icon-left">
+          <i className={PrimeIcons.ENVELOPE} />
+          <InputText
+            {...register("email", { required: true })}
+            placeholder="Email đăng nhập"
+            className="w-full"
+            name="email"
+          />
+        </span>
+        <span className="p-input-icon-left">
+          <i className={PrimeIcons.KEY} />
+          <InputText
+            {...register("password", { required: true })}
+            placeholder="Mật khẩu"
+            className="w-full"
+            name="password"
+          />
+        </span>
+        <Button
+          className="rounded-xl !bg-mangahay-700 flex justify-center"
+          type="submit"
+        >
+          <div className="flex gap-3 items-center text-white">
+            <div className="text-white font-bold">Đăng nhập</div>
+            <i className={PrimeIcons.SIGN_IN} />
           </div>
-          <div className="w-full p-8 flex flex-col items-center justify-center">
-            <div className="w-full flex flex-col items-center gap-5">
-              <div className="font-bold text-2xl self-start">
-                Đăng nhập để tiếp tục
-              </div>
-              <form
-                className="flex flex-col gap-5 w-[30rem]"
-                onSubmit={handleSubmit(onSubmit)}
-              >
-                <input
-                  {...register("csrfToken")}
-                  name="csrfToken"
-                  type="hidden"
-                  defaultValue={csrfToken}
-                />
-                <span className="p-input-icon-left">
-                  <i className={PrimeIcons.ENVELOPE} />
-                  <InputText
-                    {...register("email", { required: true })}
-                    placeholder="Email đăng nhập"
-                    className="w-full"
-                    name="email"
-                  />
-                </span>
-                <span className="p-input-icon-left">
-                  <i className={PrimeIcons.KEY} />
-                  <InputText
-                    {...register("password", { required: true })}
-                    placeholder="Mật khẩu"
-                    className="w-full"
-                    name="password"
-                  />
-                </span>
-                <Button
-                  className="rounded-xl !bg-mangahay-700 flex justify-center"
-                  type="submit"
-                >
-                  <div className="flex gap-3 items-center text-white">
-                    <div className="text-white font-bold">Đăng nhập</div>
-                    <i className={PrimeIcons.SIGN_IN} />
-                  </div>
-                </Button>
-              </form>
-              <div className="flex gap-10 font-bold">
-                <Link
-                  className="cursor-pointer text-mangahay-500"
-                  href="/auth/signup"
-                >
-                  Tạo tài khoản mới
-                </Link>
-                <Link
-                  className="cursor-pointer text-mangahay-500"
-                  href="/auth/forgot"
-                >
-                  Quên mật khẩu
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Layout>
-    </div>
+        </Button>
+      </form>
+      <div className="flex gap-10 font-bold">
+        <Link className="cursor-pointer text-mangahay-500" href="/auth/signup">
+          Tạo tài khoản mới
+        </Link>
+        <Link className="cursor-pointer text-mangahay-500" href="/auth/forgot">
+          Quên mật khẩu
+        </Link>
+      </div>
+    </AuthPageLayout>
   );
 };
 
