@@ -8,17 +8,45 @@ import "@/styles/primeReactTheme.scss";
 
 import MainLayout from "@/layouts/MainLayout";
 import type { AppProps } from "next/app";
-import { SessionProvider } from "next-auth/react";
+import { Provider, useSelector } from "react-redux";
+import store from "@/redux";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+
+const authorizedPaths = ["/admin"];
+
+const AppRouter = ({ children }: { children: React.ReactNode }) => {
+  const isAuthUser = useSelector(
+    (state: any) => state.authentication.isAuthUser
+  );
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (
+      authorizedPaths.some((path) => router.asPath.includes(path)) &&
+      !isAuthUser
+    ) {
+      router.push("/auth/signin");
+    }
+    if (isAuthUser && router.asPath.includes("/auth")) {
+      router.push("/");
+    }
+  }, [router, isAuthUser]);
+  return <>{children}</>;
+};
 
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
   return (
-    <SessionProvider session={session}>
-      <MainLayout>
-        <Component {...pageProps} />
-      </MainLayout>
-    </SessionProvider>
+    <Provider store={store}>
+      <AppRouter>
+        <MainLayout>
+          <Component {...pageProps} />
+        </MainLayout>
+      </AppRouter>
+    </Provider>
   );
 }

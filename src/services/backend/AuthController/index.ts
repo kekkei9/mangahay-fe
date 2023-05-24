@@ -1,5 +1,5 @@
 import axiosClient from "../axiosClient";
-import { Response, SignUp } from "@/types/Response.type";
+import { Account, Login, Response, SignUp } from "@/types/Response.type";
 
 export const requestChangePasswordAPI = ({ email }: { email: string }) => {
   return axiosClient.post<Response<any>>("/api/auth/forget-password", {
@@ -16,6 +16,19 @@ export const changePasswordAPI = (password: string, token: string) => {
   );
 };
 
+export const signInAPI = ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
+  return axiosClient.post<Response<Login>>("/api/auth/login", {
+    email,
+    password,
+  });
+};
+
 export const signUpAPI = ({
   email,
   password,
@@ -30,6 +43,10 @@ export const signUpAPI = ({
     password,
     fullname,
   });
+};
+
+export const getCredentialsAPI = () => {
+  return axiosClient.get<Response<Account>>("/api/user/credentials");
 };
 
 export const signOutAPI = () => {

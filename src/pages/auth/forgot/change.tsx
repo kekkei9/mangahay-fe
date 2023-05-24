@@ -1,17 +1,9 @@
-import Layout from "@/layouts/Layout";
-import Image from "next/image";
 import { PrimeIcons } from "primereact/api";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
-import { getServerSession } from "next-auth";
-import { getCsrfToken, getProviders } from "next-auth/react";
-import { GetServerSidePropsContext } from "next";
-import authOptions from "@/lib/nextAuthOptions";
-import axiosClient from "@/services/backend/axiosClient";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { changePasswordAPI } from "@/services/backend/AuthController";
-import { Password } from "primereact/password";
 import AuthPageLayout from "@/layouts/AuthPageLayout";
 
 const changePasswordFormFields = [
@@ -94,27 +86,3 @@ const ChangePasswordPage = ({ providers }: any) => {
 };
 
 export default ChangePasswordPage;
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerSession(
-    context.req,
-    context.res,
-    authOptions(axiosClient)
-  );
-
-  // If the user is already logged in, redirect.
-  // Note: Make sure not to redirect to the same page
-  // To avoid an infinite loop!
-  if (session) {
-    return { redirect: { destination: "/" } };
-  }
-
-  const providers = await getProviders();
-
-  return {
-    props: {
-      providers: providers ?? [],
-      csrfToken: await getCsrfToken(context),
-    },
-  };
-}

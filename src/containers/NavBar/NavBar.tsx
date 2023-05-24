@@ -1,35 +1,39 @@
+import { logoutHandler } from "@/redux/authentication/authentication.action";
 import { signOutAPI } from "@/services/backend/AuthController";
 import { setAuthToken } from "@/services/backend/axiosClient";
 import { useRouter } from "next/router";
 import { Button } from "primereact/button";
 import { Menu } from "primereact/menu";
 import { useRef } from "react";
-import useSWR from "swr";
-import { fetcher } from "@/utils/common";
-import { Response } from "@/types/Response.type";
-
-const handleSignOut = async () => {
-  try {
-    await signOutAPI();
-  } catch (e) {
-    console.error(e);
-  } finally {
-    setAuthToken();
-  }
-};
+import { useDispatch, useSelector } from "react-redux";
 
 const NavBar = () => {
   const router = useRouter();
   const menuRef = useRef<Menu>(null);
+  const dispatch = useDispatch();
+  const { isAuthUser, user } = useSelector(
+    (state: any) => state.authentication
+  );
+
+  const handleSignOut = async () => {
+    try {
+      await signOutAPI();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setAuthToken();
+      dispatch(logoutHandler() as any);
+    }
+  };
 
   return (
     <div className="h-10 fixed top-0 left-0 z-50 ">
       <div className="flex justify-around w-screen px-4">
         <div>Just a simple navbar</div>
-        {null ? (
+        {isAuthUser ? (
           <>
             <Button
-              label={`Hi, hi`}
+              label={`Hi, ${user.fullname}`}
               onClick={(e) => menuRef.current?.toggle(e)}
             />
             <Menu
