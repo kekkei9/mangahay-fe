@@ -32,7 +32,7 @@ export const signUpAPI = ({
   });
 };
 
-export const signOutRequest = () => {
+export const signOutAPI = () => {
   return axiosClient.get<any>("/api/auth/logout");
 };
 

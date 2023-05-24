@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import Cookies from "js-cookie";
 import { refreshTokenAPI } from "./AuthController";
+import { getSession, useSession } from "next-auth/react";
 
 const DEFAULT_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_ENDPOINT;
 
@@ -62,11 +63,11 @@ export const setAuthToken = (token?: string) => {
   }
 };
 
-export const fetcher = (url: string) =>
-  axiosClient.get(url).then((res) => res.data);
-
 // hàm để refresh token
 const refreshToken = async () => {
+  const session = await getSession();
+  console.log(session?.user);
+
   const refreshToken = Cookies.get(
     process.env.NEXT_PUBLIC_REFRESH_TOKEN_KEY as string
   );

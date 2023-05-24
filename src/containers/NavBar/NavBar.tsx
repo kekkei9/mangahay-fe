@@ -1,16 +1,24 @@
-import { signOutRequest } from "@/services/backend/AuthController";
-import { signOut, useSession } from "next-auth/react";
+import { signOutAPI } from "@/services/backend/AuthController";
+import { setAuthToken } from "@/services/backend/axiosClient";
 import { useRouter } from "next/router";
 import { Button } from "primereact/button";
 import { Menu } from "primereact/menu";
 import { useRef } from "react";
+import useSWR from "swr";
+import { fetcher } from "@/utils/common";
+import { Response } from "@/types/Response.type";
 
-const handleSignOut = () => {
-  signOut();
+const handleSignOut = async () => {
+  try {
+    await signOutAPI();
+  } catch (e) {
+    console.error(e);
+  } finally {
+    setAuthToken();
+  }
 };
 
 const NavBar = () => {
-  const { data } = useSession();
   const router = useRouter();
   const menuRef = useRef<Menu>(null);
 
@@ -18,10 +26,10 @@ const NavBar = () => {
     <div className="h-10 fixed top-0 left-0 z-50 ">
       <div className="flex justify-around w-screen px-4">
         <div>Just a simple navbar</div>
-        {data ? (
+        {null ? (
           <>
             <Button
-              label={`Hi, ${data.user?.name}`}
+              label={`Hi, hi`}
               onClick={(e) => menuRef.current?.toggle(e)}
             />
             <Menu
