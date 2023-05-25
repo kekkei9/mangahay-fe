@@ -19,7 +19,7 @@ const changePasswordFormFields = [
   },
 ];
 
-const ChangePasswordPage = ({ providers }: any) => {
+const ChangePasswordPage = () => {
   const {
     register,
     handleSubmit,
@@ -28,7 +28,6 @@ const ChangePasswordPage = ({ providers }: any) => {
   } = useForm();
 
   const router = useRouter();
-  console.log(errors);
 
   const onSubmit = async (formData: any) => {
     try {

@@ -21,6 +21,7 @@ export const loginStorageHandler = (loginData: Login) => {
 export const logoutHandler = () => {
   return (dispatch: Dispatch) => {
     Cookies.remove("token");
+    Cookies.remove("refreshToken");
     localStorage.removeItem("user");
     dispatch(authenticationActions.logout());
   };

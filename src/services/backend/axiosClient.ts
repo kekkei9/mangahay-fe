@@ -86,15 +86,18 @@ const refreshToken = async () => {
   }
   try {
     const {
-      data: { data },
+      data: { result },
     } = await refreshTokenAPI(refreshToken);
-    Cookies.set(process.env.NEXT_PUBLIC_TOKEN_KEY as string, data.token);
+    Cookies.set(
+      process.env.NEXT_PUBLIC_TOKEN_KEY as string,
+      result.access_token
+    );
     Cookies.set(
       process.env.NEXT_PUBLIC_REFRESH_TOKEN_KEY as string,
-      data.refreshToken
+      result.refresh_token
     );
-    await setAuthToken(data.token);
-    return data.token;
+    await setAuthToken(result.access_token);
+    return result.access_token;
   } catch (error) {
     console.log(error);
     return null;

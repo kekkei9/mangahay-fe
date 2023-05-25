@@ -7,6 +7,7 @@ import { Menu } from "primereact/menu";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Response } from "@/types/Response.type";
+import { Notification } from "@/types/Notification";
 import useSWR from "swr";
 import { fetcher } from "@/utils/common";
 
@@ -30,10 +31,12 @@ const NavBar = () => {
     }
   };
 
-  const { data: notifications } = useSWR<Response<any>>(
-    "/api/user/notifies",
+  const { data: notificationResponse } = useSWR<Response<Notification[]>>(
+    isAuthUser ? "/api/user/notifies" : null,
     fetcher
   );
+
+  console.log(notificationResponse);
 
   useEffect(() => {
     setIsClient(true);

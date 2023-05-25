@@ -2,22 +2,17 @@ import { PrimeIcons } from "primereact/api";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/router";
-import {
-  requestChangePasswordAPI,
-  signUpAPI,
-} from "@/services/backend/AuthController";
+import { requestChangePasswordAPI } from "@/services/backend/AuthController";
 import AuthPageLayout from "@/layouts/AuthPageLayout";
 import { useState } from "react";
 
-const ForgotPasswordPage = ({ providers }: any) => {
+const ForgotPasswordPage = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const router = useRouter();
   const [isSent, setIsSent] = useState(false);
 
   const onSubmit = async (formData: any) => {
