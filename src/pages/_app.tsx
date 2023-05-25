@@ -31,7 +31,11 @@ const AppRouter = ({ children }: { children: React.ReactNode }) => {
     ) {
       router.push("/auth/signin");
     }
-    if (isAuthUser && router.asPath.includes("/auth")) {
+    if (
+      isAuthUser &&
+      router.asPath.includes("/auth") &&
+      router.asPath !== "/auth/account"
+    ) {
       router.push("/");
     }
   }, [router, isAuthUser]);
