@@ -12,6 +12,8 @@ import { Provider, useSelector } from "react-redux";
 import store from "@/redux";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { SWRConfig } from "swr";
+import { fetcher } from "@/utils/common";
 
 const authorizedPaths = ["/admin"];
 
@@ -41,12 +43,19 @@ export default function App({
   pageProps: { session, ...pageProps },
 }: AppProps) {
   return (
-    <Provider store={store}>
-      <AppRouter>
-        <MainLayout>
-          <Component {...pageProps} />
-        </MainLayout>
-      </AppRouter>
-    </Provider>
+    <SWRConfig
+      value={{
+        refreshInterval: 3000,
+        fetcher: fetcher,
+      }}
+    >
+      <Provider store={store}>
+        <AppRouter>
+          <MainLayout>
+            <Component {...pageProps} />
+          </MainLayout>
+        </AppRouter>
+      </Provider>
+    </SWRConfig>
   );
 }

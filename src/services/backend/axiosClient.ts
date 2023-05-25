@@ -39,7 +39,7 @@ axiosClient.interceptors.response.use(
     if (error?.response?.status === 403) {
       if (!originalRequest?.retry) {
         originalRequest.retry = true;
-        const access_token = Cookies.get("token");
+        const access_token = await refreshToken();
         setAuthToken(access_token as string);
         axiosClient.defaults.headers.common["Authorization"] =
           "Bearer " + access_token;
