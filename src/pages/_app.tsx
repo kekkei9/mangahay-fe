@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { SWRConfig } from "swr";
 import { fetcher } from "@/utils/common";
+import ErrorBoundary from "@/containers/ErrorBoundary";
 
 const authorizedPaths = ["/admin"];
 
@@ -47,19 +48,21 @@ export default function App({
   pageProps: { session, ...pageProps },
 }: AppProps) {
   return (
-    <SWRConfig
-      value={{
-        refreshInterval: 3000,
-        fetcher: fetcher,
-      }}
-    >
-      <Provider store={store}>
-        <AppRouter>
-          <MainLayout>
-            <Component {...pageProps} />
-          </MainLayout>
-        </AppRouter>
-      </Provider>
-    </SWRConfig>
+    <ErrorBoundary>
+      <SWRConfig
+        value={{
+          refreshInterval: 3000,
+          fetcher: fetcher,
+        }}
+      >
+        <Provider store={store}>
+          <AppRouter>
+            <MainLayout>
+              <Component {...pageProps} />
+            </MainLayout>
+          </AppRouter>
+        </Provider>
+      </SWRConfig>
+    </ErrorBoundary>
   );
 }

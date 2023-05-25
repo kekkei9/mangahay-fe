@@ -13,6 +13,22 @@ import { Badge } from "primereact/badge";
 import { OverlayPanel } from "primereact/overlaypanel";
 import NotificationBoxContainer from "../Overlay/NotificationBox";
 import FollowingBoxContainer from "../Overlay/FollowingBox";
+import Link from "next/link";
+
+const navList = [
+  {
+    label: "Thể loại",
+    href: "/genre",
+  },
+  {
+    label: "Bảng xếp hạng",
+    href: "/top",
+  },
+  {
+    label: "Tìm truyện",
+    href: "/find-comic",
+  },
+];
 
 const NavBar = () => {
   const router = useRouter();
@@ -54,13 +70,26 @@ const NavBar = () => {
       <OverlayPanel ref={followingRef}>
         <FollowingBoxContainer />
       </OverlayPanel>
-      <div className="h-10 fixed top-0 left-0 z-50 ">
-        <div className="flex justify-around w-screen px-4">
-          <div>Just a simple navbar</div>
-
+      <div className="h-10 fixed top-0 left-0 z-50 bg-white">
+        <div className="flex justify-between w-screen px-8">
+          <div className="flex gap-6 items-center">
+            <Link className="cursor-pointer text-red-400" href="/">
+              Logo here
+            </Link>
+            {navList.map(({ label, href }, index) => (
+              <Link
+                key={index}
+                href={href}
+                className={!router.asPath.includes(href) ? "text-black" : ""}
+              >
+                {label.toLocaleUpperCase()}
+              </Link>
+            ))}
+          </div>
+          <div>Search Box</div>
           {isClient &&
             (isAuthUser ? (
-              <>
+              <div className="flex gap-6 items-center">
                 <i
                   className={`${PrimeIcons.CHECK_SQUARE} !text-2xl cursor-pointer`}
                   onClick={(e) => followingRef.current?.toggle(e)}
@@ -72,7 +101,7 @@ const NavBar = () => {
                   {!!notificationCount && <Badge value={notificationCount} />}
                 </i>
                 <Button
-                  label={`Hi, ${user.fullname}`}
+                  label={`Xin chào, ${user.fullname}`}
                   onClick={(e) => menuRef.current?.toggle(e)}
                 />
                 <Menu
@@ -87,7 +116,7 @@ const NavBar = () => {
                     { label: "Log out", command: handleSignOut },
                   ]}
                 />
-              </>
+              </div>
             ) : (
               <Button onClick={() => router.push("/auth/signin")}>
                 Log in
