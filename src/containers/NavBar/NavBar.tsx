@@ -6,6 +6,9 @@ import { Button } from "primereact/button";
 import { Menu } from "primereact/menu";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Response } from "@/types/Response.type";
+import useSWR from "swr";
+import { fetcher } from "@/utils/common";
 
 const NavBar = () => {
   const router = useRouter();
@@ -26,6 +29,11 @@ const NavBar = () => {
       dispatch(logoutHandler() as any);
     }
   };
+
+  const { data: notifications } = useSWR<Response<any>>(
+    "/api/user/notifies",
+    fetcher
+  );
 
   useEffect(() => {
     setIsClient(true);

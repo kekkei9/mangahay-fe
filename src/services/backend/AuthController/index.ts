@@ -54,7 +54,7 @@ export const signOutAPI = () => {
 };
 
 export function refreshTokenAPI(refreshToken: string) {
-  return axiosClient.post<any>("/api/v1/auth/refresh", {
-    refreshToken,
+  return axiosClient.post<Response<any>>("/api/auth/refresh-token", {
+    "refresh-token": refreshToken,
   });
 }

@@ -36,6 +36,20 @@ axiosClient.interceptors.response.use(
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     const originalRequest = error.config;
+    if (error?.response?.status === 403) {
+      if (!originalRequest?.retry) {
+        originalRequest.retry = true;
+        const access_token = Cookies.get("token");
+        setAuthToken(access_token as string);
+        axiosClient.defaults.headers.common["Authorization"] =
+          "Bearer " + access_token;
+        originalRequest.headers["Authorization"] = "Bearer " + access_token;
+        return axios(originalRequest);
+      } else {
+        delete axiosClient.defaults.headers.common.Authorization;
+      }
+    }
+
     if (error?.response?.status === 401) {
       if (!originalRequest?.retry) {
         originalRequest.retry = true;

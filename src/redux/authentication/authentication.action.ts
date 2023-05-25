@@ -2,15 +2,16 @@ import { Dispatch } from "redux";
 import { authenticationActions } from "./authentication.slice";
 import Cookies from "js-cookie";
 import { getCredentialsAPI } from "@/services/backend/AuthController";
-import axiosClient, { setAuthToken } from "@/services/backend/axiosClient";
+import { Login } from "@/types/Response.type";
 
-export const loginStorageHandler = (loginData: { access_token: string }) => {
+export const loginStorageHandler = (loginData: Login) => {
   return async (dispatch: any) => {
     Cookies.set("token", loginData.access_token);
+    Cookies.set("refreshToken", loginData.refresh_token);
 
-    const { data: res } = await getCredentialsAPI();
-
-    const userData = { ...loginData, ...res.result };
+    const {
+      data: { result: userData },
+    } = await getCredentialsAPI();
 
     localStorage.setItem("user", JSON.stringify(userData));
     dispatch(authenticationActions.setUser(userData));
