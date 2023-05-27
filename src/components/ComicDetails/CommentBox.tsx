@@ -1,7 +1,8 @@
 import { Pagination } from "@mui/material";
 import { handleClientScriptLoad } from "next/script";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReportTable from "../ReportTable/ReportTable";
+import { getComment, postComment } from "@/service/backend/CommentControllers";
 
 const reportItems = [
     'Spam: Nội dung bình luận không liên quan đến chủ đề hoặc là quảng cáo, spam.',
@@ -10,7 +11,20 @@ const reportItems = [
     'Tấn công cá nhân: Nội dung bình luận tấn công hoặc phân biệt chủng tộc, tôn giáo, giới tính, địa phương, quốc gia,...',
 ]
 
-const CommentBox =(props:any)=>{
+const formatDateTime = (dateString:string) =>{
+    const dateObj = new Date(dateString);
+    const year = dateObj.getFullYear();
+    const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
+    const day = dateObj.getDate().toString().padStart(2, '0');
+    const hours = dateObj.getHours().toString().padStart(2, '0');
+    const minutes = dateObj.getMinutes().toString().padStart(2, '0');
+    const seconds = dateObj.getSeconds().toString().padStart(2, '0');
+
+    const formattedDateTime = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    return formattedDateTime;
+}
+
+const CommentBox =({comic,noticeShow}:any)=>{
 
     const [commentList,setCommentList] = useState<any[]>([])
     const [comment,setComment] = useState('')
@@ -19,16 +33,37 @@ const CommentBox =(props:any)=>{
     const [reportIsShown,setReportIsShown] = useState(false)
     const [reportId,setReportID] = useState('')
 
-    const handlePost = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>)=>{
+    const handlePost = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>)=>{
+        
         event.preventDefault();
-        const newComment = {
-            content: comment,
-            time: 'a',
-            name:'abc'
-        }
-        setCommentList((prev: any) => [newComment,...prev])
-        setComment("");
+        if(!sessionStorage.getItem("access_token")){
+            noticeShow('error','Đăng nhập để thực hiện chức năng');
+            return;
+        }else{
+            try{
+                const data = await postComment(comic.id,comment)
+                const newComment = data.result;
+                setCommentList((prev: any) => [newComment,...prev])
+                setComment("");
+            }catch(error){
+                noticeShow('error',error);
+            }   
+        }   
     }
+
+    const fetchData = async ()=>{
+        try {
+            const data = await getComment(comic.id);
+            setCommentList(data.result)
+
+          } catch (error) {
+            // Xử lý lỗi tại đây
+          }
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, [comic]);
 
     const handleChangePage=(event:any,value:any)=>{
         setCurrentPage(value);
@@ -39,14 +74,19 @@ const CommentBox =(props:any)=>{
     }
 
     const handleReport = (id:any)=>{
-        setReportID(id)
-        setReportIsShown(true)
+        if(!sessionStorage.getItem("access_token")){
+            noticeShow('error','Đăng nhập để thực hiện chức năng');
+        }else{
+            setReportID(id)
+            setReportIsShown(true)
+        }
+        
     }
 
 
     return(
         <>
-        {reportIsShown && <ReportTable items={reportItems} onClose={closeReport}></ReportTable>}
+        {reportIsShown && <ReportTable type='comment' id={reportId} items={reportItems} onClose={closeReport} noticeShow={noticeShow} ></ReportTable>}
         <div className="p-4 bg-white">
             <h2 className="text-lg font-medium mb-4">Comment</h2>
             <form className="mb-4">
@@ -60,8 +100,8 @@ const CommentBox =(props:any)=>{
                     commentList.map((cmt:any)=>(
                         <div className="bg-white rounded-md py-4 border-b border-gray-200" key={cmt.id}>
                             <div className="flex justify-between items-center mb-2">
-                                <span className="font-medium">{cmt.name}</span>
-                                <span className="text-gray-400 text-sm">{cmt.time}</span>
+                                <span className="font-medium">{cmt.id_user.fullname}</span>
+                                <span className="text-gray-400 text-sm">{formatDateTime(cmt.createdAt)}</span>
                             </div>
                             <p className="text-gray-700">{cmt.content}</p>
                             <div className="flex justify-end mt-2">
@@ -70,26 +110,6 @@ const CommentBox =(props:any)=>{
                         </div>
                     ))
                 }
-                <div className="bg-white rounded-md py-4 border-b border-gray-200">
-                    <div className="flex justify-between items-center mb-2">
-                        <span className="font-medium">John Doe</span>
-                        <span className="text-gray-400 text-sm">May 15, 2022</span>
-                    </div>
-                    <p className="text-gray-700">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec diam in diam lobortis gravida. Nunc mollis ante sit amet velit venenatis.</p>
-                    <div className="flex justify-end mt-2">
-                        <button className="text-gray-500 font-medium">Report</button>
-                    </div>
-                </div>
-                <div className="bg-white rounded-md py-4 border-b border-gray-200">
-                <div className="flex justify-between items-center mb-2">
-                    <span className="font-medium">Jane Smith</span>
-                    <span className="text-gray-400 text-sm">May 17, 2022</span>
-                </div>
-                <p className="text-gray-700">Duis sed ex sit amet purus pellentesque pharetra. Aenean finibus augue lectus, a luctus eros gravida in. Aliquam varius, lorem eu auctor congue, ipsum arcu ullamcorper nulla, nec euismod magna augue a sem.</p>
-                <div className="flex justify-end mt-2">
-                    <button className="text-gray-500 font-medium">Report</button>
-                </div>
-                </div>
             </div>
             <div className="mt-4 flex justify-center">
             <Pagination count={totalPages} page={currentPage} onChange={handleChangePage}></Pagination>

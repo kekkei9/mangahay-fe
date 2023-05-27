@@ -1,32 +1,46 @@
+import { postReport } from "@/service/backend/ReportControllers";
 import React, { useState } from "react";
 
 
-const ReportTable = (props:any)=>{
+const ReportTable = ({id,type,items,onClose,noticeShow}:any)=>{
     const [description,setDescription] = useState("")
-    const [selectedItems, setSelectedItems] = useState(props.items.map(() => false));
+    const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
     const handleChange = (event:any, index:any) => {
-        const newSelectedItems = [...selectedItems];
-        
-
-        newSelectedItems[index] = event.target.checked;
-        setSelectedItems(newSelectedItems);
+        const checked = event.target.checked;
+        if (checked) {
+        setSelectedItems(prevSelectedItems => [...prevSelectedItems, index]);
+        } else {
+        setSelectedItems(prevSelectedItems => prevSelectedItems.filter(item => item !== index));
+        }
       };
     
-      const handleSubmit = (event:any) => {
+      const handleSubmit = async (event:any) => {
         event.preventDefault();
-        console.log("Description:", description);
-        console.log("Selected items:", selectedItems);
-        props.onClose();
+        const dataReport = {
+            type:type,
+            detail_report:description,
+            errors:Array.from(selectedItems, (index:number) => items[index]),
+            id_object:id
+        }
+        try{
+            const data =  postReport(dataReport);
+            noticeShow('success','Báo cáo thành công');
+        }catch(err){
+            noticeShow('error',err);
+        }
+        
+
+        onClose();
       };
 
     return(
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-900 bg-opacity-75 z-50">
            
-            <div className="bg-white rounded-md shadow-lg ">
+            <div className="bg-white rounded-md shadow-lg min-w-[50%]">
                 <div className="flex justify-between items-center mb-4 bg-gray-100 p-2 px-4 rounded-md">
                     <h2 className="text-lg font-semibold">Report</h2>
-                    <button onClick={props.onClose} className="text-gray-500 hover:text-gray-700">
+                    <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
                         <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
                         <path
                             fillRule="evenodd"
@@ -37,12 +51,12 @@ const ReportTable = (props:any)=>{
                 </div>
                 <form onSubmit={handleSubmit}>
                 <div className="space-y-2 p-4 px-8">
-                    {props.items.map((item:any, index:any) => (
+                    {items.map((item:any, index:any) => (
                     <div key={index} className="flex items-center">
                         <input
                         type="checkbox"
                         className="form-checkbox h-5 w-5 text-indigo-600"
-                        checked={selectedItems[index]}
+                        checked={selectedItems.includes(index)}
                         onChange={(event) => handleChange(event, index)}
                         />
                         <span className="ml-2 text-gray-700">{item}</span>
@@ -54,14 +68,14 @@ const ReportTable = (props:any)=>{
                         </label>
                         <textarea
                             id="description"
-                            className="form-textarea mt-1 block w-full rounded-md border border-black shadow-sm ml-2"
+                            className="form-textarea mt-1 block w-full rounded-md border border-black shadow-sm ml-2 p-2"
                             value={description}
                             onChange={(event) => setDescription(event.target.value)}
                         />
                     </div>
                 </div>
                 <div className="bg-gray-100 flex justify-end p-2 rounded-md">
-                    <button type="button" onClick={props.onClose} className="mr-2 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md">
+                    <button type="button" onClick={onClose} className="mr-2 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md">
                     Cancel
                     </button>
                     <button type="submit" className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md">
