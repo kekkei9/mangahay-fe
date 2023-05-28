@@ -16,7 +16,7 @@ export type Comic = {
   id_owner: number;
   like: number;
   name: string;
-  new_chapter: Chapter;
+  new_chapter?: Chapter;
   slug: string;
   star: string;
   state: "Đang tiến hành" | string;

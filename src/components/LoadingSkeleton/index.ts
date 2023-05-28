@@ -1,3 +1,3 @@
-import LoadingSkeleton from "./LoadingSkeleton";
+import ComicLoadingSkeleton from "./ComicLoadingSkeleton";
 
-export default LoadingSkeleton;
+export default { Comic: ComicLoadingSkeleton };

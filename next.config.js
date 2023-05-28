@@ -38,6 +38,11 @@ const nextConfig = {
         hostname: "1.bp.blogspot.com",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.myanimelist.net",
+        port: "",
+      },
     ],
   },
 };

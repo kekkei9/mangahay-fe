@@ -14,11 +14,10 @@ export default function Home() {
 
   return (
     <>
-      {isLoading && <LoadingSkeleton />}
-      <main className="flex flex-col items-center justify-between pt-10">
+      {isLoading && <LoadingSkeleton.Comic />}
+      <main className="flex flex-col items-center justify-between">
         <CardList
           dataList={allComicsResponse?.result}
-          className="px-12"
           onClickCard={(data) => data?.id && router.push(`comic/${data?.slug}`)}
         >
           {ComicPreviewCard}

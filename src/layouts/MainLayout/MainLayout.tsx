@@ -8,7 +8,7 @@ const MainLayout: React.FC<IProps> = ({ children }) => {
   return (
     <>
       <NavBar />
-      <main className="mt-10">{children}</main>
+      <main className="mt-10 lg:p-10">{children}</main>
     </>
   );
 };
