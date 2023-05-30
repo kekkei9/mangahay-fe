@@ -104,4 +104,8 @@ const refreshToken = async () => {
   }
 };
 
+export const fetcher = (url: string) => {
+  return axiosClient.get(url).then((res) => res.data);
+};
+
 export default axiosClient;

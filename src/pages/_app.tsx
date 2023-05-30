@@ -13,8 +13,8 @@ import store from "@/redux";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { SWRConfig } from "swr";
-import { fetcher } from "@/utils/common";
 import ErrorBoundary from "@/containers/ErrorBoundary";
+import { fetcher } from "@/services/backend/axiosClient";
 
 const authorizedPaths = ["/admin"];
 
