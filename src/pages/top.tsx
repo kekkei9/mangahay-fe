@@ -1,5 +1,5 @@
 import CardList from "@/components/CardList";
-import ComicPreviewCard from "@/components/Cards/ComicPreviewCard";
+import ComicCard from "@/components/Cards/ComicCard";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 
@@ -16,7 +16,7 @@ const TopPage = () => {
         dataList={topResponse?.result}
         onClickCard={(data) => data?.id && router.push(`comic/${data?.slug}`)}
       >
-        {ComicPreviewCard}
+        {ComicCard.Preview}
       </CardList>
     </div>
   );

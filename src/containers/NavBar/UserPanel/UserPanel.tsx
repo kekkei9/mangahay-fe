@@ -75,7 +75,7 @@ const UserPanel = () => {
               model={[
                 {
                   label: "My account",
-                  command: () => router.push("/auth/account"),
+                  command: () => router.push("/account"),
                 },
                 { label: "Log out", command: handleSignOut },
               ]}

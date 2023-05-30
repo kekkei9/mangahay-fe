@@ -1,5 +1,5 @@
 import CardList from "@/components/CardList";
-import ComicPreviewCard from "@/components/Cards/ComicPreviewCard";
+import ComicCard from "@/components/Cards/ComicCard";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import { Comic } from "@/types/Comic";
 import { Response } from "@/types/Response.type";
@@ -20,7 +20,7 @@ export default function Home() {
           dataList={allComicsResponse?.result}
           onClickCard={(data) => data?.id && router.push(`comic/${data?.slug}`)}
         >
-          {ComicPreviewCard}
+          {ComicCard.Preview}
         </CardList>
       </main>
     </>

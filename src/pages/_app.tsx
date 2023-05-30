@@ -26,17 +26,13 @@ const AppRouter = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (
-      authorizedPaths.some((path) => router.asPath.includes(path)) &&
-      !isAuthUser
-    ) {
-      router.push("/auth/signin");
+    if (!isAuthUser) {
+      if (authorizedPaths.some((path) => router.asPath.includes(path))) {
+        router.push("/auth/signin");
+      }
+      return;
     }
-    if (
-      isAuthUser &&
-      router.asPath.includes("/auth") &&
-      router.asPath !== "/auth/account"
-    ) {
+    if (router.asPath.includes("/auth")) {
       router.push("/");
     }
   }, [router, isAuthUser]);

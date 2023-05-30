@@ -43,6 +43,11 @@ const nextConfig = {
         hostname: "cdn.myanimelist.net",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "metac.nxtv.jp",
+        port: "",
+      },
     ],
   },
 };

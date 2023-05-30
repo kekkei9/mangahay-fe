@@ -7,8 +7,9 @@ import NotificationComponent from "@/components/Overlay/Notification";
 const handleNotificationClick = () => {};
 
 const NotificationBox = () => {
-  const { data: notificationResponse } =
-    useSWR<Response<Notification[]>>("/api/user/notifies");
+  const { data: notificationResponse } = useSWR<Response<Notification[]>>(
+    "/api/user/notifies?limit=10&page=0"
+  );
 
   return (
     <div className="notification-box">
