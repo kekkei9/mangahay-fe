@@ -5,7 +5,7 @@ import { ListBox } from "primereact/listbox";
 import useSWR from "swr";
 
 const FollowingBox = () => {
-  //TODO: Implement infinite
+  //TODO: Implement infinite & template & onClick
   const { data: followingResponse } = useSWR<Response<Following[]>>(
     "/api/user/comic/following?limit=100&page=0"
   );
