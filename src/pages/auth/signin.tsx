@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { loginStorageHandler } from "@/redux/authentication/authentication.action";
 import { setAuthToken } from "@/services/backend/axiosClient";
 
-const SignInPage = ({ csrfToken }: { csrfToken: string }) => {
+const SignInPage = () => {
   const { register, handleSubmit } = useForm();
   const dispatch = useDispatch();
   const router = useRouter();
@@ -37,12 +37,6 @@ const SignInPage = ({ csrfToken }: { csrfToken: string }) => {
         className="flex flex-col gap-5 w-full"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <input
-          {...register("csrfToken")}
-          name="csrfToken"
-          type="hidden"
-          defaultValue={csrfToken}
-        />
         <span className="p-input-icon-left">
           <i className={PrimeIcons.ENVELOPE} />
           <InputText

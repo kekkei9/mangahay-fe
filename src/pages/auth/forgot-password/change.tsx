@@ -59,8 +59,8 @@ const ChangePasswordPage = () => {
                 required: true,
                 validate: (val: string) => {
                   if (name !== "retypePassword") return true;
-                  if (watch("password") != val) {
-                    return "Your passwords do no match";
+                  if (watch("password") !== val) {
+                    return "Your passwords do not match";
                   }
                 },
               })}

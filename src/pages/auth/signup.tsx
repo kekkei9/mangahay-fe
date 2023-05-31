@@ -44,9 +44,9 @@ const SinUpPage = () => {
 
   const onSubmit = async (formData: any) => {
     try {
-      const res = await signUpAPI(formData);
+      await signUpAPI(formData);
     } catch (e: any) {
-      const { message, success, statusCode } = e.response.data;
+      const { message, success } = e.response.data;
       if (success) {
         router.push("/auth/signin");
         return;
@@ -77,8 +77,8 @@ const SinUpPage = () => {
                   required: true,
                   validate: (val: string) => {
                     if (name !== "retypePassword") return true;
-                    if (watch("password") != val) {
-                      return "Your passwords do no match";
+                    if (watch("password") !== val) {
+                      return "Your passwords do not match";
                     }
                   },
                 })}
