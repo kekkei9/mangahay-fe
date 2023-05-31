@@ -2,7 +2,7 @@ import { Dispatch } from "redux";
 import { authenticationActions } from "./authentication.slice";
 import Cookies from "js-cookie";
 import { getCredentialsAPI } from "@/services/backend/AuthController";
-import { Login } from "@/types/Response.type";
+import { Login } from "@/types/Auth";
 
 export const loginStorageHandler = (loginData: Login) => {
   return async (dispatch: any) => {

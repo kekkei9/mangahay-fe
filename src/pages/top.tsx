@@ -11,10 +11,11 @@ const TopPage = () => {
   );
 
   return (
-    <div>
+    <div className="top-page">
       <CardList
         dataList={topResponse?.result}
         onClickCard={(data) => data?.id && router.push(`comic/${data?.slug}`)}
+        title="Bảng xếp hạng tuần này"
       >
         {ComicCard.Preview}
       </CardList>

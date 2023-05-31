@@ -1,9 +1,9 @@
 import { ControllerRenderProps } from "react-hook-form";
 import { ComicQueries } from "../../comicQueriesMapper";
-import GenreMultiSelectComponent from "@/components/DynamicForm/DynamicFormComponent/GenreMultiSelect";
 import useSWRImmutable from "swr/immutable";
 import { Response } from "@/types/Response.type";
 import { Genre } from "@/types/Comic";
+import GenreMultiSelectComponent from "@/components/FormComponent/GenreMultiSelect";
 
 const GenreMultiSelect = ({
   field,
@@ -15,11 +15,12 @@ const GenreMultiSelect = ({
 
   return (
     <GenreMultiSelectComponent
-      {...field}
+      field={field}
       options={genresResponse?.result?.map(({ genre, slug }) => ({
         code: slug,
         name: genre,
       }))}
+      placeholder="Chọn thể loại"
     />
   );
 };

@@ -16,7 +16,7 @@ const SearchBox = ({ value }: ISearchBoxProps) => {
   );
 
   return (
-    <div className="search-box-container max-w-[24rem] max-h-[20rem] overflow-y-auto">
+    <div className="search-box-container max-w-[24rem] max-h-[20rem] overflow-y-auto flex flex-col gap-2">
       {searchComicResponse?.result?.length ? (
         searchComicResponse?.result?.map((comic) => (
           <ComicCard.HorizontalPreview

@@ -32,6 +32,7 @@ const FindComicPage = () => {
         <CardList
           dataList={filteredComicsResponse?.result}
           onClickCard={(data) => data?.id && router.push(`comic/${data?.slug}`)}
+          title="Kết quả tìm kiếm"
         >
           {ComicCard.Preview}
         </CardList>

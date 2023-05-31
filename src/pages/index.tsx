@@ -15,14 +15,15 @@ export default function Home() {
   return (
     <>
       {isLoading && <LoadingSkeleton.Comic />}
-      <main className="flex flex-col items-center justify-between">
+      <div>
         <CardList
           dataList={allComicsResponse?.result}
           onClickCard={(data) => data?.id && router.push(`comic/${data?.slug}`)}
+          title="Tất cả truyện"
         >
           {ComicCard.Preview}
         </CardList>
-      </main>
+      </div>
     </>
   );
 }

@@ -2,16 +2,16 @@ import { ComicQueries } from "@/containers/FindComicPage/comicQueriesMapper";
 import { MultiSelect } from "primereact/multiselect";
 import { ControllerRenderProps } from "react-hook-form";
 
-interface IGenreMultiSelectProps
-  extends ControllerRenderProps<ComicQueries, "filterGenre"> {
+interface IGenreMultiSelectProps {
+  field: ControllerRenderProps<ComicQueries, "filterGenre">;
   options?: { name: string; code: string }[];
+  placeholder: string;
 }
 
 const GenreMultiSelect = ({
-  name,
-  onChange,
-  value,
+  field: { name, onChange, value },
   options,
+  placeholder,
 }: IGenreMultiSelectProps) => {
   return (
     <MultiSelect
@@ -23,7 +23,7 @@ const GenreMultiSelect = ({
       onChange={(e) => {
         onChange(e.value);
       }}
-      placeholder="Select Cities"
+      placeholder={placeholder}
       className="w-full md:w-20rem"
     />
   );

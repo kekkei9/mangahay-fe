@@ -25,7 +25,11 @@ const SearchPanel = () => {
 
       <span className="search-bar p-input-icon-left">
         <i className="pi pi-search" />
-        <InputText placeholder="Tìm truyện" onChange={handleOnSearchChange} />
+        <InputText
+          placeholder="Tìm truyện"
+          onChange={handleOnSearchChange}
+          className="!w-96"
+        />
       </span>
     </>
   );

@@ -4,6 +4,7 @@ import Link from "next/link";
 import UserPanelContainer from "./UserPanel";
 import { navList } from "./navList";
 import SearchPanelContainer from "./SearchPanel";
+import Image from "next/image";
 
 const NavBar = () => {
   const router = useRouter();
@@ -13,11 +14,18 @@ const NavBar = () => {
   useEffect(() => setIsClient(true), []);
 
   return (
-    <div className="top-navbar h-10 fixed top-0 left-0 z-50 bg-white">
-      <div className="tabs-bar flex items-center justify-between w-screen px-8">
+    <div className="top-navbar fixed top-0 left-0 z-50 bg-white">
+      <div className="tabs-bar flex items-center justify-between w-screen px-8 py-4">
         <div className="flex gap-6 items-center">
-          <Link className="cursor-pointer text-red-400" href="/">
-            Logo here
+          <Link className="text-red-400 " href="/">
+            <div className="h-6 aspect-[5/1] relative">
+              <Image
+                src="/assets/logo_web.png"
+                alt="logo"
+                fill
+                className="object-contain"
+              />
+            </div>
           </Link>
           {navList.map(({ label, href }, index) => (
             <Link

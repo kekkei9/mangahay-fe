@@ -7,11 +7,15 @@ import { useRouter } from "next/router";
 import axiosClient from "@/services/backend/axiosClient";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import ComicCard from "@/components/Cards/ComicCard";
+import { PrimeIcons } from "primereact/api";
+
+const DEFAULT_GENRE_NUMBER = 20;
 
 const GenrePage = () => {
   const router = useRouter();
   const [selectedGenre, setSelectedGenre] = useState<string>("");
   const [genres, setGenres] = useState<Genre[]>([]);
+  const [isShowMore, setIsShowMore] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchGenres = async () => {
@@ -28,21 +32,33 @@ const GenrePage = () => {
     `/api/comic/search?comic_name=&filter_state=&filter_author=&filter_genre=${selectedGenre}&filter_sort=az`
   );
 
+  const displayGenres = isShowMore
+    ? genres
+    : genres?.slice(0, DEFAULT_GENRE_NUMBER);
+
   return (
     <div>
       <div className="flex flex-wrap gap-6">
         {genres.length ? (
-          genres?.slice(0, 15).map(({ genre }, index) => (
-            <div
-              key={index}
-              className={`cursor-pointer ${
-                selectedGenre === genre ? "text-black" : "text-slate-400"
-              }`}
-              onClick={() => setSelectedGenre(genre)}
-            >
-              {genre.toLocaleUpperCase()}
-            </div>
-          ))
+          <>
+            {displayGenres.map(({ genre }, index) => (
+              <div
+                key={index}
+                className={`cursor-pointer ${
+                  selectedGenre === genre ? "text-black" : "text-slate-400"
+                }`}
+                onClick={() => setSelectedGenre(genre)}
+              >
+                {genre.toLocaleUpperCase()}
+              </div>
+            ))}
+            <i
+              className={`${
+                isShowMore ? PrimeIcons.CHEVRON_UP : PrimeIcons.CHEVRON_DOWN
+              } cursor-pointer`}
+              onClick={() => setIsShowMore((prev) => !prev)}
+            />
+          </>
         ) : (
           <LoadingSkeleton.Genre />
         )}

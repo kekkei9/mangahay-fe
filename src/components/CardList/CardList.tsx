@@ -1,3 +1,4 @@
+// @ts-nocheck
 interface ICardListProps<T> {
   dataList?: T[];
   children: ({
@@ -9,22 +10,31 @@ interface ICardListProps<T> {
   }) => JSX.Element;
   className?: string;
   onClickCard?: (data?: T) => void;
+  title?: string;
 }
 
 const CardList = <T,>({
   dataList,
   children,
+  title,
   className,
   onClickCard,
 }: ICardListProps<T>) => {
   const Component = children;
 
   return (
-    <div className={`grid grid-cols-5 gap-4 ${className}`}>
-      {dataList?.map((data, index) => (
-        // @ts-ignore
-        <Component data={data} key={data?.id || index} onClick={onClickCard} />
-      ))}
+    <div>
+      <div className="text-3xl font-bold mb-10">{title}</div>
+
+      <div className={`grid grid-cols-5 gap-4 ${className}`}>
+        {dataList?.map((data, index) => (
+          <Component
+            data={data}
+            key={data?.id || index}
+            onClick={onClickCard}
+          />
+        ))}
+      </div>
     </div>
   );
 };

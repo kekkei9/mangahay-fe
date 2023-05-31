@@ -1,4 +1,9 @@
 import ComicLoadingSkeleton from "./ComicLoadingSkeleton";
 import GenreLoadingSkeleton from "./GenreLoadingSkeleton";
 
-export default { Comic: ComicLoadingSkeleton, Genre: GenreLoadingSkeleton };
+const LoadingSkeleton = {
+  Comic: ComicLoadingSkeleton,
+  Genre: GenreLoadingSkeleton,
+};
+
+export default LoadingSkeleton;

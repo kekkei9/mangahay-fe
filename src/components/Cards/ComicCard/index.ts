@@ -1,7 +1,9 @@
 import ComicHorizontalCard from "./ComicHorizontalCard";
 import ComicPreviewCard from "./ComicPreviewCard";
 
-export default {
+const ComicCard = {
   Preview: ComicPreviewCard,
   HorizontalPreview: ComicHorizontalCard,
 };
+
+export default ComicCard;

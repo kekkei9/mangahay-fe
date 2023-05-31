@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import useSWR from "swr";
 import { Response } from "@/types/Response.type";
 import NotificationBoxContainer from "@/containers/Overlay/NotificationBox";
-import FollowingBoxContainer from "@/containers/Overlay/FollowingBox";
 import { Button } from "primereact/button";
 import { PrimeIcons } from "primereact/api";
 import { useRouter } from "next/router";
@@ -23,7 +22,6 @@ const UserPanel = () => {
 
   const menuRef = useRef<Menu>(null);
   const notificationRef = useRef<OverlayPanel>(null);
-  const followingRef = useRef<OverlayPanel>(null);
 
   const handleSignOut = async () => {
     try {
@@ -45,19 +43,35 @@ const UserPanel = () => {
       <OverlayPanel ref={notificationRef}>
         <NotificationBoxContainer />
       </OverlayPanel>
-      <OverlayPanel ref={followingRef}>
-        <FollowingBoxContainer />
-      </OverlayPanel>
+
+      <Menu
+        popup
+        ref={menuRef}
+        className="!border-0 !w-fit"
+        model={[
+          {
+            label: "Tài khoản",
+            command: () => router.push("/account"),
+            icon: PrimeIcons.USER,
+          },
+          {
+            label: "Truyện đang theo dõi",
+            command: () => router.push("/following"),
+            icon: PrimeIcons.CHECK_SQUARE,
+          },
+          {
+            label: "Đăng xuất",
+            command: handleSignOut,
+            icon: PrimeIcons.SIGN_OUT,
+          },
+        ]}
+      />
 
       <div className="user-panel flex gap-6 items-center">
         {isAuthUser ? (
           <>
             <i
-              className={`${PrimeIcons.CHECK_SQUARE} !text-2xl cursor-pointer`}
-              onClick={(e) => followingRef.current?.toggle(e)}
-            />
-            <i
-              className={`${PrimeIcons.BELL} !text-2xl p-overlay-badge cursor-pointer`}
+              className={`${PrimeIcons.BELL} !text-xl p-overlay-badge cursor-pointer`}
               onClick={(e) => notificationRef.current?.toggle(e)}
             >
               {!!notificationCountResponse?.result && (
@@ -65,24 +79,12 @@ const UserPanel = () => {
               )}
             </i>
             <Button
-              label={`Xin chào, ${user.fullname}`}
+              label={`Xin chào, ${user.fullname.split(" ").slice(-1)}`}
               onClick={(e) => menuRef.current?.toggle(e)}
-            />
-            <Menu
-              popup
-              ref={menuRef}
-              className="!border-0"
-              model={[
-                {
-                  label: "My account",
-                  command: () => router.push("/account"),
-                },
-                { label: "Log out", command: handleSignOut },
-              ]}
             />
           </>
         ) : (
-          <Button onClick={() => router.push("/auth/signin")}>Log in</Button>
+          <Button onClick={() => router.push("/auth/signin")}>Đăng nhập</Button>
         )}
       </div>
     </>

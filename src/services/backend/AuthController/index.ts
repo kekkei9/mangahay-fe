@@ -1,5 +1,6 @@
+import { Account, Login, SignUp } from "@/types/Auth";
 import axiosClient from "../axiosClient";
-import { Account, Login, Response, SignUp } from "@/types/Response.type";
+import { Response } from "@/types/Response.type";
 
 export const requestChangePasswordAPI = ({ email }: { email: string }) => {
   return axiosClient.post<Response<any>>("/api/auth/forget-password", {

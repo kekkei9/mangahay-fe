@@ -10,14 +10,18 @@ const LoadingSkeleton = ({ className }: ILoadingSkeletonProps) => {
       {[...Array(10)].map((_, index) => (
         <div key={index}>
           <div className="flex gap-2">
-            <Skeleton size="4rem" />
+            <Skeleton className="!bg-[#dfdfdf]" size="4rem" />
             <div className="w-full">
-              <Skeleton width="100%" className="mb-2" />
-              <Skeleton width="100%" className="mb-2" />
-              <Skeleton width="80%" />
+              <Skeleton className="!bg-[#dfdfdf] mb-2" width="100%" />
+              <Skeleton className="!bg-[#dfdfdf] mb-2" width="100%" />
+              <Skeleton className="!bg-[#dfdfdf]" width="80%" />
             </div>
           </div>
-          <Skeleton width="100%" height="12rem" className="mt-2" />
+          <Skeleton
+            className="!bg-[#dfdfdf] mt-2"
+            width="100%"
+            height="12rem"
+          />
         </div>
       ))}
     </div>

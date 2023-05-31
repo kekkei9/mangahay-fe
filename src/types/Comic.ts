@@ -24,3 +24,24 @@ export type Comic = {
   updatedAt: string;
   view: number;
 };
+
+export type FollowingComic = {
+  follow_comic_id_user: number;
+  follow_comic_id_comic: number;
+  comics_id: number;
+  comics_slug: string;
+  comics_name: string;
+  comics_another_name: string;
+  comics_genres: string[];
+  comics_authors: string[];
+  comics_state: string;
+  comics_thumb: string;
+  comics_brief_desc: string;
+  comics_view: number;
+  comics_like: number;
+  comics_follow: number;
+  comics_star: string;
+  comics_id_owner: number;
+  comics_createdAt: string;
+  comics_updatedAt: string;
+};

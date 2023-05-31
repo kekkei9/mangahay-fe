@@ -1,3 +1,4 @@
+import { Account } from "@/types/Auth";
 import { createSlice } from "@reduxjs/toolkit";
 
 export const isClient = typeof window !== "undefined";
@@ -8,7 +9,7 @@ const authenticationSlice = createSlice({
     isAuthUser: isClient ? !!window.localStorage.getItem("user") : false,
     user: JSON.parse(
       isClient ? window.localStorage.getItem("user") ?? "{}" : "{}"
-    ),
+    ) as Account,
   },
   reducers: {
     setUser: (state, action) => {
