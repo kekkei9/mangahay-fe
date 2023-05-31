@@ -29,7 +29,7 @@ const AccountPage = () => {
   useEffect(() => setIsClient(true), []);
 
   return (
-    <Layout className="max-w-4xl w-fit">
+    <Layout className="account-page max-w-4xl w-fit">
       <div className="bg-white rounded-3xl p-10 flex flex-col gap-2 items-center">
         {user.avatar && isClient && (
           <div className="relative w-32 aspect-square">

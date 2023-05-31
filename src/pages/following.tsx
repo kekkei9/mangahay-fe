@@ -14,19 +14,18 @@ const FollowingPage = () => {
   >("/api/user/comic/following?limit=100&page=0");
 
   return (
-    <>
-      {isLoading && <LoadingSkeleton.Comic />}
-
+    <div className="following-comics">
       <CardList
         dataList={followingResponse?.result?.map((followingComic) =>
           followingComicToComicMapper(followingComic)
         )}
         onClickCard={(data) => data?.id && router.push(`comic/${data?.slug}`)}
         title="Truyện đang theo dõi"
+        isLoading={isLoading}
       >
         {ComicCard.Preview}
       </CardList>
-    </>
+    </div>
   );
 };
 

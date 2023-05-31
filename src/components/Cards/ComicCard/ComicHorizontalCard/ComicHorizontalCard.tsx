@@ -9,11 +9,11 @@ interface IComicHorizontalCardProps {
 const ComicHorizontalCard = ({ data, onClick }: IComicHorizontalCardProps) => {
   return (
     <div
-      className="comic-horizontal-card flex cursor-pointer hover:bg-mangahaySecondary-500"
+      className="comic-horizontal-card flex gap-2 cursor-pointer hover:bg-mangahay-200 transition-colors"
       onClick={() => onClick && onClick(data)}
     >
       {data?.thumb && (
-        <div className="relative w-12 aspect-square flex-shrink-0">
+        <div className="relative w-16 h-16 flex-shrink-0">
           <Image
             src={data?.thumb}
             alt={`comic-thumb-${data?.id}`}
@@ -23,18 +23,10 @@ const ComicHorizontalCard = ({ data, onClick }: IComicHorizontalCardProps) => {
         </div>
       )}
       <div className="comic-data">
-        <div>{data?.name}</div>
-        <div>{data?.new_chapter?.name}</div>
-        <div>
-          {data?.authors.map((author, index) => (
-            <span key={index}>{author}</span>
-          ))}
-        </div>
-        <div className="flex flex-wrap">
-          {data?.genres.map((genre, index) => (
-            <div key={index}>{genre}</div>
-          ))}
-        </div>
+        <div className="font-semibold line-clamp-2">{data?.name}</div>
+        <div className="text-sm italic">{data?.new_chapter?.name}</div>
+        <div className="text-mangahay-400">{data?.authors.join(", ")}</div>
+        <div>{data?.genres.join(", ")}</div>
       </div>
     </div>
   );

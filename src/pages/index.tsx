@@ -13,17 +13,15 @@ export default function Home() {
     useSWR<Response<Comic[]>>("/api/comic");
 
   return (
-    <>
-      {isLoading && <LoadingSkeleton.Comic />}
-      <div>
-        <CardList
-          dataList={allComicsResponse?.result}
-          onClickCard={(data) => data?.id && router.push(`comic/${data?.slug}`)}
-          title="Tất cả truyện"
-        >
-          {ComicCard.Preview}
-        </CardList>
-      </div>
-    </>
+    <div className="home-page">
+      <CardList
+        dataList={allComicsResponse?.result}
+        onClickCard={(data) => data?.id && router.push(`comic/${data?.slug}`)}
+        title="Tất cả truyện"
+        isLoading={isLoading}
+      >
+        {ComicCard.Preview}
+      </CardList>
+    </div>
   );
 }

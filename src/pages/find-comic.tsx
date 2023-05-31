@@ -23,20 +23,19 @@ const FindComicPage = () => {
   );
 
   return (
-    <div>
+    <div className="find-comic-page">
       <SearchSectionContainer
         onSubmit={(formData) => setComicQueries(formData)}
       />
-      <div className="comic-list mt-10">
-        {isLoading && <LoadingSkeleton.Comic />}
-        <CardList
-          dataList={filteredComicsResponse?.result}
-          onClickCard={(data) => data?.id && router.push(`comic/${data?.slug}`)}
-          title="Kết quả tìm kiếm"
-        >
-          {ComicCard.Preview}
-        </CardList>
-      </div>
+      <CardList
+        className="comic-list mt-10"
+        dataList={filteredComicsResponse?.result}
+        onClickCard={(data) => data?.id && router.push(`comic/${data?.slug}`)}
+        title="Kết quả tìm kiếm"
+        isLoading={isLoading}
+      >
+        {ComicCard.Preview}
+      </CardList>
     </div>
   );
 };

@@ -37,7 +37,7 @@ const GenrePage = () => {
     : genres?.slice(0, DEFAULT_GENRE_NUMBER - 1);
 
   return (
-    <div>
+    <div className="genre-page">
       <div className="flex flex-wrap gap-6">
         {genres.length ? (
           <>
@@ -63,15 +63,14 @@ const GenrePage = () => {
           <LoadingSkeleton.Genre />
         )}
       </div>
-      <div className="mt-10">
-        {isLoading && <LoadingSkeleton.Comic />}
-        <CardList
-          dataList={filterComicResponse?.result}
-          onClickCard={(data) => data?.id && router.push(`comic/${data?.slug}`)}
-        >
-          {ComicCard.Preview}
-        </CardList>
-      </div>
+      <CardList
+        dataList={filterComicResponse?.result}
+        onClickCard={(data) => data?.id && router.push(`comic/${data?.slug}`)}
+        isLoading={isLoading}
+        className="mt-10"
+      >
+        {ComicCard.Preview}
+      </CardList>
     </div>
   );
 };
