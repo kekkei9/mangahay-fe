@@ -31,7 +31,7 @@ const signUpFormFields = [
   },
 ];
 
-const SinUpPage = ({ providers }: any) => {
+const SinUpPage = () => {
   const router = useRouter();
 
   const {
@@ -66,7 +66,7 @@ const SinUpPage = ({ providers }: any) => {
       <AuthPageLayout>
         <div className="font-bold text-2xl self-start">Đăng kí tài khoản</div>
         <form
-          className="flex flex-col gap-5 w-[16rem] xs:w-[20rem] sm:w-[30rem]"
+          className="flex flex-col gap-5 w-full"
           onSubmit={handleSubmit(onSubmit)}
         >
           {signUpFormFields.map(({ icon, name, placeholder }, index) => (

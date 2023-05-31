@@ -23,7 +23,7 @@ const AuthPageLayout = ({ children }: IAuthPageLayoutProps) => {
             />
           </div>
           <div className="w-full p-8 flex flex-col items-center justify-center bg-opacity-70">
-            <div className="w-full flex flex-col items-center gap-5">
+            <div className="flex flex-col items-center gap-5 w-[16rem] xs:w-[20rem] sm:w-[30rem]">
               <i
                 className={`${PrimeIcons.ARROW_LEFT} cursor-pointer self-start`}
                 onClick={() => router.back()}
