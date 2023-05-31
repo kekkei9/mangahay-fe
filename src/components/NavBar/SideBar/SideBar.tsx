@@ -1,56 +1,42 @@
-import Link from "next/link";
 import { navList } from "../../../containers/NavBar/navList";
-import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutHandler } from "@/redux/authentication/authentication.action";
 import { RootState } from "@/redux";
+import NavLink from "../NavLink";
+import { Divider } from "primereact/divider";
 
-const SideBar = () => {
+interface ISideBarProps {
+  onClickNav?: () => void;
+}
+
+const SideBar = ({ onClickNav }: ISideBarProps) => {
   const dispatch = useDispatch();
-
-  const router = useRouter();
 
   const { isAuthUser, user } = useSelector(
     (state: RootState) => state.authentication
   );
 
+  const CustomNavLink = (props: any) => (
+    <NavLink {...props} onClick={() => onClickNav && onClickNav()} />
+  );
+
   return (
     <div className="flex flex-col gap-6 p-4 text-xl">
-      {navList.map(({ label, href }, index) => (
-        <Link
-          key={index}
-          href={href}
-          className={`${!router.asPath.includes(href) && "text-black"} text-xl`}
-        >
-          {label.toLocaleUpperCase()}
-        </Link>
+      {navList.map((nav, index) => (
+        <CustomNavLink {...nav} key={index} />
       ))}
-
+      <Divider />
       {isAuthUser ? (
         <>
           <div className="font-semibold text-mangahay-200 mt-2">
             {user.fullname}
           </div>
-          <Link
-            href="/account"
-            className={`${
-              !router.asPath.includes("/account") && "text-black"
-            } text-xl`}
-          >
-            Tài khoản
-          </Link>
-          <Link
-            href="/following"
-            className={`${
-              !router.asPath.includes("/following") && "text-black"
-            } text-xl`}
-          >
-            Truyện đang theo dõi
-          </Link>
+          <CustomNavLink href="/account" label="Tài khoản" />
+          <CustomNavLink href="/following" label="Truyện đang theo dõi" />
           <div onClick={() => dispatch(logoutHandler() as any)}>Đăng xuất</div>
         </>
       ) : (
-        <div onClick={() => router.push("/auth/signin")}>Đăng nhập</div>
+        <CustomNavLink href="/auth/signin" label="Đăng nhập" />
       )}
     </div>
   );

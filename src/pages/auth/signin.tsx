@@ -34,7 +34,7 @@ const SignInPage = ({ csrfToken }: { csrfToken: string }) => {
     <AuthPageLayout>
       <div className="font-bold text-2xl self-start">Đăng nhập để tiếp tục</div>
       <form
-        className="flex flex-col gap-5 w-[30rem]"
+        className="flex flex-col gap-5 w-[16rem] xs:w-[20rem] sm:w-[30rem]"
         onSubmit={handleSubmit(onSubmit)}
       >
         <input
@@ -75,7 +75,10 @@ const SignInPage = ({ csrfToken }: { csrfToken: string }) => {
         <Link className="cursor-pointer text-mangahay-500" href="/auth/signup">
           Tạo tài khoản mới
         </Link>
-        <Link className="cursor-pointer text-mangahay-500" href="/auth/forgot">
+        <Link
+          className="cursor-pointer text-mangahay-500"
+          href="/auth/forgot-password"
+        >
           Quên mật khẩu
         </Link>
       </div>

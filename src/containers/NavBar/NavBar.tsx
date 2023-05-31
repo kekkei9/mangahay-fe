@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { navList } from "./navList";
@@ -8,10 +7,9 @@ import { PrimeIcons } from "primereact/api";
 import { Sidebar } from "primereact/sidebar";
 import SideBar from "@/components/NavBar/SideBar";
 import UserPanelContainer from "@/components/NavBar/UserPanel";
+import NavLink from "@/components/NavBar/NavLink";
 
 const NavBar = () => {
-  const router = useRouter();
-
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   //for preventing hydration
@@ -24,9 +22,8 @@ const NavBar = () => {
         visible={isSidebarOpen}
         onHide={() => setIsSidebarOpen(false)}
         position="right"
-        onClick={() => setIsSidebarOpen(false)}
       >
-        <SideBar />
+        <SideBar onClickNav={() => setIsSidebarOpen(false)} />
       </Sidebar>
       <div className="top-navbar shadow fixed top-0 left-0 z-50 bg-white">
         <div className="tabs-bar flex items-center justify-between w-screen px-8 py-4">
@@ -42,14 +39,8 @@ const NavBar = () => {
               </div>
             </Link>
             <div className="gap-6 items-center hidden xl:flex">
-              {navList.map(({ label, href }, index) => (
-                <Link
-                  key={index}
-                  href={href}
-                  className={!router.asPath.includes(href) ? "text-black" : ""}
-                >
-                  {label.toLocaleUpperCase()}
-                </Link>
+              {navList.map((nav, index) => (
+                <NavLink {...nav} key={index} />
               ))}
             </div>
           </div>
@@ -65,15 +56,10 @@ const NavBar = () => {
             onClick={() => setIsSidebarOpen(true)}
           />
         </div>
-        <div className="hidden xs:flex gap-6 items-center justify-center p-4">
-          {navList.map(({ label, href }, index) => (
-            <Link
-              key={index}
-              href={href}
-              className={!router.asPath.includes(href) ? "text-black" : ""}
-            >
-              {label.toLocaleUpperCase()}
-            </Link>
+
+        <div className="hidden xs:flex xl:hidden gap-6 items-center justify-center p-4">
+          {navList.map((nav, index) => (
+            <NavLink {...nav} key={index} />
           ))}
         </div>
       </div>

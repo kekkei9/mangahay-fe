@@ -12,7 +12,7 @@ const MainLayout: React.FC<IProps> = ({ children }) => {
     <>
       <NavBar />
       <main
-        className={`mt-[4.5rem] xs:mt-[8rem] xl:mt-[4.5rem] ${
+        className={`mt-[3.85rem] xs:mt-[8rem] xl:mt-[4.5rem] ${
           !router.asPath.includes("/auth") && "p-4 xs:p-10"
         }`}
       >
