@@ -67,7 +67,7 @@ const GenrePage = () => {
         dataList={filterComicResponse?.result}
         onClickCard={(data) => data?.id && router.push(`comic/${data?.slug}`)}
         isLoading={isLoading}
-        className="mt-10"
+        className="mt-4 xs:mt-10"
       >
         {ComicCard.Preview}
       </CardList>

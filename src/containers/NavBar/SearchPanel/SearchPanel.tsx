@@ -28,7 +28,7 @@ const SearchPanel = () => {
         <InputText
           placeholder="Tìm truyện"
           onChange={handleOnSearchChange}
-          className="!w-96"
+          className="md:!w-96"
         />
       </span>
     </>

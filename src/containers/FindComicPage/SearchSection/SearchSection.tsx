@@ -14,11 +14,11 @@ const SearchSection = ({ onSubmit }: ISearchSectionProps) => {
 
   return (
     <form className="search-section" onSubmit={handleSubmit(onSubmit)}>
-      <div className="grid grid-cols-8 gap-x-4 gap-y-2 items-center">
+      <div className="grid xs:grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-x-4 gap-y-2 items-center">
         {formFields.map(({ label, name, render }) => (
           <>
             <span className="col-span-1 font-semibold">{label}</span>
-            <div className="col-span-3">
+            <div className="col-span-3 sm:col-span-2 lg:col-span-3">
               <Controller name={name} control={control} render={render} />
             </div>
           </>

@@ -25,12 +25,14 @@ const CardList = <T,>({
   const Component = children;
 
   return (
-    <div>
-      <div className="text-3xl font-bold mb-10">{title}</div>
+    <div className={className}>
+      <div className="text-xl xs:text-2xl md:text-3xl font-bold mb-4 xs:mb-10">
+        {title}
+      </div>
 
       {isLoading && <LoadingSkeleton.Comic />}
 
-      <div className={`grid grid-cols-5 gap-4 ${className}`}>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6 gap-4">
         {dataList?.map((data, index) => (
           <Component
             data={data}

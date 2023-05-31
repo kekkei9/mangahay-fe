@@ -23,17 +23,6 @@ const UserPanel = () => {
   const menuRef = useRef<Menu>(null);
   const notificationRef = useRef<OverlayPanel>(null);
 
-  const handleSignOut = async () => {
-    try {
-      await signOutAPI();
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setAuthToken();
-      dispatch(logoutHandler() as any);
-    }
-  };
-
   const { data: notificationCountResponse } = useSWR<Response<number>>(
     isAuthUser ? "/api/notify/unread-notifies/count" : null
   );
@@ -61,31 +50,37 @@ const UserPanel = () => {
           },
           {
             label: "Đăng xuất",
-            command: handleSignOut,
+            command: () => dispatch(logoutHandler() as any),
             icon: PrimeIcons.SIGN_OUT,
           },
         ]}
       />
 
       <div className="user-panel flex gap-6 items-center">
-        {isAuthUser ? (
-          <>
-            <i
-              className={`${PrimeIcons.BELL} !text-xl p-overlay-badge cursor-pointer`}
-              onClick={(e) => notificationRef.current?.toggle(e)}
-            >
-              {!!notificationCountResponse?.result && (
-                <Badge value={notificationCountResponse?.result} />
-              )}
-            </i>
-            <Button
-              label={`Xin chào, ${user.fullname.split(" ").slice(-1)}`}
-              onClick={(e) => menuRef.current?.toggle(e)}
-            />
-          </>
-        ) : (
-          <Button onClick={() => router.push("/auth/signin")}>Đăng nhập</Button>
+        {isAuthUser && (
+          <i
+            className={`${PrimeIcons.BELL} !text-xl p-overlay-badge cursor-pointer`}
+            onClick={(e) => notificationRef.current?.toggle(e)}
+          >
+            {!!notificationCountResponse?.result && (
+              <Badge value={notificationCountResponse?.result} />
+            )}
+          </i>
         )}
+        <div className="hidden xs:block">
+          {isAuthUser ? (
+            <>
+              <Button
+                label={`Xin chào, ${user.fullname.split(" ").slice(-1)}`}
+                onClick={(e) => menuRef.current?.toggle(e)}
+              />
+            </>
+          ) : (
+            <Button onClick={() => router.push("/auth/signin")}>
+              Đăng nhập
+            </Button>
+          )}
+        </div>
       </div>
     </>
   );

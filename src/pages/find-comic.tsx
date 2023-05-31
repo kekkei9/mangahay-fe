@@ -28,7 +28,7 @@ const FindComicPage = () => {
         onSubmit={(formData) => setComicQueries(formData)}
       />
       <CardList
-        className="comic-list mt-10"
+        className="comic-list mt-4 xs:mt-10"
         dataList={filteredComicsResponse?.result}
         onClickCard={(data) => data?.id && router.push(`comic/${data?.slug}`)}
         title="Kết quả tìm kiếm"

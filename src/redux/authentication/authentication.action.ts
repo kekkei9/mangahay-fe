@@ -1,8 +1,12 @@
 import { Dispatch } from "redux";
 import { authenticationActions } from "./authentication.slice";
 import Cookies from "js-cookie";
-import { getCredentialsAPI } from "@/services/backend/AuthController";
+import {
+  getCredentialsAPI,
+  signOutAPI,
+} from "@/services/backend/AuthController";
 import { Login } from "@/types/Auth";
+import { setAuthToken } from "@/services/backend/axiosClient";
 
 export const loginStorageHandler = (loginData: Login) => {
   return async (dispatch: any) => {
@@ -19,7 +23,13 @@ export const loginStorageHandler = (loginData: Login) => {
 };
 
 export const logoutHandler = () => {
-  return (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      await signOutAPI();
+    } catch (e) {
+      console.error(e);
+    }
+    setAuthToken();
     Cookies.remove("token");
     Cookies.remove("refreshToken");
     localStorage.removeItem("user");
