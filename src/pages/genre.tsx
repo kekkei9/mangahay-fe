@@ -34,7 +34,7 @@ const GenrePage = () => {
 
   const displayGenres = isShowMore
     ? genres
-    : genres?.slice(0, DEFAULT_GENRE_NUMBER);
+    : genres?.slice(0, DEFAULT_GENRE_NUMBER - 1);
 
   return (
     <div>
