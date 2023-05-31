@@ -50,7 +50,10 @@ const UserPanel = () => {
           },
           {
             label: "Đăng xuất",
-            command: () => dispatch(logoutHandler() as any),
+            command: () => {
+              dispatch(logoutHandler() as any);
+              router.push("/");
+            },
             icon: PrimeIcons.SIGN_OUT,
           },
         ]}

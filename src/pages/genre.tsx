@@ -8,11 +8,21 @@ import axiosClient from "@/services/backend/axiosClient";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import ComicCard from "@/components/Cards/ComicCard";
 import { PrimeIcons } from "primereact/api";
+import useBreakpoint from "@/hooks/useBreakpoint";
 
-const DEFAULT_GENRE_NUMBER = 20;
+const defaultGenreNumber = {
+  DEFAULT: 8,
+  xs: 9,
+  sm: 12,
+  md: 15,
+  lg: 20,
+  xl: 25,
+  "2xl": 30,
+};
 
 const GenrePage = () => {
   const router = useRouter();
+  const breakpoint = useBreakpoint();
   const [selectedGenre, setSelectedGenre] = useState<string>("");
   const [genres, setGenres] = useState<Genre[]>([]);
   const [isShowMore, setIsShowMore] = useState<boolean>(false);
@@ -34,11 +44,14 @@ const GenrePage = () => {
 
   const displayGenres = isShowMore
     ? genres
-    : genres?.slice(0, DEFAULT_GENRE_NUMBER - 1);
+    : genres?.slice(
+        0,
+        defaultGenreNumber[breakpoint as keyof typeof defaultGenreNumber] - 1
+      );
 
   return (
     <div className="genre-page">
-      <div className="flex flex-wrap gap-6">
+      <div className="flex flex-wrap gap-6 justify-center xs:justify-start">
         {genres.length ? (
           <>
             {displayGenres.map(({ genre }, index) => (

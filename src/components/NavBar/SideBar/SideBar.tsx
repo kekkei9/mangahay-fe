@@ -4,6 +4,7 @@ import { logoutHandler } from "@/redux/authentication/authentication.action";
 import { RootState } from "@/redux";
 import NavLink from "../NavLink";
 import { Divider } from "primereact/divider";
+import { useRouter } from "next/router";
 
 interface ISideBarProps {
   onClickNav?: () => void;
@@ -11,6 +12,7 @@ interface ISideBarProps {
 
 const SideBar = ({ onClickNav }: ISideBarProps) => {
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const { isAuthUser, user } = useSelector(
     (state: RootState) => state.authentication
@@ -33,7 +35,14 @@ const SideBar = ({ onClickNav }: ISideBarProps) => {
           </div>
           <CustomNavLink href="/account" label="Tài khoản" />
           <CustomNavLink href="/following" label="Truyện đang theo dõi" />
-          <div onClick={() => dispatch(logoutHandler() as any)}>Đăng xuất</div>
+          <div
+            onClick={() => {
+              dispatch(logoutHandler() as any);
+              router.push("/");
+            }}
+          >
+            ĐĂNG XUẤT
+          </div>
         </>
       ) : (
         <CustomNavLink href="/auth/signin" label="Đăng nhập" />
