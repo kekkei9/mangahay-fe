@@ -1,0 +1,13 @@
+.multi-state-checkbox {
+  :global {
+    .p-multistatecheckbox {
+      @apply items-center;
+      .p-checkbox-box {
+        @apply w-8 h-8;
+        .p-checkbox-icon {
+          @apply text-lg #{!important};
+        }
+      }
+    }
+  }
+}
