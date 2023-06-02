@@ -1,31 +1,28 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
-
-import classes from './ComicDetail.module.sass'
+import classes from "./ComicDetail.module.sass";
 
 const list_star = Array.from(Array(5).keys());
 
-const EnvalueStar = (props:any) =>{
-    return(
-            <div className={classes.detailinfo__evaluate__star}>
-                <span className={classes.evaluate__star__default}>
-                    <span>
-                        <span style={props.percent_rating}>
-                            {list_star.map((ele) => (
+const EnvalueStar = (props: any) => {
+  return (
+    <div className={classes.detailinfo__evaluate__star}>
+      <span className={classes.evaluate__star__default}>
+        <span>
+          <span style={props.percent_rating}>
+            {/* {list_star.map((ele) => (
                                 <FontAwesomeIcon className={classes.evaluate__star} icon={faStar} onClick={() => props.evaluteStarComic(ele)} style={{ 'cursor': 'pointer' }} />
-                            ))}
-                        </span>
-                    </span>
+                            ))} */}
+          </span>
+        </span>
 
-                    <span className={classes.evaluate__star__copy2}>
-                        {list_star.map((ele) => (
+        <span className={classes.evaluate__star__copy2}>
+          {/* {list_star.map((ele) => (
                             <FontAwesomeIcon className={classes.evaluate__star} icon={faStar} onClick={() => props.evaluteStarComic(ele)} style={{ 'cursor': 'pointer' }} />
-                        ))}
-                    </span>
-                </span>
-                <span>{props.comic.star}</span>
-            </div>
-    )
-}
+                        ))} */}
+        </span>
+      </span>
+      <span>{props.comic.star}</span>
+    </div>
+  );
+};
 
-export default EnvalueStar
+export default EnvalueStar;

@@ -5,9 +5,9 @@ import SearchPanelContainer from "./SearchPanel";
 import Image from "next/image";
 import { PrimeIcons } from "primereact/api";
 import { Sidebar } from "primereact/sidebar";
-import SideBar from "@/components/NavBar/SideBar";
-import UserPanelContainer from "@/components/NavBar/UserPanel";
-import NavLink from "@/components/NavBar/NavLink";
+import SideBar from "@/components/Navbar/SideBar";
+import NavLink from "@/components/Navbar/NavLink";
+import UserPanelContainer from "@/components/Navbar/UserPanel";
 
 const NavBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
