@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import { signUpAPI } from "@/services/backend/AuthController";
 import { useRef } from "react";
 import { Toast } from "primereact/toast";
-import AuthPageLayout from "@/layouts/AuthPageLayout";
 
 const signUpFormFields = [
   {
@@ -63,7 +62,7 @@ const SinUpPage = () => {
   return (
     <>
       <Toast ref={toastRef} />
-      <AuthPageLayout>
+      <>
         <div className="font-bold text-2xl self-start">Đăng kí tài khoản</div>
         <form
           className="flex flex-col gap-5 w-full"
@@ -95,7 +94,7 @@ const SinUpPage = () => {
             </div>
           </Button>
         </form>
-      </AuthPageLayout>
+      </>
     </>
   );
 };

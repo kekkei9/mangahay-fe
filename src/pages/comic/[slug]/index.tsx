@@ -28,13 +28,9 @@ const ComicDetail = () => {
 
   return (
     <>
-      <Navbar></Navbar>
       {comicResponse && (
         <>
-          <ComicInfo
-            comic={comicResponse?.result?.comic}
-            first_chapter={comicResponse?.result?.chapters[0]}
-          />
+          <ComicInfo comic={comicResponse?.result?.comic} />
           <ComicChapter
             comic={comicResponse?.result?.comic}
             chapters={comicResponse.result?.chapters}

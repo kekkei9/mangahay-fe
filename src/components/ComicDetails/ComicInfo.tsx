@@ -1,18 +1,11 @@
 import Link from "next/link";
 
 import classes from "./ComicDetail.module.sass";
-import EnvalueStar from "./EnvalueStar";
 import { useState, useEffect } from "react";
-import {
-  getLikeAndFollowState,
-  unLikeComic,
-  likeComic,
-  FollowComic,
-  unFollowComic,
-} from "@/service/backend/ComicControllers";
+import { getLikeAndFollowState } from "@/service/backend/ComicControllers";
 import { Skeleton } from "primereact/skeleton";
 
-const ComicInfo = ({ comic, first_chapter }: any) => {
+const ComicInfo = ({ comic }: any) => {
   const [isLike, setIsLike] = useState(false);
   const [isFollow, setIsFollow] = useState(false);
   const [isEvalute, setIsEvalute] = useState(false);

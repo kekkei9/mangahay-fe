@@ -4,7 +4,6 @@ import { InputText } from "primereact/inputtext";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { changePasswordAPI } from "@/services/backend/AuthController";
-import AuthPageLayout from "@/layouts/AuthPageLayout";
 
 const changePasswordFormFields = [
   {
@@ -45,7 +44,7 @@ const ChangePasswordPage = () => {
   };
 
   return (
-    <AuthPageLayout>
+    <>
       <div className="font-bold text-2xl self-start">Xác nhận đổi mật khẩu</div>
       <form
         className="flex flex-col gap-5 w-full"
@@ -80,7 +79,7 @@ const ChangePasswordPage = () => {
           </div>
         </Button>
       </form>
-    </AuthPageLayout>
+    </>
   );
 };
 

@@ -4,7 +4,6 @@ import { PrimeIcons } from "primereact/api";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import AuthPageLayout from "@/layouts/AuthPageLayout";
 import { signInAPI } from "@/services/backend/AuthController";
 import { useDispatch } from "react-redux";
 import { loginStorageHandler } from "@/redux/authentication/authentication.action";
@@ -31,7 +30,7 @@ const SignInPage = () => {
   };
 
   return (
-    <AuthPageLayout>
+    <>
       <div className="font-bold text-2xl self-start">Đăng nhập để tiếp tục</div>
       <form
         className="flex flex-col gap-5 w-full"
@@ -76,7 +75,7 @@ const SignInPage = () => {
           Quên mật khẩu
         </Link>
       </div>
-    </AuthPageLayout>
+    </>
   );
 };
 
