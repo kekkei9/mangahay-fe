@@ -39,7 +39,7 @@ const GenrePage = () => {
       setGenres(res.data.result || []);
     };
     fetchGenres();
-  }, [router.isReady]);
+  }, [router.isReady, router.query.genre]);
 
   const { data: filterComicResponse, isLoading } = useSWR<Response<Comic[]>>(
     `/api/comic/search?comic_name=&filter_state=&filter_author=&filter_genre=${selectedGenre}&filter_sort=az`

@@ -7,4 +7,8 @@ export type Chapter = {
   updatedAt: string;
   nextChapter?: Chapter;
   prevChapter?: Chapter;
+  comicInfo?: {
+    name: string;
+    slug: string;
+  };
 };

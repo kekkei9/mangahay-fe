@@ -5,11 +5,11 @@ import SearchPanelContainer from "./SearchPanel";
 import Image from "next/image";
 import { PrimeIcons } from "primereact/api";
 import { Sidebar } from "primereact/sidebar";
-import SideBar from "@/components/NavBar/SideBar";
-import NavLink from "@/components/NavBar/NavLink";
+import SideBar from "@/components/NavBar/MainNavBar/SideBar";
 import UserPanelContainer from "@/components/NavBar/UserPanel";
+import NavLink from "@/components/NavBar/MainNavBar/NavLink";
 
-const NavBar = () => {
+const MainNavBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   //for preventing hydration
@@ -28,7 +28,7 @@ const NavBar = () => {
       <div className="top-navbar shadow fixed top-0 left-0 z-50 bg-white">
         <div className="tabs-bar flex items-center justify-between w-screen px-8 py-4">
           <div className="flex gap-6 items-center">
-            <Link className="text-red-400 " href="/">
+            <Link href="/">
               <div className="h-6 aspect-[5/1] relative">
                 <Image
                   src="/assets/logo_web.png"
@@ -67,4 +67,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default MainNavBar;

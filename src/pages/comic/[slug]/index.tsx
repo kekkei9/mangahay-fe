@@ -1,10 +1,10 @@
-import ComicInfo from "@/components/ComicDetail/ComicInfo";
+import ComicInfo from "@/components/Comic/ComicDetail/ComicInfo";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import { Response } from "@/types/Response.type";
 import { Comic } from "@/types/Comic";
 import { Chapter } from "@/types/Chapter";
-import ComicChapter from "@/components/ComicDetail/ComicChapter";
+import ComicChapter from "@/components/Comic/ComicDetail/ComicChapter";
 
 const ComicDetail = () => {
   const router = useRouter();

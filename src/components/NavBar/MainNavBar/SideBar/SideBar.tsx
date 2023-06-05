@@ -1,10 +1,10 @@
-import { navList } from "../../../containers/NavBar/navList";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutHandler } from "@/redux/authentication/authentication.action";
 import { RootState } from "@/redux";
 import NavLink from "../NavLink";
 import { Divider } from "primereact/divider";
 import { useRouter } from "next/router";
+import { navList } from "@/containers/NavBar/MainNavBar/navList";
 
 interface ISideBarProps {
   onClickNav?: () => void;

@@ -3,18 +3,17 @@ import { useState, useEffect } from "react";
 import { Chapter } from "@/types/Chapter";
 import { Comic } from "@/types/Comic";
 import { PrimeIcons } from "primereact/api";
+import UserPanelContainer from "@/components/NavBar/UserPanel";
+import Image from "next/image";
 
 const reportItems = ["Lỗi ảnh"];
 
 interface IChapterNavProps {
-  comic?: Comic;
   chapter?: Chapter;
 }
 
-const ChapterNav = ({ comic, chapter }: IChapterNavProps) => {
+const ChapterNav = ({ chapter }: IChapterNavProps) => {
   const [showNavbar, setShowNavbar] = useState(true);
-
-  const [reportIsShown, setReportIsShown] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,55 +33,36 @@ const ChapterNav = ({ comic, chapter }: IChapterNavProps) => {
     };
   }, []);
 
-  const closeReport = () => {
-    setReportIsShown(false);
-  };
-
-  //TODO: Gửi Report đến BE
-  // const handleReport = (id: any) => {
-  //   if (!sessionStorage.getItem("access_token")) {
-  //     noticeShow("error", "Đăng nhập để thực hiện chức năng");
-  //   } else {
-  //     setReportIsShown(true);
-  //   }
-  // };
-
   return (
     <>
-      {/* {reportIsShown && (
-        <ReportTable
-          items={reportItems}
-          id={chapter?.id}
-          type="chapter"
-          onClose={closeReport}
-          noticeShow={noticeShow}
-        />
-      )} */}
       <nav
         className={`fixed w-full grid grid-cols-3 items-center py-2 gap-4 bg-zinc-800 visibility: ${
           showNavbar ? "visible" : "hidden"
         }`}
       >
         <div className="flex items-center">
-          <Link href="/" className="text-gray-300 mr-4">
-            <img
-              className="h-10 w-50"
-              src="/assets/logo/logo_web.png"
-              alt="logo"
-            />
+          <Link href="/">
+            <div className="h-6 aspect-[5/1] relative">
+              <Image
+                src="/assets/logo_web.png"
+                alt="logo"
+                fill
+                className="object-contain"
+              />
+            </div>
           </Link>
           <Link
-            href={`/comic/${comic?.slug}`}
+            href={`/comic/${chapter?.comicInfo?.slug}`}
             className="text-white font-medium text-lg max-w-xs"
           >
-            {comic?.name}{" "}
+            {chapter?.comicInfo?.name}
           </Link>
-          {/* <FontAwesomeIcon icon={faChevronRight} className='h-4 w-4 mx-2 text-white'/> */}
+          <i className={PrimeIcons.CHEVRON_RIGHT} />
           <span className="text-gray-400 mr-4 text-lg">{chapter?.name}</span>
         </div>
         <div className="flex items-center justify-center">
           <a
-            href={`/comic/${comic?.slug}/${chapter?.prevChapter?.slug}`}
+            href={`/comic/${chapter?.comicInfo?.slug}/${chapter?.prevChapter?.slug}`}
             className={`mr-4 ${
               chapter?.prevChapter?.slug
                 ? "text-white "
@@ -95,7 +75,7 @@ const ChapterNav = ({ comic, chapter }: IChapterNavProps) => {
             {chapter?.name}
           </span>
           <a
-            href={`/comic/${comic?.slug}/${chapter?.nextChapter?.slug}`}
+            href={`/comic/${chapter?.comicInfo?.slug}/${chapter?.nextChapter?.slug}`}
             className={`mr-4 ${
               chapter?.nextChapter?.slug
                 ? "text-white "
@@ -105,14 +85,7 @@ const ChapterNav = ({ comic, chapter }: IChapterNavProps) => {
             <i className={PrimeIcons.CHEVRON_RIGHT} />
           </a>
         </div>
-        {/* <div className="flex items-center justify-end mr-4">
-          <button
-            className="px-4 py-1 font-medium text-white  rounded-md hover:bg-blue-700 border-2 border-black focus:outline-none"
-            onClick={handleReport}
-          >
-            Report
-          </button>
-        </div> */}
+        <UserPanelContainer />
       </nav>
     </>
   );

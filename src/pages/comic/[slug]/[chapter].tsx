@@ -1,44 +1,53 @@
-import ChapterNav from "@/components/Chapter/ChapterNav";
-import CommentBox from "@/components/ComicDetail/CommentBox";
+import ChapterNav from "@/containers/NavBar/ChapterNav/ChapterNav";
+import CommentBox from "@/components/Comic/ComicDetail/CommentBox";
 import { Chapter } from "@/types/Chapter";
 import { Comic } from "@/types/Comic";
 import { useRouter } from "next/router";
 import { Response } from "@/types/Response.type";
 import useSWR from "swr";
-import ChapterImages from "@/components/Chapter/ChapterImages";
-import { chapterMapper } from "@/components/Chapter/chapterMapper";
+import { chapterMapper } from "@/containers/Comic/Chapter/chapterMapper";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
+import Image from "next/image";
 
 const ChapterDetail = () => {
   const router = useRouter();
 
   const { data: comicResponse } = useSWR<
     Response<{ chapters: Chapter[]; comic: Comic }>
-  >(`/api/comic/${router.query.slug}`);
+  >(router.isReady ? `/api/comic/${router.query.slug}` : null);
 
   const currentChapter = chapterMapper(
     router.query.chapter as string,
-    comicResponse?.result?.chapters
+    comicResponse?.result?.chapters,
+    comicResponse?.result?.comic
   ) as Chapter;
 
+  console.log(currentChapter);
   return (
     <>
-      <>
-        <ChapterNav
-          chapter={currentChapter}
-          comic={comicResponse?.result?.comic}
-        />
+      <ChapterNav chapter={currentChapter} />
+      <div className="w-4/5 mx-auto flex items-center flex-col pt-20 bg-white">
         {comicResponse ? (
-          <div className="w-full mx-auto flex items-center flex-col">
-            <ChapterImages images={currentChapter?.images} />
-            <div className="w-4/5 border-t border-black py-2 ">
+          <>
+            {currentChapter.images.map((image: any, index: any) => (
+              <Image
+                src={image}
+                alt={`Comic Image ${index + 1}`}
+                width={0}
+                height={0}
+                key={index}
+                sizes="100vw"
+                style={{ width: "100%", height: "auto" }}
+              />
+            ))}
+            <div className="w-full border-t border-black py-2 ">
               <CommentBox comic={comicResponse.result?.comic} />
             </div>
-          </div>
+          </>
         ) : (
-          <LoadingSkeleton.Comic />
+          <LoadingSkeleton.Chapter />
         )}
-      </>
+      </div>
     </>
   );
 };

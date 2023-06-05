@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import ReportTable from "../ReportTable/ReportTable";
+import ReportTable from "../../ReportTable/ReportTable";
 import { getComment, postComment } from "@/service/backend/CommentControllers";
 
 const reportItems = [
