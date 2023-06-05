@@ -1,5 +1,4 @@
 import classes from "./ComicDetail.module.sass";
-import Loading from "../Loading/Loading";
 import { Skeleton } from "primereact/skeleton";
 
 const ComicRelate = (props: any) => {
@@ -21,7 +20,6 @@ const ComicRelate = (props: any) => {
           )}
         </div>
         <div className={classes.boxcard__body}>
-          {props.isShowLoading && <Loading />}
           {/* <Grid container spacing={1}>
                     <Grid item md={12}>
                         {

@@ -28,15 +28,18 @@ const GenrePage = () => {
   const [isShowMore, setIsShowMore] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!router.isReady) return;
     const fetchGenres = async () => {
       const res = await axiosClient.get<Response<Genre[]>>("/api/comic/genres");
       if (res.data.result?.[0]) {
-        setSelectedGenre(res.data.result?.[0].genre);
+        setSelectedGenre(
+          (router.query.genre as string) || res.data.result?.[0].genre
+        );
       }
       setGenres(res.data.result || []);
     };
     fetchGenres();
-  }, []);
+  }, [router.isReady]);
 
   const { data: filterComicResponse, isLoading } = useSWR<Response<Comic[]>>(
     `/api/comic/search?comic_name=&filter_state=&filter_author=&filter_genre=${selectedGenre}&filter_sort=az`
@@ -60,7 +63,10 @@ const GenrePage = () => {
                 className={`cursor-pointer ${
                   selectedGenre === genre ? "text-black" : "text-slate-400"
                 }`}
-                onClick={() => setSelectedGenre(genre)}
+                onClick={() => {
+                  setSelectedGenre(genre);
+                  router.push(`/genre?genre=${genre}`);
+                }}
               >
                 {genre.toLocaleUpperCase()}
               </div>
@@ -77,6 +83,7 @@ const GenrePage = () => {
         )}
       </div>
       <CardList
+        title={`Kết quả tìm kiếm cho thể loại "${selectedGenre}"`}
         dataList={filterComicResponse?.result}
         onClickCard={(data) => data?.id && router.push(`comic/${data?.slug}`)}
         isLoading={isLoading}

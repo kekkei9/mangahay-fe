@@ -1,4 +1,4 @@
-const ComicImages = (props: any) => {
+const ChapterImages = (props: any) => {
   return (
     <div className="flex justify-center flex-col bg-white w-4/5 pt-20">
       {props.images.map((image: any, index: any) => (
@@ -13,4 +13,4 @@ const ComicImages = (props: any) => {
   );
 };
 
-export default ComicImages;
+export default ChapterImages;

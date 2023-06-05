@@ -1,15 +1,10 @@
-import ComicInfo from "@/components/ComicDetails/ComicInfo";
-import Navbar from "@/components/Navbar/Navbar";
-import { useEffect } from "react";
+import ComicInfo from "@/components/ComicDetail/ComicInfo";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import { Response } from "@/types/Response.type";
 import { Comic } from "@/types/Comic";
 import { Chapter } from "@/types/Chapter";
-import axiosClient from "@/services/backend/axiosClient";
-import ComicChapter from "@/components/ComicDetails/ComicChapter";
-import CommentBox from "@/components/ComicDetails/CommentBox";
-import ComicRelate from "@/components/ComicDetails/ComicRelate";
+import ComicChapter from "@/components/ComicDetail/ComicChapter";
 
 const ComicDetail = () => {
   const router = useRouter();
@@ -24,7 +19,7 @@ const ComicDetail = () => {
 
   const { data: comicResponse } = useSWR<
     Response<{ chapters: Chapter[]; comic: Comic }>
-  >(`/api/comic/${router.query.slug}`);
+  >(router.isReady ? `/api/comic/${router.query.slug}` : null);
 
   return (
     <>

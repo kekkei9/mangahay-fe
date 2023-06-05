@@ -5,4 +5,6 @@ export type Chapter = {
   name: string;
   slug: string;
   updatedAt: string;
+  nextChapter?: Chapter;
+  prevChapter?: Chapter;
 };

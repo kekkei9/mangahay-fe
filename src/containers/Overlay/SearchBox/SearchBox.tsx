@@ -22,7 +22,7 @@ const SearchBox = ({ value }: ISearchBoxProps) => {
           <ComicCard.HorizontalPreview
             data={comic}
             key={comic.id}
-            onClick={(data) => data?.id && router.push(`comic/${data?.slug}`)}
+            onClick={(data) => data?.id && router.push(`/comic/${data?.slug}`)}
           />
         ))
       ) : (

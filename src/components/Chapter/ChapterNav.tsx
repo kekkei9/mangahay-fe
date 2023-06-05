@@ -1,14 +1,20 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { Chapter } from "@/types/Chapter";
+import { Comic } from "@/types/Comic";
+import { PrimeIcons } from "primereact/api";
 
-import ReportTable from "../ReportTable/ReportTable";
 const reportItems = ["Lỗi ảnh"];
-const ChapterNav = ({ chapters, comic, chapter, noticeShow }: any) => {
+
+interface IChapterNavProps {
+  comic?: Comic;
+  chapter?: Chapter;
+}
+
+const ChapterNav = ({ comic, chapter }: IChapterNavProps) => {
   const [showNavbar, setShowNavbar] = useState(true);
 
   const [reportIsShown, setReportIsShown] = useState(false);
-  const [prevChap, setPrevChap] = useState({ slug: "" });
-  const [nextChap, setNextChap] = useState({ slug: "" });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,50 +34,37 @@ const ChapterNav = ({ chapters, comic, chapter, noticeShow }: any) => {
     };
   }, []);
 
-  useEffect(() => {
-    for (let i = 0; i < chapters.length; i++) {
-      if (chapters[i] == chapter) {
-        if (i - 1 >= 0) {
-          setNextChap(chapters[i - 1]);
-        }
-        if (i + 1 < chapters.length) {
-          setPrevChap(chapters[i + 1]);
-        }
-      }
-    }
-  }, [chapter, chapters]);
-
   const closeReport = () => {
     setReportIsShown(false);
   };
 
   //TODO: Gửi Report đến BE
-  const handleReport = (id: any) => {
-    if (!sessionStorage.getItem("access_token")) {
-      noticeShow("error", "Đăng nhập để thực hiện chức năng");
-    } else {
-      setReportIsShown(true);
-    }
-  };
+  // const handleReport = (id: any) => {
+  //   if (!sessionStorage.getItem("access_token")) {
+  //     noticeShow("error", "Đăng nhập để thực hiện chức năng");
+  //   } else {
+  //     setReportIsShown(true);
+  //   }
+  // };
 
   return (
     <>
-      {reportIsShown && (
+      {/* {reportIsShown && (
         <ReportTable
           items={reportItems}
-          id={chapter.id}
+          id={chapter?.id}
           type="chapter"
           onClose={closeReport}
           noticeShow={noticeShow}
-        ></ReportTable>
-      )}
+        />
+      )} */}
       <nav
         className={`fixed w-full grid grid-cols-3 items-center py-2 gap-4 bg-zinc-800 visibility: ${
           showNavbar ? "visible" : "hidden"
         }`}
       >
         <div className="flex items-center">
-          <Link href="#" className="text-gray-300 mr-4">
+          <Link href="/" className="text-gray-300 mr-4">
             <img
               className="h-10 w-50"
               src="/assets/logo/logo_web.png"
@@ -79,47 +72,47 @@ const ChapterNav = ({ chapters, comic, chapter, noticeShow }: any) => {
             />
           </Link>
           <Link
-            href={`/comic/${comic.slug}`}
+            href={`/comic/${comic?.slug}`}
             className="text-white font-medium text-lg max-w-xs"
           >
-            {comic.name}{" "}
+            {comic?.name}{" "}
           </Link>
           {/* <FontAwesomeIcon icon={faChevronRight} className='h-4 w-4 mx-2 text-white'/> */}
-          <span className="text-gray-400 mr-4 text-lg">{chapter.name}</span>
+          <span className="text-gray-400 mr-4 text-lg">{chapter?.name}</span>
         </div>
         <div className="flex items-center justify-center">
           <a
-            href={`/comic/${comic.slug}/${prevChap?.slug}`}
+            href={`/comic/${comic?.slug}/${chapter?.prevChapter?.slug}`}
             className={`mr-4 ${
-              prevChap.slug === ""
-                ? "pointer-events-none text-gray-300"
-                : "text-white "
+              chapter?.prevChapter?.slug
+                ? "text-white "
+                : "pointer-events-none text-gray-300"
             }`}
           >
-            {/* <FontAwesomeIcon icon={faChevronLeft} className="h-6 w-6 border-2 border-black"/> */}
+            <i className={PrimeIcons.CHEVRON_LEFT} />
           </a>
           <span className="text-white font-medium mr-4 text-lg">
-            {chapter.name}
+            {chapter?.name}
           </span>
           <a
-            href={`/comic/${comic.slug}/${nextChap?.slug}`}
+            href={`/comic/${comic?.slug}/${chapter?.nextChapter?.slug}`}
             className={`mr-4 ${
-              nextChap.slug === ""
-                ? "pointer-events-none text-gray-300"
-                : "text-white "
+              chapter?.nextChapter?.slug
+                ? "text-white "
+                : "pointer-events-none text-gray-300"
             }`}
           >
-            {/* <FontAwesomeIcon icon={faChevronRight} className="h-6 w-6 border-2 border-black"/> */}
+            <i className={PrimeIcons.CHEVRON_RIGHT} />
           </a>
         </div>
-        <div className="flex items-center justify-end mr-4">
+        {/* <div className="flex items-center justify-end mr-4">
           <button
             className="px-4 py-1 font-medium text-white  rounded-md hover:bg-blue-700 border-2 border-black focus:outline-none"
             onClick={handleReport}
           >
             Report
           </button>
-        </div>
+        </div> */}
       </nav>
     </>
   );
