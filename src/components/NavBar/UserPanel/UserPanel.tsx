@@ -1,6 +1,4 @@
 import { logoutHandler } from "@/redux/authentication/authentication.action";
-import { signOutAPI } from "@/services/backend/AuthController";
-import { setAuthToken } from "@/services/backend/axiosClient";
 import { Menu } from "primereact/menu";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { useRef } from "react";
@@ -13,7 +11,11 @@ import { PrimeIcons } from "primereact/api";
 import { useRouter } from "next/router";
 import { Badge } from "primereact/badge";
 
-const UserPanel = () => {
+interface IUserPanelProps {
+  className?: string;
+}
+
+const UserPanel = ({ className }: IUserPanelProps) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { isAuthUser, user } = useSelector(
@@ -59,7 +61,7 @@ const UserPanel = () => {
         ]}
       />
 
-      <div className="user-panel flex gap-6 items-center">
+      <div className={`user-panel flex gap-6 items-center ${className}`}>
         {isAuthUser && (
           <i
             className={`${PrimeIcons.BELL} !text-xl p-overlay-badge cursor-pointer`}

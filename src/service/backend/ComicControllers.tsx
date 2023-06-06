@@ -1,17 +1,38 @@
-import axios from "axios";
-
-const bEServer = process.env.NEXT_PUBLIC_BACKEND_ENDPOINT;
+import axiosClient from "@/services/backend/axiosClient";
 
 export const getLikeAndFollowState = async (id: any) => {
   try {
-    const response = await axios.get(
-      `${bEServer}/api/user/comic/check/?id_comic=${id}`,
-      {
-        headers: {
-          Authorization: `bearer ${sessionStorage.getItem("access_token")}`,
-          "Content-Type": "application/json",
-        },
-      }
+    const response = await axiosClient.get(`/api/comic/check?id_comic=${id}`);
+    return response.data;
+  } catch (e) {
+    console.error("Lỗi khi lấy dữ liệu từ backend:", e);
+    throw e;
+  }
+};
+
+export const likeComic = async ({ id, slug }: any) => {
+  try {
+    const responsePost = await axiosClient.post("/api/user/comic?action=like", {
+      id_comic: id,
+    });
+    const response = await axiosClient.get(
+      `/api/comic/${slug}/icrement?field=like&jump=1`
+    );
+
+    return response.data;
+  } catch (e) {
+    console.error("Lỗi khi lấy dữ liệu từ backend:", e);
+    throw e;
+  }
+};
+
+export const unLikeComic = async ({ id, slug }: any) => {
+  try {
+    const responseDelete = await axiosClient.delete(
+      "/api/user/comic?action=like"
+    );
+    const response = await axiosClient.get(
+      `/api/comic/${slug}/icrement?field=like&jump=-1`
     );
     return response.data;
   } catch (e) {
@@ -20,16 +41,17 @@ export const getLikeAndFollowState = async (id: any) => {
   }
 };
 
-export const likeComic = async (name: any) => {
+export const followComic = async ({ id, slug }: any) => {
   try {
-    const response = await axios.post(
-      `${bEServer}/api/user/comic/${name}/?field=like&jump=1`,
+    const responsePost = await axiosClient.post(
+      "/api/user/comic?action=follow",
       {
-        headers: {
-          Authorization: `bearer ${sessionStorage.getItem("access_token")}`,
-          "Content-Type": "application/json",
-        },
+        id_comic: id,
       }
+    );
+
+    const response = await axiosClient.get(
+      `/api/comic/${slug}/icrement?field=follow&jump=1`
     );
     return response.data;
   } catch (e) {
@@ -38,70 +60,10 @@ export const likeComic = async (name: any) => {
   }
 };
 
-export const unLikeComic = async (name: any) => {
+export const unFollowComic = async ({ id, slug }: any) => {
   try {
-    const response = await axios.post(
-      `${bEServer}/api/user/comic/${name}/?field=like&jump=-1`,
-      {
-        headers: {
-          Authorization: `bearer ${sessionStorage.getItem("access_token")}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return response.data;
-  } catch (e) {
-    console.error("Lỗi khi lấy dữ liệu từ backend:", e);
-    throw e;
-  }
-};
-
-export const viewComic = async (name: any) => {
-  try {
-    const response = await axios.post(
-      `${bEServer}/api/user/comic/${name}/?field=view&jump=1`,
-      {
-        headers: {
-          Authorization: `bearer ${sessionStorage.getItem("access_token")}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return response.data;
-  } catch (e) {
-    console.error("Lỗi khi lấy dữ liệu từ backend:", e);
-    throw e;
-  }
-};
-
-export const FollowComic = async (name: any) => {
-  try {
-    const response = await axios.post(
-      `${bEServer}/api/user/comic/${name}/?field=follow&jump=1`,
-      {
-        headers: {
-          Authorization: `bearer ${sessionStorage.getItem("access_token")}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return response.data;
-  } catch (e) {
-    console.error("Lỗi khi lấy dữ liệu từ backend:", e);
-    throw e;
-  }
-};
-
-export const unFollowComic = async (name: any) => {
-  try {
-    const response = await axios.post(
-      `${bEServer}/api/user/comic/${name}/?field=follow&jump=-1`,
-      {
-        headers: {
-          Authorization: `bearer ${sessionStorage.getItem("access_token")}`,
-          "Content-Type": "application/json",
-        },
-      }
+    const response = await axiosClient.get(
+      `/api/comic/${slug}/icrement?field=follow&jump=-1`
     );
     return response.data;
   } catch (e) {

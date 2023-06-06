@@ -8,6 +8,7 @@ import useSWR from "swr";
 import { chapterMapper } from "@/containers/Comic/Chapter/chapterMapper";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import Image from "next/image";
+import ChapterSpeedDialContainer from "@/containers/Comic/Chapter/ChapterSpeedDial";
 
 const ChapterDetail = () => {
   const router = useRouter();
@@ -22,9 +23,12 @@ const ChapterDetail = () => {
     comicResponse?.result?.comic
   ) as Chapter;
 
-  console.log(currentChapter);
   return (
     <>
+      <ChapterSpeedDialContainer
+        className="!fixed bottom-10 right-10"
+        chapter={currentChapter}
+      />
       <ChapterNav chapter={currentChapter} />
       <div className="w-4/5 mx-auto flex items-center flex-col pt-20 bg-white">
         {comicResponse ? (
@@ -40,7 +44,7 @@ const ChapterDetail = () => {
                 style={{ width: "100%", height: "auto" }}
               />
             ))}
-            <div className="w-full border-t border-black py-2 ">
+            <div className="w-full border-t border-black py-2 comment-section">
               <CommentBox comic={comicResponse.result?.comic} />
             </div>
           </>

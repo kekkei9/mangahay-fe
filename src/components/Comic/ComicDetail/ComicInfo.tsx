@@ -1,79 +1,98 @@
 import Link from "next/link";
 import classes from "./ComicDetail.module.sass";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Skeleton } from "primereact/skeleton";
-import { Comic } from "@/types/Comic";
+import { Comic, ComicAuthStatus } from "@/types/Comic";
 import useSWR from "swr";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
+import { Toast, ToastMessage } from "primereact/toast";
+import { useRouter } from "next/router";
+import {
+  followComic,
+  likeComic,
+  unFollowComic,
+  unLikeComic,
+} from "@/service/backend/ComicControllers";
+import { Response } from "@/types/Response.type";
+import { authErrorToastBody } from "./toastBody";
 
 interface IComicInfoProps {
   comic?: Comic;
 }
 
 const ComicInfo = ({ comic }: IComicInfoProps) => {
-  const [isLike, setIsLike] = useState(false);
-  const [isFollow, setIsFollow] = useState(false);
+  const router = useRouter();
+  const toastRef = useRef<Toast>(null);
 
   const { isAuthUser } = useSelector(
     (state: RootState) => state.authentication
   );
 
-  const { data: likedResponse } = useSWR(
-    isAuthUser ? "/api/user/comic/liked?limit=100&page=0" : null
-  );
-  const { data: followedResponse } = useSWR(
-    isAuthUser ? "/api/user/comic/liked?limit=100&page=0" : null
+  const { data: statusResponse, mutate } = useSWR<Response<ComicAuthStatus>>(
+    isAuthUser ? `/api/user/comic/check?id_comic=${comic?.id}` : null
   );
 
-  const handleClickLike = async () => {
+  const checkAuth = () => {
     if (!isAuthUser) {
-      console.log("dang nhap di ck");
-      return;
+      toastRef.current?.show(
+        authErrorToastBody(() => router.push("/signin")) as ToastMessage
+      );
+      return false;
     }
-    // if (!sessionStorage.getItem("access_token")) {
-    //   noticeShow("error", "Đăng nhập để thực hiện chức năng");
-    // } else {
-    //   try {
-    //     let data;
-    //     if (isLike) {
-    //       data = await unLikeComic(comic.slug);
-    //     } else {
-    //       data = await likeComic(comic.slug);
-    //     }
-    //     if (data.success == true) {
-    //       setIsLike((pre) => !pre);
-    //       noticeShow("success", "Thêm vào danh sách yêu thích thành công");
-    //     }
-    //   } catch (error) {
-    //     noticeShow("error", error);
-    //   }
-    // }
+    return true;
+  };
+
+  //TODO: Move to container & fix show error
+
+  const handleClickLike = async () => {
+    if (!checkAuth()) return;
+    try {
+      let data;
+      if (statusResponse?.result?.isLike) {
+        data = await unLikeComic(comic);
+      } else {
+        data = await likeComic(comic);
+      }
+
+      if (data.success == true) {
+        mutate();
+      }
+    } catch (error) {
+      toastRef.current?.show({
+        severity: "error",
+        summary: "ERROR",
+        detail: "ERROR",
+      });
+    }
   };
 
   const handleClickFollow = async () => {
-    // if (!sessionStorage.getItem("access_token")) {
-    //   noticeShow("error", "Đăng nhập để thực hiện chức năng");
-    // } else {
-    //   try {
-    //     let data;
-    //     if (isFollow) {
-    //       data = await unFollowComic(comic.slug);
-    //     } else {
-    //       data = await FollowComic(comic.slug);
-    //     }
-    //     if (data.success == true) {
-    //       setIsFollow((pre) => !pre);
-    //       noticeShow("success", "Thêm vào danh sách theo dõi thành công");
-    //     }
-    //   } catch (error) {
-    //     noticeShow("error", error);
-    //   }
-    // }
+    if (!checkAuth()) return;
+
+    try {
+      let data;
+      if (statusResponse?.result?.isLike) {
+        data = await unFollowComic(comic);
+      } else {
+        data = await followComic(comic);
+      }
+
+      if (data.success == true) {
+        mutate();
+      }
+    } catch (error) {
+      toastRef.current?.show({
+        severity: "error",
+        summary: "ERROR",
+        detail: "ERROR",
+      });
+    }
   };
 
   return (
     <>
+      <Toast ref={toastRef} />
       <div className={classes.comicdetail__header}>
         <div className="main-image w-full h-[32rem] relative overflow-hidden">
           <img
@@ -157,25 +176,31 @@ const ComicInfo = ({ comic }: IComicInfoProps) => {
             <div className="flex gap-2">
               <button
                 className={`py-2 px-4 rounded-md flex items-center ${
-                  isLike
+                  statusResponse?.result?.isLike
                     ? "bg-red-500 text-white"
                     : "bg-white text-red-500 border border-red-500 hover:bg-red-500 hover:text-white"
                 }`}
                 onClick={handleClickLike}
               >
                 {/* <FontAwesomeIcon icon={faHeart} /> */}
-                {isLike ? " Đã yêu thích" : " Thêm vào danh sách yêu thích"}
+                {statusResponse?.result?.isLike
+                  ? " Đã yêu thích"
+                  : " Thêm vào danh sách yêu thích"}
               </button>
               <button
                 id="button-follow"
                 className={`py-2 px-4 rounded-md flex items-center ${
-                  isFollow
+                  statusResponse?.result?.isFollow
                     ? "bg-blue-500 text-white"
                     : "bg-white text-blue-500 border border-blue-500"
                 }`}
                 onClick={handleClickFollow}
               >
-                <span>{isFollow ? "Đang theo dõi" : "Theo dõi"}</span>
+                <span>
+                  {statusResponse?.result?.isFollow
+                    ? "Đang theo dõi"
+                    : "Theo dõi"}
+                </span>
               </button>
             </div>
           </div>

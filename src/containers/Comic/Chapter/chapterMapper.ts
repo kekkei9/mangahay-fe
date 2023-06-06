@@ -1,12 +1,13 @@
 import { Chapter } from "@/types/Chapter";
 import { Comic } from "@/types/Comic";
+import { normalizeChapterArray } from "@/utils/normalizeData";
 
 export const chapterMapper = (
   slug?: string,
   chapters?: Chapter[],
   comic?: Comic
 ) => {
-  const mappedChapters = chapters?.map((chapter) => ({
+  const mappedChapters = normalizeChapterArray(chapters)?.map((chapter) => ({
     ...chapter,
     comicInfo: {
       slug: comic?.slug,

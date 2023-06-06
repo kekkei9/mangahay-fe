@@ -5,6 +5,12 @@ export type Genre = {
   genre: string;
 };
 
+export type ComicAuthStatus = {
+  isEvaluate: boolean;
+  isFollow: boolean;
+  isLike: boolean;
+};
+
 export type Comic = {
   another_name: string;
   authors: string[];

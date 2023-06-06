@@ -6,8 +6,6 @@ import { PrimeIcons } from "primereact/api";
 import UserPanelContainer from "@/components/NavBar/UserPanel";
 import Image from "next/image";
 
-const reportItems = ["Lỗi ảnh"];
-
 interface IChapterNavProps {
   chapter?: Chapter;
 }
@@ -33,10 +31,13 @@ const ChapterNav = ({ chapter }: IChapterNavProps) => {
     };
   }, []);
 
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => setIsClient(true), []);
+
   return (
     <>
       <nav
-        className={`fixed w-full grid grid-cols-3 items-center py-2 gap-4 bg-zinc-800 visibility: ${
+        className={`fixed w-full grid grid-cols-3 items-center py-2 px-4 gap-4 bg-zinc-800 visibility: ${
           showNavbar ? "visible" : "hidden"
         }`}
       >
@@ -53,12 +54,10 @@ const ChapterNav = ({ chapter }: IChapterNavProps) => {
           </Link>
           <Link
             href={`/comic/${chapter?.comicInfo?.slug}`}
-            className="text-white font-medium text-lg max-w-xs"
+            className="text-white font-medium text-lg max-w-xs line-clamp-1 ml-4"
           >
             {chapter?.comicInfo?.name}
           </Link>
-          <i className={PrimeIcons.CHEVRON_RIGHT} />
-          <span className="text-gray-400 mr-4 text-lg">{chapter?.name}</span>
         </div>
         <div className="flex items-center justify-center">
           <a
@@ -85,7 +84,7 @@ const ChapterNav = ({ chapter }: IChapterNavProps) => {
             <i className={PrimeIcons.CHEVRON_RIGHT} />
           </a>
         </div>
-        <UserPanelContainer />
+        {isClient && <UserPanelContainer className="justify-end" />}
       </nav>
     </>
   );

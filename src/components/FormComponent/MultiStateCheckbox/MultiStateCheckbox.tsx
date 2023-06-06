@@ -9,11 +9,17 @@ import styles from "./MultiStateCheckbox.module.scss";
 interface IMultiStateCheckboxProps {
   field: ControllerRenderProps<ComicQueries, "filterState">;
   options: MultiStateCheckboxOption[];
+  empty?: boolean;
+  labelMapper?: {
+    [key: string]: string;
+  };
 }
 
 const MultiStateCheckbox = ({
   field: { name, value, onChange, ref },
   options,
+  empty = true,
+  labelMapper,
 }: IMultiStateCheckboxProps) => {
   return (
     <div
@@ -27,8 +33,11 @@ const MultiStateCheckbox = ({
         options={options}
         optionValue="value"
         className="!w-10 !h-10"
+        empty={empty}
       />
-      <div className="text-lg">{value}</div>
+      <div className="text-lg">
+        {labelMapper?.[value as keyof typeof labelMapper] || value}
+      </div>
     </div>
   );
 };
