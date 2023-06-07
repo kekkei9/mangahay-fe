@@ -42,17 +42,6 @@ const SearchBox = ({ value }: ISearchBoxProps) => {
           ))
         }
       </InfiniteScroll>
-      {/* {searchComicResponse?.result?.length ? (
-        searchComicResponse?.result?.map((comic) => (
-          <ComicCard.HorizontalPreview
-            data={comic}
-            key={comic.id}
-            onClick={(data) => data?.id && router.push(`/comic/${data?.slug}`)}
-          />
-        ))
-      ) : (
-        <div>Không có kết quả</div>
-      )} */}
     </div>
   );
 };

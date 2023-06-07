@@ -6,7 +6,6 @@ export const likeComic = async ({ id, slug }: any) => {
       id_comic: id,
     });
 
-    console.log(responsePost);
     const response = await axiosClient.get(
       `/api/comic/${slug}/increment?field=like&jump=1`
     );
