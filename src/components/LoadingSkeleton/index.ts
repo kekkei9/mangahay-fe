@@ -1,9 +1,11 @@
 import ChapterLoadingSkeleton from "./ChapterLoadingSkeleton";
-import ComicLoadingSkeleton from "./ComicLoadingSkeleton";
+import ComicInfoLoadingSkeleton from "./ComicInfoLoadingSkeleton";
+import ComicListLoadinSkeleton from "./ComicListLoadingSkeleton";
 import GenreLoadingSkeleton from "./GenreLoadingSkeleton";
 
 const LoadingSkeleton = {
-  Comic: ComicLoadingSkeleton,
+  ComicList: ComicListLoadinSkeleton,
+  ComicInfo: ComicInfoLoadingSkeleton,
   Genre: GenreLoadingSkeleton,
   Chapter: ChapterLoadingSkeleton,
 };

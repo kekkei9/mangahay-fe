@@ -12,6 +12,7 @@ export const chapterMapper = (
     comicInfo: {
       slug: comic?.slug,
       name: comic?.name,
+      id: comic?.id,
     },
   }));
 

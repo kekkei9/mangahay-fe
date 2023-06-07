@@ -2,15 +2,23 @@ import { Button } from "primereact/button";
 import { Controller, useForm } from "react-hook-form";
 import { ComicQueries, initialComicQueries } from "../comicQueriesMapper";
 import { formFields } from "./formFieldData";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 interface ISearchSectionProps {
   onSubmit: (formData: ComicQueries) => void;
+  defaultValues?: Object;
 }
 
-const SearchSection = ({ onSubmit }: ISearchSectionProps) => {
-  const { handleSubmit, register, reset, control } = useForm({
-    defaultValues: initialComicQueries,
+const SearchSection = ({ onSubmit, defaultValues }: ISearchSectionProps) => {
+  const router = useRouter();
+  const { handleSubmit, reset, control, setValue, getValues } = useForm({
+    defaultValues: { ...initialComicQueries, ...router.query },
   });
+
+  useEffect(() => {
+    onSubmit(getValues());
+  }, []);
 
   return (
     <form className="search-section" onSubmit={handleSubmit(onSubmit)}>

@@ -1,4 +1,5 @@
 import { Comic } from "@/types/Comic";
+import { formatDate } from "@/utils/date";
 import Image from "next/image";
 import { PrimeIcons } from "primereact/api";
 import { Divider } from "primereact/divider";
@@ -31,9 +32,12 @@ const ComicPreviewCard = ({ data, onClick }: IComicPreviewCardProps) => {
       <div className="front-preview-card flex flex-col justify-between h-full bg-white">
         <div className="p-5 h-full flex flex-col gap-2">
           <div className="line-clamp-2 font-semibold">{data?.name}</div>
-          <div className="flex gap-2 items-center">
-            <i className={`${PrimeIcons.HEART_FILL} text-mangahay-400`} />
-            <div className="text-mangahay-400">{data?.follow}</div>
+          <div className="flex justify-between">
+            <div className="flex gap-2 items-center">
+              <i className={`${PrimeIcons.HEART_FILL} text-mangahay-400`} />
+              <div className="text-mangahay-400">{data?.follow}</div>
+            </div>
+            <div className="text-slate-400">{formatDate(data?.updatedAt)}</div>
           </div>
         </div>
         {data?.thumb && (

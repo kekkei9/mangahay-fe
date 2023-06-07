@@ -14,13 +14,6 @@ export const initialComicQueries: ComicQueries = {
   filterSort: "az",
 };
 
-export const statusMapper = {
-  "Tất cả": "0",
-  "Đang tiến hành": "1",
-  "Tạm ngưng": "2",
-  "Hoàn thành": "3",
-};
-
 export const comicQueriesMapper = ({
   comicName,
   filterState,
@@ -29,8 +22,8 @@ export const comicQueriesMapper = ({
   filterSort,
 }: ComicQueries) => ({
   comic_name: comicName,
-  filter_state: statusMapper?.[filterState as keyof typeof statusMapper] || "",
+  filter_state: filterState || "",
   filter_author: filterAuthor,
-  filter_genre: filterGenre.map((a) => a.name).join(" "),
+  filter_genre: filterGenre.map((a) => a.name).toString(),
   filter_sort: filterSort,
 });

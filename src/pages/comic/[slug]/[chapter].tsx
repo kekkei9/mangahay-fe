@@ -1,5 +1,4 @@
-import ChapterNav from "@/containers/NavBar/ChapterNav/ChapterNav";
-import CommentBox from "@/components/Comic/ComicDetail/CommentBox";
+import ChapterNav from "@/containers/NavBar/ChapterNav";
 import { Chapter } from "@/types/Chapter";
 import { Comic } from "@/types/Comic";
 import { useRouter } from "next/router";
@@ -9,6 +8,9 @@ import { chapterMapper } from "@/containers/Comic/Chapter/chapterMapper";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import Image from "next/image";
 import ChapterSpeedDialContainer from "@/containers/Comic/Chapter/ChapterSpeedDial";
+import { useEffect } from "react";
+import { appendToHistory } from "@/service/backend/ChapterController";
+import CommentBox from "@/containers/Comic/ComicDetail/CommentBox";
 
 const ChapterDetail = () => {
   const router = useRouter();
@@ -23,6 +25,10 @@ const ChapterDetail = () => {
     comicResponse?.result?.comic
   ) as Chapter;
 
+  useEffect(() => {
+    appendToHistory(currentChapter);
+  }, [currentChapter]);
+
   return (
     <>
       <ChapterSpeedDialContainer
@@ -31,7 +37,7 @@ const ChapterDetail = () => {
       />
       <ChapterNav chapter={currentChapter} />
       <div className="w-4/5 mx-auto flex items-center flex-col pt-20 bg-white">
-        {comicResponse ? (
+        {comicResponse?.result?.chapters ? (
           <>
             {currentChapter.images.map((image: any, index: any) => (
               <Image

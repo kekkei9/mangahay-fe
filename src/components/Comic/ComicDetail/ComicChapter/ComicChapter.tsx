@@ -1,18 +1,8 @@
 import { Chapter } from "@/types/Chapter";
 import { Comic } from "@/types/Comic";
+import { formatDate } from "@/utils/date";
 import { normalizeChapterArray } from "@/utils/normalizeData";
 import Link from "next/link";
-
-const formatDate = (dateString: string) => {
-  const dateObj = new Date(dateString);
-  const day = dateObj.getDate();
-  const month = dateObj.getMonth() + 1;
-  const year = dateObj.getFullYear();
-  const formattedDate = `${day < 10 ? "0" + day : day}/${
-    month < 10 ? "0" + month : month
-  }/${year}`;
-  return formattedDate;
-};
 
 interface IComicChapterProps {
   comic?: Comic;

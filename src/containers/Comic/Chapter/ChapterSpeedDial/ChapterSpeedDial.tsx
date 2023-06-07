@@ -4,13 +4,14 @@ import styles from "./ChapterSpeedDial.module.scss";
 import { Tooltip } from "primereact/tooltip";
 import { Chapter } from "@/types/Chapter";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { Dialog } from "primereact/dialog";
 import ChapterReportBoxContainer from "./ChapterReportBox";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
 import { Toast, ToastMessage } from "primereact/toast";
-import { authErrorToastBody } from "@/components/Comic/ComicDetail/toastBody";
+import { authErrorToastBody } from "../../ComicDetail/ComicInfo/ComicInteractPanel/toastBody";
+import { ToastContext } from "@/contexts/ToastContext";
 
 interface IChapterSpeedDialProps {
   className?: string;
@@ -20,16 +21,17 @@ interface IChapterSpeedDialProps {
 const ChapterSpeedDial = ({ className, chapter }: IChapterSpeedDialProps) => {
   const router = useRouter();
   const [isReportBoxOpen, setIsReportBoxOpen] = useState(false);
-  const toastRef = useRef<Toast>(null);
 
   const { isAuthUser } = useSelector(
     (state: RootState) => state.authentication
   );
 
+  const { toastRef } = useContext(ToastContext);
+
   const checkAuth = () => {
     if (!isAuthUser) {
-      toastRef.current?.show(
-        authErrorToastBody(() => router.push("/signin")) as ToastMessage
+      toastRef?.current?.show(
+        authErrorToastBody(() => router.push("/auth/signin")) as ToastMessage
       );
       return false;
     }
@@ -73,7 +75,6 @@ const ChapterSpeedDial = ({ className, chapter }: IChapterSpeedDialProps) => {
 
   return (
     <>
-      <Toast ref={toastRef} />
       <Dialog
         onHide={() => setIsReportBoxOpen(false)}
         visible={isReportBoxOpen}

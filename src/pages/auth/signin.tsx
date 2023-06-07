@@ -9,12 +9,14 @@ import { useDispatch } from "react-redux";
 import { loginStorageHandler } from "@/redux/authentication/authentication.action";
 import { setAuthToken } from "@/services/backend/axiosClient";
 import { Toast } from "primereact/toast";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
+import { ToastContext } from "@/contexts/ToastContext";
 
 const SignInPage = () => {
   const { register, handleSubmit } = useForm();
   const dispatch = useDispatch();
-  const toastRef = useRef<Toast>(null);
+
+  const { toastRef } = useContext(ToastContext);
 
   const onSubmit = async (formData: any) => {
     try {
@@ -27,7 +29,7 @@ const SignInPage = () => {
         dispatch(loginStorageHandler(result) as any);
       }
     } catch (e: any) {
-      toastRef.current?.show({
+      toastRef?.current?.show({
         severity: "error",
         summary: "Đăng nhập thất bại",
         detail: e.response.data.message,
@@ -37,7 +39,6 @@ const SignInPage = () => {
 
   return (
     <>
-      <Toast ref={toastRef} />
       <div className="font-bold text-2xl self-start">Đăng nhập để tiếp tục</div>
       <form
         className="flex flex-col gap-5 w-full"

@@ -29,6 +29,32 @@ const UserPanel = ({ className }: IUserPanelProps) => {
     isAuthUser ? "/api/notify/unread-notifies/count" : null
   );
 
+  const menuModel = [
+    {
+      label: "Tài khoản",
+      command: () => router.push("/account"),
+      icon: PrimeIcons.USER,
+    },
+    {
+      label: "Truyện đang theo dõi",
+      command: () => router.push("/following"),
+      icon: PrimeIcons.CHECK_SQUARE,
+    },
+    {
+      label: "Lịch sử xem truyện",
+      command: () => router.push("/history"),
+      icon: PrimeIcons.HISTORY,
+    },
+    {
+      label: "Đăng xuất",
+      command: () => {
+        dispatch(logoutHandler() as any);
+        router.push("/");
+      },
+      icon: PrimeIcons.SIGN_OUT,
+    },
+  ];
+
   return (
     <>
       <OverlayPanel ref={notificationRef}>
@@ -39,26 +65,7 @@ const UserPanel = ({ className }: IUserPanelProps) => {
         popup
         ref={menuRef}
         className="!border-0 !w-fit"
-        model={[
-          {
-            label: "Tài khoản",
-            command: () => router.push("/account"),
-            icon: PrimeIcons.USER,
-          },
-          {
-            label: "Truyện đang theo dõi",
-            command: () => router.push("/following"),
-            icon: PrimeIcons.CHECK_SQUARE,
-          },
-          {
-            label: "Đăng xuất",
-            command: () => {
-              dispatch(logoutHandler() as any);
-              router.push("/");
-            },
-            icon: PrimeIcons.SIGN_OUT,
-          },
-        ]}
+        model={menuModel}
       />
 
       <div className={`user-panel flex gap-6 items-center ${className}`}>

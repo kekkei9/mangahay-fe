@@ -10,7 +10,7 @@ import {
 import { Comic } from "@/types/Comic";
 import { Response } from "@/types/Response.type";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useSWR from "swr";
 
 const FindComicPage = () => {
@@ -24,9 +24,12 @@ const FindComicPage = () => {
 
   return (
     <div className="find-comic-page">
-      <SearchSectionContainer
-        onSubmit={(formData) => setComicQueries(formData)}
-      />
+      {router.isReady && (
+        <SearchSectionContainer
+          onSubmit={(formData) => setComicQueries(formData)}
+          defaultValues={router.query}
+        />
+      )}
       <CardList
         className="comic-list mt-4 xs:mt-10"
         dataList={filteredComicsResponse?.result}

@@ -7,9 +7,11 @@ interface ICardListProps<T> {
   }: {
     data?: T;
     onClick?: (data?: T) => void;
+    onClickLink?: (data?: T) => void;
   }) => JSX.Element;
   className?: string;
   onClickCard?: (data?: T) => void;
+  onClickLink?: (data?: T) => void;
   title?: string;
   isLoading?: boolean;
 }
@@ -20,6 +22,7 @@ const CardList = <T,>({
   title,
   className,
   onClickCard,
+  onClickLink,
   isLoading,
 }: ICardListProps<T>) => {
   const Component = children;
@@ -30,7 +33,7 @@ const CardList = <T,>({
         {title}
       </div>
 
-      {isLoading && <LoadingSkeleton.Comic />}
+      {isLoading && <LoadingSkeleton.ComicList />}
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6 gap-4">
         {dataList?.map((data, index) => (
@@ -39,6 +42,7 @@ const CardList = <T,>({
             // @ts-ignore
             key={data?.id || index}
             onClick={onClickCard}
+            onClickLink={onClickLink}
           />
         ))}
       </div>
