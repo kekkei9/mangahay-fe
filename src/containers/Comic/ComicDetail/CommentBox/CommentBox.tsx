@@ -11,18 +11,12 @@ import { authErrorToastBody } from "../ComicInfo/ComicInteractPanel/toastBody";
 import { useRouter } from "next/router";
 import { ToastMessage } from "primereact/toast";
 
-const reportItems = [
-  "Spam: Nội dung bình luận không liên quan đến chủ đề hoặc là quảng cáo, spam.",
-  "Quấy rối: Nội dung bình luận chứa nội dung kích động, gây tranh cãi, lạm dụng hoặc quấy rối người khác.",
-  "Nội dung không thích hợp: Nội dung bình luận không phù hợp với đối tượng sử dụng hoặc có nội dung đồi trụy.",
-  "Tấn công cá nhân: Nội dung bình luận tấn công hoặc phân biệt chủng tộc, tôn giáo, giới tính, địa phương, quốc gia,...",
-];
-
 interface ICommentBoxProps {
   comic: Comic;
+  onClickReport: () => void;
 }
 
-const CommentBox = ({ comic }: ICommentBoxProps) => {
+const CommentBox = ({ comic, onClickReport }: ICommentBoxProps) => {
   const router = useRouter();
   const [comment, setComment] = useState("");
 
@@ -93,7 +87,7 @@ const CommentBox = ({ comic }: ICommentBoxProps) => {
               <div className="flex justify-end mt-2">
                 <button
                   className="text-gray-500 font-medium"
-                  onClick={() => {}}
+                  onClick={onClickReport}
                 >
                   Report
                 </button>

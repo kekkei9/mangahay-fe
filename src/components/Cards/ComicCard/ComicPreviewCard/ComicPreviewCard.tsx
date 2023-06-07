@@ -18,7 +18,7 @@ const ComicPreviewCard = ({ data, onClick }: IComicPreviewCardProps) => {
       <div className="back-preview-card absolute top-0 left-0 w-full h-full z-10 p-5 flex flex-col justify-between bg-mangahay-200 opacity-0 hover:opacity-100 hover:transition-all duration-300">
         <div className="flex-shrink-0 flex flex-col justify-between">
           <div className="line-clamp-2 font-semibold">{data?.name}</div>
-          <div className="mt-2">{data?.authors.join(", ")}</div>
+          <div className="mt-2">{data?.authors?.join(", ")}</div>
         </div>
         <Divider />
         <div className="w-full aspect-square">

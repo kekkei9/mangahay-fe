@@ -71,7 +71,7 @@ const UserPanel = ({ className }: IUserPanelProps) => {
       <div className={`user-panel flex gap-6 items-center ${className}`}>
         {isAuthUser && (
           <i
-            className={`${PrimeIcons.BELL} !text-xl p-overlay-badge cursor-pointer`}
+            className={`${PrimeIcons.BELL} !text-xl p-overlay-badge cursor-pointer !text-mangahay-400`}
             onClick={(e) => notificationRef.current?.toggle(e)}
           >
             {!!notificationCountResponse?.result && (

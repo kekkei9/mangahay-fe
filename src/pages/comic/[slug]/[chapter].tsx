@@ -8,12 +8,18 @@ import { chapterMapper } from "@/containers/Comic/Chapter/chapterMapper";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import Image from "next/image";
 import ChapterSpeedDialContainer from "@/containers/Comic/Chapter/ChapterSpeedDial";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { appendToHistory } from "@/service/backend/ChapterController";
 import CommentBox from "@/containers/Comic/ComicDetail/CommentBox";
+import { Dialog } from "primereact/dialog";
+import ReportTable from "@/containers/ReportTable/ReportTable";
+import { reportItemsMapper } from "@/containers/ReportTable/reportItemsMapper";
 
-const ChapterDetail = () => {
+const ChapterPage = () => {
   const router = useRouter();
+  const [isReportOpen, setIsReportOpen] = useState<false | "comment" | "comic">(
+    false
+  );
 
   const { data: comicResponse } = useSWR<
     Response<{ chapters: Chapter[]; comic: Comic }>
@@ -31,27 +37,46 @@ const ChapterDetail = () => {
 
   return (
     <>
+      <Dialog
+        onHide={() => setIsReportOpen(false)}
+        visible={!!isReportOpen}
+        header={<div className="text-2xl font-semibold ml-4">Report</div>}
+      >
+        <ReportTable
+          id={1}
+          type={isReportOpen.toString()}
+          items={
+            reportItemsMapper[isReportOpen as keyof typeof reportItemsMapper]
+          }
+          onClose={() => setIsReportOpen(false)}
+        />
+      </Dialog>
+
       <ChapterSpeedDialContainer
+        onClickReport={() => setIsReportOpen("comic")}
         className="!fixed bottom-10 right-10"
         chapter={currentChapter}
       />
       <ChapterNav chapter={currentChapter} />
       <div className="w-4/5 mx-auto flex items-center flex-col pt-20 bg-white">
-        {comicResponse?.result?.chapters ? (
+        {comicResponse?.result && currentChapter ? (
           <>
             {currentChapter.images.map((image: any, index: any) => (
               <Image
                 src={image}
                 alt={`Comic Image ${index + 1}`}
-                width={0}
-                height={0}
+                width={200}
+                height={500}
                 key={index}
                 sizes="100vw"
                 style={{ width: "100%", height: "auto" }}
               />
             ))}
             <div className="w-full border-t border-black py-2 comment-section">
-              <CommentBox comic={comicResponse.result?.comic} />
+              <CommentBox
+                comic={comicResponse.result?.comic}
+                onClickReport={() => setIsReportOpen("comment")}
+              />
             </div>
           </>
         ) : (
@@ -62,4 +87,4 @@ const ChapterDetail = () => {
   );
 };
 
-export default ChapterDetail;
+export default ChapterPage;

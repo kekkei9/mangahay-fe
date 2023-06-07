@@ -6,7 +6,6 @@ import { Chapter } from "@/types/Chapter";
 import { useRouter } from "next/router";
 import { useContext, useRef, useState } from "react";
 import { Dialog } from "primereact/dialog";
-import ChapterReportBoxContainer from "./ChapterReportBox";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
 import { Toast, ToastMessage } from "primereact/toast";
@@ -16,11 +15,15 @@ import { ToastContext } from "@/contexts/ToastContext";
 interface IChapterSpeedDialProps {
   className?: string;
   chapter?: Chapter;
+  onClickReport: () => void;
 }
 
-const ChapterSpeedDial = ({ className, chapter }: IChapterSpeedDialProps) => {
+const ChapterSpeedDial = ({
+  className,
+  chapter,
+  onClickReport,
+}: IChapterSpeedDialProps) => {
   const router = useRouter();
-  const [isReportBoxOpen, setIsReportBoxOpen] = useState(false);
 
   const { isAuthUser } = useSelector(
     (state: RootState) => state.authentication
@@ -46,7 +49,7 @@ const ChapterSpeedDial = ({ className, chapter }: IChapterSpeedDialProps) => {
         additionalAction = () => router.push("/");
         break;
       case "Báo cáo":
-        additionalAction = () => checkAuth() && setIsReportBoxOpen(true);
+        additionalAction = () => checkAuth() && onClickReport();
         break;
       case "Bình luận":
         additionalAction = () => {
@@ -75,13 +78,6 @@ const ChapterSpeedDial = ({ className, chapter }: IChapterSpeedDialProps) => {
 
   return (
     <>
-      <Dialog
-        onHide={() => setIsReportBoxOpen(false)}
-        visible={isReportBoxOpen}
-      >
-        <ChapterReportBoxContainer />
-      </Dialog>
-
       <Tooltip
         target=".speeddial-bottom-right .p-speeddial-action"
         position="left"

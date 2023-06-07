@@ -1,9 +1,11 @@
 import ComicCard from "@/components/Cards/ComicCard";
+import InfiniteScroll from "@/containers/ListContainers/InfiniteScroll";
 import { Comic } from "@/types/Comic";
 import { Response } from "@/types/Response.type";
 import { useRouter } from "next/router";
-import useSWR from "swr";
+import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite";
 
+const PAGE_SIZE = 5;
 interface ISearchBoxProps {
   value: string;
 }
@@ -11,13 +13,36 @@ interface ISearchBoxProps {
 const SearchBox = ({ value }: ISearchBoxProps) => {
   const router = useRouter();
 
-  const { data: searchComicResponse } = useSWR<Response<Comic[]>>(
-    `/api/comic/search?comic_name=${value}&filter_state=&filter_author=&filter_genre=&filter_sort=az`
+  const swr = useSWRInfinite<Response<Comic[]>>(
+    (index) =>
+      `/api/comic/search?comic_name=${value}&filter_state=&filter_author=&filter_genre=&filter_sort=az&page=${
+        index + 1
+      }&limit=${PAGE_SIZE}`
   );
 
   return (
-    <div className="search-box-container max-w-[24rem] max-h-[20rem] overflow-y-auto flex flex-col gap-2">
-      {searchComicResponse?.result?.length ? (
+    <div className="search-box-container max-w-[24rem] max-h-[20rem] overflow-y-auto">
+      <InfiniteScroll
+        swr={swr}
+        dataWrapper={({ children }) => <div>{children}</div>}
+        isReachingEnd={(swr: SWRInfiniteResponse<Response<Comic[]>, any>) =>
+          swr.data?.[0]?.result?.length === 0 ||
+          (swr.data?.[swr.data?.length - 1].result || []).length < PAGE_SIZE
+        }
+      >
+        {(comics) =>
+          comics?.map((comic) => (
+            <ComicCard.HorizontalPreview
+              data={comic}
+              key={comic.id}
+              onClick={(data) =>
+                data?.id && router.push(`/comic/${data?.slug}`)
+              }
+            />
+          ))
+        }
+      </InfiniteScroll>
+      {/* {searchComicResponse?.result?.length ? (
         searchComicResponse?.result?.map((comic) => (
           <ComicCard.HorizontalPreview
             data={comic}
@@ -27,7 +52,7 @@ const SearchBox = ({ value }: ISearchBoxProps) => {
         ))
       ) : (
         <div>Không có kết quả</div>
-      )}
+      )} */}
     </div>
   );
 };

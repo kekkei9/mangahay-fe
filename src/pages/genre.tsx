@@ -9,6 +9,7 @@ import LoadingSkeleton from "@/components/LoadingSkeleton";
 import ComicCard from "@/components/Cards/ComicCard";
 import { PrimeIcons } from "primereact/api";
 import useBreakpoint from "@/hooks/useBreakpoint";
+import CardListContainer from "@/containers/ListContainers/CardList";
 
 const defaultGenreNumber = {
   DEFAULT: 8,
@@ -82,15 +83,22 @@ const GenrePage = () => {
           <LoadingSkeleton.Genre />
         )}
       </div>
-      <CardList
+      <CardListContainer
         title={`Kết quả tìm kiếm cho thể loại "${selectedGenre}"`}
-        dataList={filterComicResponse?.result}
-        onClickCard={(data) => data?.id && router.push(`comic/${data?.slug}`)}
-        isLoading={isLoading}
         className="mt-4 xs:mt-10"
+        fetchUrl={(index, pageSize) =>
+          `/api/comic/search?comic_name=&filter_state=&filter_author=&filter_genre=${selectedGenre}&filter_sort=az&page=${
+            index + 1
+          }&limit=${pageSize}`
+        }
       >
-        {ComicCard.Preview}
-      </CardList>
+        {(comic) => (
+          <ComicCard.Preview
+            data={comic as Comic}
+            onClick={(data) => data?.id && router.push(`comic/${data?.slug}`)}
+          />
+        )}
+      </CardListContainer>
     </div>
   );
 };

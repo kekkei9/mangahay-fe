@@ -7,6 +7,7 @@ import {
   comicQueriesMapper,
   initialComicQueries,
 } from "@/containers/FindComicPage/comicQueriesMapper";
+import CardListContainer from "@/containers/ListContainers/CardList";
 import { Comic } from "@/types/Comic";
 import { Response } from "@/types/Response.type";
 import { useRouter } from "next/router";
@@ -18,10 +19,6 @@ const FindComicPage = () => {
   const [comicQueries, setComicQueries] =
     useState<ComicQueries>(initialComicQueries);
 
-  const { data: filteredComicsResponse, isLoading } = useSWR<Response<Comic[]>>(
-    "/api/comic/search?" + new URLSearchParams(comicQueriesMapper(comicQueries))
-  );
-
   return (
     <div className="find-comic-page">
       {router.isReady && (
@@ -30,15 +27,22 @@ const FindComicPage = () => {
           defaultValues={router.query}
         />
       )}
-      <CardList
-        className="comic-list mt-4 xs:mt-10"
-        dataList={filteredComicsResponse?.result}
-        onClickCard={(data) => data?.id && router.push(`comic/${data?.slug}`)}
+      <CardListContainer
         title="Kết quả tìm kiếm"
-        isLoading={isLoading}
+        fetchUrl={(index, pageSize) =>
+          `/api/comic/search?${new URLSearchParams(
+            comicQueriesMapper(comicQueries)
+          )}&page=${index + 1}&limit=${pageSize}`
+        }
+        className="comic-list mt-4 xs:mt-10"
       >
-        {ComicCard.Preview}
-      </CardList>
+        {(comic) => (
+          <ComicCard.Preview
+            data={comic as Comic}
+            onClick={(data) => data?.id && router.push(`comic/${data?.slug}`)}
+          />
+        )}
+      </CardListContainer>
     </div>
   );
 };

@@ -22,7 +22,7 @@ const LoadingSkeleton = ({ className }: ILoadingSkeletonProps) => {
           <Skeleton
             className="!bg-[#dfdfdf] mt-2"
             width="100%"
-            height="12rem"
+            height="16rem"
           />
         </div>
       ))}

@@ -1,5 +1,6 @@
 import CardList from "@/components/CardList";
 import ComicCard from "@/components/Cards/ComicCard";
+import CardListContainer from "@/containers/ListContainers/CardList";
 import { HistoryChapter } from "@/types/Chapter";
 import { Response } from "@/types/Response.type";
 import { useRouter } from "next/router";
@@ -13,16 +14,22 @@ const HistoryPage = () => {
 
   return (
     <div>
-      <CardList
-        dataList={historyResponse?.result?.slice()?.reverse()}
+      <CardListContainer
         title="Truyện đã xem"
-        onClickLink={(data) =>
-          router.push(`comic/${data?.comic_slug}/${data?.chapter_slug}`)
+        fetchUrl={(index, pageSize) =>
+          `/api/user/history?page=${index}&limit=${pageSize}`
         }
-        onClickCard={(data) => router.push(`comic/${data?.comic_slug}`)}
       >
-        {ComicCard.History}
-      </CardList>
+        {(chapter) => (
+          <ComicCard.History
+            data={chapter as HistoryChapter}
+            onClickComic={(data) => router.push(`comic/${data?.comic_slug}`)}
+            onClickChapter={(data) =>
+              router.push(`comic/${data?.comic_slug}/${data?.chapter_slug}`)
+            }
+          />
+        )}
+      </CardListContainer>
     </div>
   );
 };

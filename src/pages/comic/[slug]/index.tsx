@@ -11,7 +11,7 @@ import ComicInfo from "@/containers/Comic/ComicDetail/ComicInfo";
 import CommentBox from "@/containers/Comic/ComicDetail/CommentBox";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 
-const ComicDetail = () => {
+const ComicPage = () => {
   const router = useRouter();
 
   const { data: comicResponse, mutate } = useSWR<
@@ -49,4 +49,4 @@ const ComicDetail = () => {
   );
 };
 
-export default ComicDetail;
+export default ComicPage;

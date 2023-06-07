@@ -5,20 +5,20 @@ import { PrimeIcons } from "primereact/api";
 
 interface IComicHistoryCardProps {
   data?: HistoryChapter;
-  onClick?: (data?: HistoryChapter) => void;
-  onClickLink?: (data?: HistoryChapter) => void;
+  onClickComic?: (data?: HistoryChapter) => void;
+  onClickChapter?: (data?: HistoryChapter) => void;
 }
 
 const ComicHistoryCard = ({
   data,
-  onClick,
-  onClickLink,
+  onClickComic,
+  onClickChapter,
 }: IComicHistoryCardProps) => {
   return (
     <div>
       <div
         className="history-chapter-card cursor-pointer bg-white shadow"
-        onClick={() => onClick && onClick(data)}
+        onClick={() => onClickComic && onClickComic(data)}
       >
         {data?.comic_thumb && (
           <div className="relative w-full aspect-square">
@@ -45,7 +45,7 @@ const ComicHistoryCard = ({
         </div>
       </div>
       <div
-        onClick={() => onClickLink && onClickLink(data)}
+        onClick={() => onClickChapter && onClickChapter(data)}
         className="cursor-pointer mt-2 flex gap-2 items-center ml-2"
       >
         <i className={`${PrimeIcons.CHEVRON_RIGHT} !text-xs text-slate-500`} />
