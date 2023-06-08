@@ -2,7 +2,6 @@ import { Comic, Genre } from "@/types/Comic";
 import { Response } from "@/types/Response.type";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
-import CardList from "@/components/CardList";
 import { useRouter } from "next/router";
 import axiosClient from "@/services/backend/axiosClient";
 import LoadingSkeleton from "@/components/LoadingSkeleton";

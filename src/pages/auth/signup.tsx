@@ -52,7 +52,7 @@ const SinUpPage = () => {
         router.push("/auth/signin");
         return;
       }
-      toastRef.current?.show({
+      toastRef?.current?.show({
         severity: "error",
         summary: "Đăng kí thất bại",
         detail: message,

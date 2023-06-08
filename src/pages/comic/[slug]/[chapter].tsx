@@ -8,19 +8,15 @@ import { chapterMapper } from "@/containers/Comic/Chapter/chapterMapper";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import Image from "next/image";
 import ChapterSpeedDialContainer from "@/containers/Comic/Chapter/ChapterSpeedDial";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { appendToHistory } from "@/service/backend/ChapterController";
 import CommentBox from "@/containers/Comic/ComicDetail/CommentBox";
-import { Dialog } from "primereact/dialog";
-import ReportTable from "@/containers/ReportTable/ReportTable";
-import { reportItemsMapper } from "@/containers/ReportTable/reportItemsMapper";
+import { ToastContext } from "@/contexts/ToastContext";
 
 const ChapterPage = () => {
   const router = useRouter();
-  const [isReportOpen, setIsReportOpen] = useState<false | "comment" | "comic">(
-    false
-  );
 
+  const { setIsReportOpen } = useContext(ToastContext);
   const { data: comicResponse } = useSWR<
     Response<{ chapters: Chapter[]; comic: Comic }>
   >(router.isReady ? `/api/comic/${router.query.slug}` : null);
@@ -37,21 +33,6 @@ const ChapterPage = () => {
 
   return (
     <>
-      <Dialog
-        onHide={() => setIsReportOpen(false)}
-        visible={!!isReportOpen}
-        header={<div className="text-2xl font-semibold ml-4">Report</div>}
-      >
-        <ReportTable
-          id={1}
-          type={isReportOpen.toString()}
-          items={
-            reportItemsMapper[isReportOpen as keyof typeof reportItemsMapper]
-          }
-          onClose={() => setIsReportOpen(false)}
-        />
-      </Dialog>
-
       <ChapterSpeedDialContainer
         onClickReport={() => setIsReportOpen("comic")}
         className="!fixed bottom-10 right-10"
