@@ -3,7 +3,7 @@ export type ComicQueries = {
   filterState: string;
   filterAuthor: string;
   filterGenre: { code: string; name: string }[];
-  filterSort: "az" | "za";
+  filterSort: "az" | "za" | "updatedAt" | "like" | "view";
 };
 
 export const initialComicQueries: ComicQueries = {
@@ -22,8 +22,8 @@ export const comicQueriesMapper = ({
   filterSort,
 }: ComicQueries) => ({
   comic_name: comicName,
-  filter_state: filterState,
+  filter_state: filterState || "",
   filter_author: filterAuthor,
-  filter_genre: filterGenre.map((a) => a.name).join(" "),
+  filter_genre: filterGenre.map((a) => a.name).toString(),
   filter_sort: filterSort,
 });

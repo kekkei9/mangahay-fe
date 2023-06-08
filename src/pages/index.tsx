@@ -1,27 +1,28 @@
-import CardList from "@/components/CardList";
 import ComicCard from "@/components/Cards/ComicCard";
-import LoadingSkeleton from "@/components/LoadingSkeleton";
+import CardListContainer from "@/containers/ListContainers/CardList";
 import { Comic } from "@/types/Comic";
 import { Response } from "@/types/Response.type";
 import { useRouter } from "next/router";
-import useSWR from "swr";
+import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite";
 
 export default function Home() {
   const router = useRouter();
 
-  const { data: allComicsResponse, isLoading } =
-    useSWR<Response<Comic[]>>("/api/comic");
-
   return (
     <div className="home-page">
-      <CardList
-        dataList={allComicsResponse?.result}
-        onClickCard={(data) => data?.id && router.push(`comic/${data?.slug}`)}
+      <CardListContainer
         title="Tất cả truyện"
-        isLoading={isLoading}
+        fetchUrl={(index, pageSize) =>
+          `/api/comic?page=${index + 1}&limit=${pageSize}`
+        }
       >
-        {ComicCard.Preview}
-      </CardList>
+        {(comic) => (
+          <ComicCard.Preview
+            data={comic as Comic}
+            onClick={(data) => data?.id && router.push(`comic/${data?.slug}`)}
+          />
+        )}
+      </CardListContainer>
     </div>
   );
 }

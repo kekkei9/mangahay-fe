@@ -3,7 +3,6 @@ import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { useForm } from "react-hook-form";
 import { requestChangePasswordAPI } from "@/services/backend/AuthController";
-import AuthPageLayout from "@/layouts/AuthPageLayout";
 import { useState } from "react";
 
 const ForgotPasswordPage = () => {
@@ -26,7 +25,7 @@ const ForgotPasswordPage = () => {
   };
 
   return (
-    <AuthPageLayout>
+    <>
       <div className="font-bold text-2xl self-start">Quên mật khẩu</div>
       <form
         className="flex flex-col gap-5 w-full"
@@ -54,7 +53,7 @@ const ForgotPasswordPage = () => {
           </div>
         </Button>
       </form>
-    </AuthPageLayout>
+    </>
   );
 };
 

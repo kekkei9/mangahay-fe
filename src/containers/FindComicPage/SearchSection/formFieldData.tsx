@@ -10,13 +10,48 @@ import { ComicQueries } from "../comicQueriesMapper";
 import MultiStateCheckboxComponent from "@/components/FormComponent/MultiStateCheckbox";
 import GenreMultiSelectContainer from "./GenreMultiSelect";
 
-export const multiStateOptions: MultiStateCheckboxOption[] = [
+export const sortbyOptions: MultiStateCheckboxOption[] = [
   {
-    value: "Chưa lên kệ",
-    icon: PrimeIcons.CALENDAR_MINUS,
+    value: "az",
+    icon: PrimeIcons.ARROW_DOWN,
     style: {},
     className: "",
   },
+  {
+    value: "za",
+    icon: PrimeIcons.ARROW_UP,
+    style: {},
+    className: "",
+  },
+  {
+    value: "updatedAt",
+    icon: PrimeIcons.SYNC,
+    style: {},
+    className: "",
+  },
+  {
+    value: "like",
+    icon: PrimeIcons.THUMBS_UP,
+    style: {},
+    className: "",
+  },
+  {
+    value: "view",
+    icon: PrimeIcons.EYE,
+    style: {},
+    className: "",
+  },
+];
+
+export const sortbyLabelMapper = {
+  az: "A->Z",
+  za: "Z->A",
+  updatedAt: "Mới cập nhật",
+  like: "Được thích nhiều",
+  view: "Được xem nhiều",
+};
+
+export const multiStateOptions: MultiStateCheckboxOption[] = [
   {
     value: "Đang tiến hành",
     icon: PrimeIcons.CALENDAR,
@@ -24,7 +59,13 @@ export const multiStateOptions: MultiStateCheckboxOption[] = [
     className: "",
   },
   {
-    value: "Đã hoàn thành",
+    value: "Tạm ngưng",
+    icon: PrimeIcons.CALENDAR_TIMES,
+    style: {},
+    className: "",
+  },
+  {
+    value: "Hoàn thành",
     icon: PrimeIcons.CHECK_SQUARE,
     style: {},
     className: "",
@@ -65,6 +106,18 @@ export const formFields: {
     name: "filterState",
     render: ({ field }) => (
       <MultiStateCheckboxComponent field={field} options={multiStateOptions} />
+    ),
+  },
+  {
+    label: "Sắp xếp theo",
+    name: "filterSort",
+    render: ({ field }) => (
+      <MultiStateCheckboxComponent
+        field={field}
+        options={sortbyOptions}
+        empty={false}
+        labelMapper={sortbyLabelMapper}
+      />
     ),
   },
 ];

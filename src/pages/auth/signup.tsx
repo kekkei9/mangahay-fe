@@ -4,9 +4,9 @@ import { InputText } from "primereact/inputtext";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { signUpAPI } from "@/services/backend/AuthController";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import { Toast } from "primereact/toast";
-import AuthPageLayout from "@/layouts/AuthPageLayout";
+import { ToastContext } from "@/contexts/ToastContext";
 
 const signUpFormFields = [
   {
@@ -40,7 +40,8 @@ const SinUpPage = () => {
     watch,
     formState: { errors },
   } = useForm();
-  const toastRef = useRef<Toast>(null);
+
+  const { toastRef } = useContext(ToastContext);
 
   const onSubmit = async (formData: any) => {
     try {
@@ -62,40 +63,37 @@ const SinUpPage = () => {
 
   return (
     <>
-      <Toast ref={toastRef} />
-      <AuthPageLayout>
-        <div className="font-bold text-2xl self-start">Đăng kí tài khoản</div>
-        <form
-          className="flex flex-col gap-5 w-full"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          {signUpFormFields.map(({ icon, name, placeholder }, index) => (
-            <span className="p-input-icon-left" key={index}>
-              <i className={icon} />
-              <InputText
-                {...register(name, {
-                  required: true,
-                  validate: (val: string) => {
-                    if (name !== "retypePassword") return true;
-                    if (watch("password") !== val) {
-                      return "Your passwords do not match";
-                    }
-                  },
-                })}
-                placeholder={placeholder}
-                className={errors?.[name] && "p-invalid"}
-                name={name}
-              />
-            </span>
-          ))}
-          <Button className="rounded-xl !bg-mangahay-700 flex justify-center">
-            <div className="flex gap-3 items-center text-white">
-              <div className="text-white font-bold">Đăng kí</div>
-              <i className={PrimeIcons.USER_PLUS} />
-            </div>
-          </Button>
-        </form>
-      </AuthPageLayout>
+      <div className="font-bold text-2xl self-start">Đăng kí tài khoản</div>
+      <form
+        className="flex flex-col gap-5 w-full"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        {signUpFormFields.map(({ icon, name, placeholder }, index) => (
+          <span className="p-input-icon-left" key={index}>
+            <i className={icon} />
+            <InputText
+              {...register(name, {
+                required: true,
+                validate: (val: string) => {
+                  if (name !== "retypePassword") return true;
+                  if (watch("password") !== val) {
+                    return "Your passwords do not match";
+                  }
+                },
+              })}
+              placeholder={placeholder}
+              className={errors?.[name] && "p-invalid"}
+              name={name}
+            />
+          </span>
+        ))}
+        <Button className="rounded-xl !bg-mangahay-700 flex justify-center">
+          <div className="flex gap-3 items-center text-white">
+            <div className="text-white font-bold">Đăng kí</div>
+            <i className={PrimeIcons.USER_PLUS} />
+          </div>
+        </Button>
+      </form>
     </>
   );
 };

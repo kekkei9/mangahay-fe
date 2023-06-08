@@ -1,6 +1,4 @@
 import { logoutHandler } from "@/redux/authentication/authentication.action";
-import { signOutAPI } from "@/services/backend/AuthController";
-import { setAuthToken } from "@/services/backend/axiosClient";
 import { Menu } from "primereact/menu";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { useRef } from "react";
@@ -13,7 +11,11 @@ import { PrimeIcons } from "primereact/api";
 import { useRouter } from "next/router";
 import { Badge } from "primereact/badge";
 
-const UserPanel = () => {
+interface IUserPanelProps {
+  className?: string;
+}
+
+const UserPanel = ({ className }: IUserPanelProps) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { isAuthUser, user } = useSelector(
@@ -27,6 +29,32 @@ const UserPanel = () => {
     isAuthUser ? "/api/notify/unread-notifies/count" : null
   );
 
+  const menuModel = [
+    {
+      label: "Tài khoản",
+      command: () => router.push("/account"),
+      icon: PrimeIcons.USER,
+    },
+    {
+      label: "Truyện đang theo dõi",
+      command: () => router.push("/following"),
+      icon: PrimeIcons.CHECK_SQUARE,
+    },
+    {
+      label: "Lịch sử xem truyện",
+      command: () => router.push("/history"),
+      icon: PrimeIcons.HISTORY,
+    },
+    {
+      label: "Đăng xuất",
+      command: () => {
+        dispatch(logoutHandler() as any);
+        router.push("/");
+      },
+      icon: PrimeIcons.SIGN_OUT,
+    },
+  ];
+
   return (
     <>
       <OverlayPanel ref={notificationRef}>
@@ -37,32 +65,13 @@ const UserPanel = () => {
         popup
         ref={menuRef}
         className="!border-0 !w-fit"
-        model={[
-          {
-            label: "Tài khoản",
-            command: () => router.push("/account"),
-            icon: PrimeIcons.USER,
-          },
-          {
-            label: "Truyện đang theo dõi",
-            command: () => router.push("/following"),
-            icon: PrimeIcons.CHECK_SQUARE,
-          },
-          {
-            label: "Đăng xuất",
-            command: () => {
-              dispatch(logoutHandler() as any);
-              router.push("/");
-            },
-            icon: PrimeIcons.SIGN_OUT,
-          },
-        ]}
+        model={menuModel}
       />
 
-      <div className="user-panel flex gap-6 items-center">
+      <div className={`user-panel flex gap-6 items-center ${className}`}>
         {isAuthUser && (
           <i
-            className={`${PrimeIcons.BELL} !text-xl p-overlay-badge cursor-pointer`}
+            className={`${PrimeIcons.BELL} !text-xl p-overlay-badge cursor-pointer !text-mangahay-400`}
             onClick={(e) => notificationRef.current?.toggle(e)}
           >
             {!!notificationCountResponse?.result && (

@@ -1,6 +1,7 @@
 import Layout from "@/layouts/Layout";
 import { RootState } from "@/redux";
 import { Account } from "@/types/Auth";
+import { formatDate } from "@/utils/date";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -48,9 +49,7 @@ const AccountPage = () => {
               <div className="ml-1 font-semibold">{label}</div>
               <div className="mt-1">
                 {isDate
-                  ? new Date(
-                      user?.[dataIndex as keyof Account] as string
-                    ).toString()
+                  ? formatDate(user?.[dataIndex as keyof Account] as string)
                   : user?.[dataIndex as keyof Account]}
               </div>
             </div>
