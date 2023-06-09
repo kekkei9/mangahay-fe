@@ -7,8 +7,10 @@ export const ToastContext = createContext<{
   toastRef: RefObject<Toast> | null;
   isReportOpen: ReportType;
   setIsReportOpen: Dispatch<SetStateAction<ReportType>>;
+  checkAuth: () => boolean;
 }>({
   toastRef: null,
   isReportOpen: false,
   setIsReportOpen: () => {},
+  checkAuth: () => false,
 });

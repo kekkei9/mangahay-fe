@@ -3,11 +3,14 @@ import AuthPageLayout from "../AuthPageLayout";
 import MainNavBar from "@/containers/NavBar/MainNavBar";
 import { ToastContext } from "@/contexts/ToastContext";
 import { useRef, useState } from "react";
-import { Toast } from "primereact/toast";
+import { Toast, ToastMessage } from "primereact/toast";
 import { ScrollTop } from "primereact/scrolltop";
 import { Dialog } from "primereact/dialog";
 import ReportTable from "@/containers/ReportTable/ReportTable";
 import { reportItemsMapper } from "@/containers/ReportTable/reportItemsMapper";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux";
+import { authErrorToastBody } from "@/containers/Comic/ComicDetail/ComicInfo/ComicInteractPanel/toastBody";
 interface IProps {
   children: any;
 }
@@ -19,12 +22,27 @@ const MainLayout: React.FC<IProps> = ({ children }) => {
     false
   );
 
+  const { isAuthUser } = useSelector(
+    (state: RootState) => state.authentication
+  );
+
+  const checkAuth = () => {
+    if (!isAuthUser) {
+      toastRef?.current?.show(
+        authErrorToastBody(() => router.push("/auth/signin")) as ToastMessage
+      );
+      return false;
+    }
+    return true;
+  };
+
   return (
     <ToastContext.Provider
       value={{
         toastRef: toastRef,
         isReportOpen: isReportOpen,
         setIsReportOpen: setIsReportOpen,
+        checkAuth: checkAuth,
       }}
     >
       <Toast ref={toastRef} />

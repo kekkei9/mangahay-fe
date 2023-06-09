@@ -43,15 +43,14 @@ const ChapterPage = () => {
         {comicResponse?.result && currentChapter ? (
           <>
             {currentChapter.images.map((image: any, index: any) => (
-              <Image
-                src={image}
-                alt={`Comic Image ${index + 1}`}
-                width={200}
-                height={500}
-                key={index}
-                sizes="100vw"
-                style={{ width: "100%", height: "auto" }}
-              />
+              <div key={index} className="relative w-full aspect-[2/3]">
+                <Image
+                  src={image}
+                  alt={`Comic Image ${index + 1}`}
+                  fill
+                  className="object-contain"
+                />
+              </div>
             ))}
             <div className="w-full border-t border-black py-2 comment-section">
               <CommentBox

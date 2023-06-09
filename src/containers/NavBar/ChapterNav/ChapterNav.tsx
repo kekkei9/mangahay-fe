@@ -37,7 +37,7 @@ const ChapterNav = ({ chapter }: IChapterNavProps) => {
   return (
     <>
       <nav
-        className={`fixed w-full grid grid-cols-3 items-center py-2 px-4 gap-4 bg-zinc-800 visibility: ${
+        className={`fixed w-full grid grid-cols-3 items-center py-2 px-4 gap-4 z-50 bg-zinc-800 visibility: ${
           showNavbar ? "visible" : "hidden"
         }`}
       >
