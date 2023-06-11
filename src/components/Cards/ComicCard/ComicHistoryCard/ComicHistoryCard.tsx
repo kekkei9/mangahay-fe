@@ -15,9 +15,9 @@ const ComicHistoryCard = ({
   onClickChapter,
 }: IComicHistoryCardProps) => {
   return (
-    <div>
+    <div className="flex flex-col">
       <div
-        className="history-chapter-card cursor-pointer bg-white shadow"
+        className="history-chapter-card cursor-pointer bg-white shadow flex-1"
         onClick={() => onClickComic && onClickComic(data)}
       >
         {data?.comic_thumb && (

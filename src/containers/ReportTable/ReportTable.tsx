@@ -58,7 +58,7 @@ const ReportTable = ({ id, type, items, onClose }: IReportTableProps) => {
           <div key={index} className="flex items-center">
             <input
               type="checkbox"
-              className="form-checkbox h-5 w-5 text-indigo-600"
+              className="form-checkbox h-5 w-5 text-indigo-600 flex-shrink-0"
               checked={selectedItems.includes(index)}
               onChange={(event) => handleChange(event, index)}
             />

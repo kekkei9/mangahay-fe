@@ -31,26 +31,14 @@ const ComicInteractPanel = ({
   comic,
   mutateComic,
 }: IComicInteractPanelProps) => {
-  const router = useRouter();
-
   const { isAuthUser } = useSelector(
     (state: RootState) => state.authentication
   );
-  const { toastRef } = useContext(ToastContext);
+  const { toastRef, checkAuth } = useContext(ToastContext);
 
   const { data: statusResponse, mutate } = useSWR<Response<ComicAuthStatus>>(
     isAuthUser ? `/api/user/comic/check?id_comic=${comic?.id}` : null
   );
-
-  const checkAuth = () => {
-    if (!isAuthUser) {
-      toastRef?.current?.show(
-        authErrorToastBody(() => router.push("/auth/signin")) as ToastMessage
-      );
-      return false;
-    }
-    return true;
-  };
 
   const handleClickLike = async () => {
     if (!checkAuth()) return;
@@ -76,8 +64,8 @@ const ComicInteractPanel = ({
     } catch (error) {
       toastRef?.current?.show({
         severity: "error",
-        summary: "ERROR",
-        detail: "ERROR",
+        summary: "Yêu thích",
+        detail: "Yêu cầu thất bại",
       });
     }
   };
@@ -107,8 +95,8 @@ const ComicInteractPanel = ({
     } catch (error) {
       toastRef?.current?.show({
         severity: "error",
-        summary: "ERROR",
-        detail: "ERROR",
+        summary: "Theo dõi",
+        detail: "Gửi yêu cầu thất bại",
       });
     }
   };

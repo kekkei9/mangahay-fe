@@ -1,4 +1,3 @@
-import CardList from "@/components/CardList";
 import ComicCard from "@/components/Cards/ComicCard";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import SearchSectionContainer from "@/containers/FindComicPage/SearchSection";

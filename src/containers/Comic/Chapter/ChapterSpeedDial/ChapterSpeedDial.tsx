@@ -29,17 +29,7 @@ const ChapterSpeedDial = ({
     (state: RootState) => state.authentication
   );
 
-  const { toastRef } = useContext(ToastContext);
-
-  const checkAuth = () => {
-    if (!isAuthUser) {
-      toastRef?.current?.show(
-        authErrorToastBody(() => router.push("/auth/signin")) as ToastMessage
-      );
-      return false;
-    }
-    return true;
-  };
+  const { toastRef, checkAuth } = useContext(ToastContext);
 
   const mappedDialItems = dialItems.map((item) => {
     let additionalAction: () => void = () => {};
