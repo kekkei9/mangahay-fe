@@ -6,6 +6,7 @@ interface INotificationProps {
 }
 
 const Notification = ({ notification }: INotificationProps) => {
+  console.log(notification);
   return <div>ehe</div>;
 };
 
