@@ -50,7 +50,7 @@ const ComicHistoryCard = ({
       >
         <i className={`${PrimeIcons.CHEVRON_RIGHT} !text-xs text-slate-500`} />
         <div className="text-slate-500 italic font-semibold ">
-          Tiếp tục đọc {data?.chapter_name}
+          {data?.chapter_name}
         </div>
       </div>
     </div>

@@ -1,6 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 import Cookies from "js-cookie";
 import { refreshTokenAPI } from "./AuthController";
+import store from "@/redux";
+import { logoutHandler } from "@/redux/authentication/authentication.action";
 
 const DEFAULT_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_ENDPOINT;
 
@@ -46,6 +48,7 @@ axiosClient.interceptors.response.use(
         originalRequest.headers["Authorization"] = "Bearer " + access_token;
         return axios(originalRequest);
       } else {
+        store.dispatch(logoutHandler() as any);
         delete axiosClient.defaults.headers.common.Authorization;
       }
     }
@@ -60,6 +63,8 @@ axiosClient.interceptors.response.use(
         originalRequest.headers["Authorization"] = "Bearer " + access_token;
         return axios(originalRequest);
       } else {
+        console.log("logout");
+        store.dispatch(logoutHandler() as any);
         delete axiosClient.defaults.headers.common.Authorization;
       }
     }

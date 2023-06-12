@@ -25,7 +25,7 @@ const ComicInfo = ({ comic, mutateComic }: IComicInfoProps) => {
       <div className={classes.comicdetail__header}>
         <div className="main-image w-full h-[32rem] relative overflow-hidden">
           <img
-            className="w-full h-full object-cover object-left-top filter blur-lg webkit-filter blur-md "
+            className="w-full h-full object-cover object-left-top filter blur-lg webkit-filter blur-md"
             src={comic?.thumb}
             alt="Cover"
           />

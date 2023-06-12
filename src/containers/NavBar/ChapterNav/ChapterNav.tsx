@@ -5,6 +5,8 @@ import { Comic } from "@/types/Comic";
 import { PrimeIcons } from "primereact/api";
 import UserPanelContainer from "@/components/NavBar/UserPanel";
 import Image from "next/image";
+import { Sidebar } from "primereact/sidebar";
+import SideBar from "@/components/NavBar/MainNavBar/SideBar";
 
 interface IChapterNavProps {
   chapter?: Chapter;
@@ -12,6 +14,7 @@ interface IChapterNavProps {
 
 const ChapterNav = ({ chapter }: IChapterNavProps) => {
   const [showNavbar, setShowNavbar] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,9 +39,16 @@ const ChapterNav = ({ chapter }: IChapterNavProps) => {
 
   return (
     <>
+      <Sidebar
+        visible={isSidebarOpen}
+        onHide={() => setIsSidebarOpen(false)}
+        position="right"
+      >
+        <SideBar onClickNav={() => setIsSidebarOpen(false)} />
+      </Sidebar>
       <nav
-        className={`fixed w-full grid grid-cols-3 items-center py-2 px-4 gap-4 z-50 bg-zinc-800 visibility: ${
-          showNavbar ? "visible" : "hidden"
+        className={`fixed w-full grid grid-cols-3 items-center py-2 px-4 gap-4 z-50 bg-zinc-800 ${
+          showNavbar ? "lg:visible" : "lg:hidden"
         }`}
       >
         <div className="flex items-center">
@@ -48,7 +58,7 @@ const ChapterNav = ({ chapter }: IChapterNavProps) => {
                 src="/assets/logo_web.png"
                 alt="logo"
                 fill
-                className="object-contain"
+                className="object-contain object-left"
               />
             </div>
           </Link>
@@ -59,10 +69,10 @@ const ChapterNav = ({ chapter }: IChapterNavProps) => {
             {chapter?.comicInfo?.name}
           </Link>
         </div>
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center gap-2">
           <a
             href={`/comic/${chapter?.comicInfo?.slug}/${chapter?.prevChapter?.slug}`}
-            className={`mr-4 ${
+            className={`${
               chapter?.prevChapter?.slug
                 ? "text-white "
                 : "pointer-events-none text-gray-300"
@@ -70,12 +80,12 @@ const ChapterNav = ({ chapter }: IChapterNavProps) => {
           >
             <i className={PrimeIcons.CHEVRON_LEFT} />
           </a>
-          <span className="text-white font-medium mr-4 text-lg">
+          <span className="text-white font-medium text-lg text-center">
             {chapter?.name}
           </span>
           <a
             href={`/comic/${chapter?.comicInfo?.slug}/${chapter?.nextChapter?.slug}`}
-            className={`mr-4 ${
+            className={`${
               chapter?.nextChapter?.slug
                 ? "text-white "
                 : "pointer-events-none text-gray-300"
@@ -84,7 +94,15 @@ const ChapterNav = ({ chapter }: IChapterNavProps) => {
             <i className={PrimeIcons.CHEVRON_RIGHT} />
           </a>
         </div>
-        {isClient && <UserPanelContainer className="justify-end" />}
+        {isClient && (
+          <div className="flex justify-end gap-4">
+            <UserPanelContainer />
+            <i
+              className={`${PrimeIcons.BARS} !text-xl !text-mangahay-200 !block xs:!hidden`}
+              onClick={() => setIsSidebarOpen(true)}
+            />
+          </div>
+        )}
       </nav>
     </>
   );
