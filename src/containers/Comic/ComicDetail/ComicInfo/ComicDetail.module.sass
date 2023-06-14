@@ -1,6 +1,10 @@
 .comicdetail__header
     margin: 0 0 30px
     max-height: 32rem
+    @media (max-width: 500px)
+        max-height: none
+        position: relative
+
 
 .header
     &__imageblur
@@ -24,6 +28,15 @@
         border-radius: 10px 10px 0 0
         box-shadow: 0 0 10px 3px var(--color-gray-bold)
 
+        @media (max-width: 500px)
+            top: 10px
+            left: auto
+            transform:  none
+            flex-direction: column 
+            margin-top : 20px
+
+
+
 .detailinfo
     &__thumb
         position: absolute
@@ -37,12 +50,27 @@
             object-fit: cover
             box-shadow: 0 5px 10px 3px var(--color-gray-bold)
 
+            @media (max-width: 500px)
+                height: 250px
+
+        @media( max-width: 500px)
+            position: relative
+            
+        
+
     &__right
         padding-left: var(--padding-right-comicdetail)
         margin-right: 30px
 
+        @media (max-width: 500px)
+            padding-left: 0
+            margin-right: 0
+            padding: 5px
+
         *
             margin: 5px 0
+
+       
     &__brief
         max-height: 50px
         overflow: hidden
@@ -187,3 +215,7 @@
     &__copy2
         position: absolute
         left: 0
+
+
+
+ 
