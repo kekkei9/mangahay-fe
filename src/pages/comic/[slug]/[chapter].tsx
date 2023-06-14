@@ -55,7 +55,7 @@ const ChapterPage = () => {
             <div className="w-full border-t border-black py-2 comment-section">
               <CommentBox
                 comic={comicResponse.result?.comic}
-                onClickReport={() => setIsReportOpen("comment")}
+                onClickReport={() => setIsReportOpen()}
               />
             </div>
           </>

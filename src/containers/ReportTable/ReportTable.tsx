@@ -32,9 +32,11 @@ const ReportTable = ({ id, type, items, onClose }: IReportTableProps) => {
       detail_report: description,
       errors: Array.from(selectedItems, (index: number) => items?.[index]),
       id_object: id,
+      link:`/comic/${id}`
     };
     try {
-      const data = postReport(dataReport);
+      console.log(dataReport)
+      const data = await postReport(dataReport);
       toastRef?.current?.show({
         severity: "success",
         summary: "Báo cáo thành công",

@@ -13,7 +13,7 @@ import { ToastMessage } from "primereact/toast";
 
 interface ICommentBoxProps {
   comic: Comic;
-  onClickReport: () => void;
+  onClickReport: (id:string) => void;
 }
 
 const CommentBox = ({ comic, onClickReport }: ICommentBoxProps) => {
@@ -87,7 +87,7 @@ const CommentBox = ({ comic, onClickReport }: ICommentBoxProps) => {
               <div className="flex justify-end mt-2">
                 <button
                   className="text-gray-500 font-medium"
-                  onClick={onClickReport}
+                  onClick={()=>onClickReport(cmt.id)}
                 >
                   Report
                 </button>

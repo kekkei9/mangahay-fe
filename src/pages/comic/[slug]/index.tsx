@@ -41,7 +41,7 @@ const ComicPage = () => {
           />
           <CommentBox
             comic={comicResponse?.result?.comic}
-            onClickReport={() => setIsReportOpen("comic")}
+            onClickReport={(id:string) => setIsReportOpen({type:"comment",id:id})}
           />
           {comicResponse.result?.comic?.authors?.length && (
             <ComicRelate comic={comicResponse.result?.comic} />

@@ -18,7 +18,7 @@ interface IProps {
 const MainLayout: React.FC<IProps> = ({ children }) => {
   const router = useRouter();
   const toastRef = useRef<Toast>(null);
-  const [isReportOpen, setIsReportOpen] = useState<false | "comment" | "comic">(
+  const [isReportOpen, setIsReportOpen] = useState<false | {type:"comment";id:string} | {type:"chapter";id:string}>(
     false
   );
 
