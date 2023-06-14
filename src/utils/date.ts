@@ -26,7 +26,7 @@ export const formatDateTimeHour = (dateString: string) => {
 
 export const timeDiff = (time: string)=>{
   const currentTime = new Date();
-  const targetTime = new Date("2023-06-14T05:48:33.606Z");
+  const targetTime = new Date(time);
 
   // Tính khoảng cách thời gian
   const timeDiff = currentTime.getTime() - targetTime.getTime();
@@ -42,7 +42,7 @@ export const timeDiff = (time: string)=>{
     return hours + " giờ trước"
   }else if(minutes >0){
     return minutes + " phút trước"
-  }else if(seconds >0){
+  }else{
     return seconds + " giây trước"
   }
 

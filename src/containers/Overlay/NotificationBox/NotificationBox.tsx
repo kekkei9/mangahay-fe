@@ -24,7 +24,7 @@ const NotificationBox = () => {
           swr.data?.[0]?.result?.length === 0 ||
           (swr.data?.[swr.data?.length - 1].result || []).length < PAGE_SIZE
         }
-        endingIndicator={"Không còn thông báo"}
+        endingIndicator={<></>}
       >
         {(notifications) =>
           notifications?.map((notification) => (
