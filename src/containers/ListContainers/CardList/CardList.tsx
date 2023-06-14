@@ -49,6 +49,7 @@ const CardList = <T,>({ children, title, className, fetchUrl }: Props<T>) => {
             (swr.data?.[swr.data?.length - 1].result || []).length < PAGE_SIZE
           }
           loadingIndicator={<LoadingSkeleton.ComicList />}
+          endingIndicator=""
         >
           {typeof children === "function"
             ? (response) => response?.map((item) => children(item))

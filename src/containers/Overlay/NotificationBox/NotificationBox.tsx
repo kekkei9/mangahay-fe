@@ -14,7 +14,7 @@ const NotificationBox = () => {
   );
 
   return (
-    <div className="notification-box max-h-[250px] w-full md:w-[14rem]">
+    <div className="notification-box max-h-[250px] w-full md:w-[14rem] overflow-auto">
       <InfiniteScroll
         swr={swrNotification}
         dataWrapper={({ children }) => <div>{children}</div>}
