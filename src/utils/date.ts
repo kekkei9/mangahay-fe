@@ -1,3 +1,5 @@
+import { min } from "lodash";
+
 export const formatDate = (dateString?: string) => {
   if (!dateString) return;
   const dateObj = new Date(dateString);
@@ -21,3 +23,27 @@ export const formatDateTimeHour = (dateString: string) => {
   const formattedDateTime = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   return formattedDateTime;
 };
+
+export const timeDiff = (time: string)=>{
+  const currentTime = new Date();
+  const targetTime = new Date("2023-06-14T05:48:33.606Z");
+
+  // Tính khoảng cách thời gian
+  const timeDiff = currentTime.getTime() - targetTime.getTime();
+  const seconds = Math.floor(timeDiff / 1000); 
+  const minutes = Math.floor(timeDiff / (1000 * 60)); 
+  const hours = Math.floor(timeDiff / (1000 * 60 * 60)); 
+  const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+  console.log('Test time',seconds,minutes,hours,days)
+
+  if(days > 0){
+    return days + " ngày trước"
+  }else if(hours >0){
+    return hours + " giờ trước"
+  }else if(minutes >0){
+    return minutes + " phút trước"
+  }else if(seconds >0){
+    return seconds + " giây trước"
+  }
+
+}
