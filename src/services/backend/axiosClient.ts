@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import Cookies from "js-cookie";
-import { refreshTokenAPI } from "./AuthController";
+import { refreshTokenAPI, signOutAPI } from "./AuthController";
 import store from "@/redux";
 import { logoutHandler } from "@/redux/authentication/authentication.action";
 
@@ -38,6 +38,16 @@ axiosClient.interceptors.response.use(
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     const originalRequest = error.config;
+    if (
+      originalRequest.url === "/api/auth/refresh-token" &&
+      error?.response?.status === 500
+    ) {
+      await signOutAPI();
+      store.dispatch(logoutHandler() as any);
+      delete axiosClient.defaults.headers.common.Authorization;
+      return axios(originalRequest);
+    }
+
     if (error?.response?.status === 403) {
       if (!originalRequest?.retry) {
         originalRequest.retry = true;
@@ -47,25 +57,6 @@ axiosClient.interceptors.response.use(
           "Bearer " + access_token;
         originalRequest.headers["Authorization"] = "Bearer " + access_token;
         return axios(originalRequest);
-      } else {
-        store.dispatch(logoutHandler() as any);
-        delete axiosClient.defaults.headers.common.Authorization;
-      }
-    }
-
-    if (error?.response?.status === 401) {
-      if (!originalRequest?.retry) {
-        originalRequest.retry = true;
-        const access_token = await refreshToken();
-        setAuthToken(access_token as string);
-        axiosClient.defaults.headers.common["Authorization"] =
-          "Bearer " + access_token;
-        originalRequest.headers["Authorization"] = "Bearer " + access_token;
-        return axios(originalRequest);
-      } else {
-        console.log("logout");
-        store.dispatch(logoutHandler() as any);
-        delete axiosClient.defaults.headers.common.Authorization;
       }
     }
 

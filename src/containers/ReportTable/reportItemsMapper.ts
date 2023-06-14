@@ -5,5 +5,5 @@ export const reportItemsMapper = {
     "Nội dung không thích hợp: Nội dung bình luận không phù hợp với đối tượng sử dụng hoặc có nội dung đồi trụy.",
     "Tấn công cá nhân: Nội dung bình luận tấn công hoặc phân biệt chủng tộc, tôn giáo, giới tính, địa phương, quốc gia,...",
   ],
-  comic: ["Lỗi ảnh"],
+  chapter: ["Lỗi ảnh"],
 };

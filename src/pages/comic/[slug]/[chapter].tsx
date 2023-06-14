@@ -16,7 +16,7 @@ import { ToastContext } from "@/contexts/ToastContext";
 const ChapterPage = () => {
   const router = useRouter();
 
-  const { setIsReportOpen } = useContext(ToastContext);
+  const { setReportModalData } = useContext(ToastContext);
   const { data: comicResponse } = useSWR<
     Response<{ chapters: Chapter[]; comic: Comic }>
   >(router.isReady ? `/api/comic/${router.query.slug}` : null);
@@ -34,7 +34,9 @@ const ChapterPage = () => {
   return (
     <>
       <ChapterSpeedDialContainer
-        onClickReport={() => setIsReportOpen("comic")}
+        onClickReport={() =>
+          setReportModalData({ type: "chapter", id: currentChapter.id })
+        }
         className="!fixed bottom-10 right-10"
         chapter={currentChapter}
       />
@@ -48,6 +50,7 @@ const ChapterPage = () => {
                   src={image}
                   alt={`Comic Image ${index + 1}`}
                   fill
+                  sizes="80vw"
                   className="object-contain"
                 />
               </div>
@@ -55,7 +58,7 @@ const ChapterPage = () => {
             <div className="w-full border-t border-black py-2 comment-section">
               <CommentBox
                 comic={comicResponse.result?.comic}
-                onClickReport={() => setIsReportOpen()}
+                onClickReport={() => setReportModalData({})}
               />
             </div>
           </>

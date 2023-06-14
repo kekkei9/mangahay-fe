@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import AuthPageLayout from "../AuthPageLayout";
 import MainNavBar from "@/containers/NavBar/MainNavBar";
-import { ToastContext } from "@/contexts/ToastContext";
+import { ReportData, ToastContext } from "@/contexts/ToastContext";
 import { useRef, useState } from "react";
 import { Toast, ToastMessage } from "primereact/toast";
 import { ScrollTop } from "primereact/scrolltop";
@@ -18,9 +18,7 @@ interface IProps {
 const MainLayout: React.FC<IProps> = ({ children }) => {
   const router = useRouter();
   const toastRef = useRef<Toast>(null);
-  const [isReportOpen, setIsReportOpen] = useState<false | {type:"comment";id:string} | {type:"chapter";id:string}>(
-    false
-  );
+  const [reportModalData, setReportModalData] = useState<ReportData>({});
 
   const { isAuthUser } = useSelector(
     (state: RootState) => state.authentication
@@ -40,25 +38,25 @@ const MainLayout: React.FC<IProps> = ({ children }) => {
     <ToastContext.Provider
       value={{
         toastRef: toastRef,
-        isReportOpen: isReportOpen,
-        setIsReportOpen: setIsReportOpen,
+        reportModalData: reportModalData,
+        setReportModalData: setReportModalData,
         checkAuth: checkAuth,
       }}
     >
       <Toast ref={toastRef} />
 
       <Dialog
-        onHide={() => setIsReportOpen(false)}
-        visible={!!isReportOpen}
+        onHide={() => setReportModalData({})}
+        visible={!!reportModalData?.type}
         header={<div className="text-2xl font-semibold ml-4">Report</div>}
       >
         <ReportTable
-          id={1}
-          type={isReportOpen.toString()}
           items={
-            reportItemsMapper[isReportOpen as keyof typeof reportItemsMapper]
+            reportItemsMapper[
+              reportModalData?.type as keyof typeof reportItemsMapper
+            ]
           }
-          onClose={() => setIsReportOpen(false)}
+          onClose={() => setReportModalData({})}
         />
       </Dialog>
       {router.pathname === "/comic/[slug]/[chapter]" ? (
