@@ -15,7 +15,7 @@ import { ToastContext } from "@/contexts/ToastContext";
 const ComicPage = () => {
   const router = useRouter();
 
-  const { setIsReportOpen } = useContext(ToastContext);
+  const { setReportModalData } = useContext(ToastContext);
   const { data: comicResponse, mutate } = useSWR<
     Response<{ chapters: Chapter[]; comic: Comic }>
   >(router.isReady ? `/api/comic/${router.query.slug}` : null);
@@ -41,7 +41,9 @@ const ComicPage = () => {
           />
           <CommentBox
             comic={comicResponse?.result?.comic}
-            onClickReport={(id:string) => setIsReportOpen({type:"comment",id:id})}
+            onClickReport={(id: string) =>
+              setReportModalData({ type: "comment", id: id })
+            }
           />
           {comicResponse.result?.comic?.authors?.length && (
             <ComicRelate comic={comicResponse.result?.comic} />

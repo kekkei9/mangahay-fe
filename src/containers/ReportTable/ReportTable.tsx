@@ -3,17 +3,15 @@ import { postReport } from "@/service/backend/ReportControllers";
 import React, { useContext, useState } from "react";
 
 interface IReportTableProps {
-  id: number;
-  type: string;
   items?: string[];
   onClose: () => void;
 }
 
-const ReportTable = ({ id, type, items, onClose }: IReportTableProps) => {
+const ReportTable = ({ items, onClose }: IReportTableProps) => {
   const [description, setDescription] = useState("");
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
-  const { toastRef } = useContext(ToastContext);
+  const { toastRef, reportModalData } = useContext(ToastContext);
 
   const handleChange = (event: any, index: any) => {
     if (event.target.checked) {
@@ -28,14 +26,14 @@ const ReportTable = ({ id, type, items, onClose }: IReportTableProps) => {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const dataReport = {
-      type: type,
+      type: reportModalData?.type,
       detail_report: description,
       errors: Array.from(selectedItems, (index: number) => items?.[index]),
-      id_object: id,
-      link:`/comic/${id}`
+      id_object: reportModalData?.id,
+      link: `/${reportModalData?.type}/${reportModalData?.id}`,
     };
     try {
-      console.log(dataReport)
+      console.log(dataReport);
       const data = await postReport(dataReport);
       toastRef?.current?.show({
         severity: "success",

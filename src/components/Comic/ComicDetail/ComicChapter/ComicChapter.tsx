@@ -24,7 +24,7 @@ const ComicChapter = ({ comic, chapters }: IComicChapterProps) => {
                 href={`/comic/${comic?.slug}/${chap.slug}`}
                 className="text-black visited:text-slate-300"
               >
-                Chapter {chap.name.split(" ")[1]}{" "}
+                {chap.name}
               </Link>
               <span className="text-gray-400 text-sm mr-5">
                 {formatDate(chap.createdAt)}
