@@ -24,7 +24,9 @@ const NotificationBox = () => {
           swr.data?.[0]?.result?.length === 0 ||
           (swr.data?.[swr.data?.length - 1].result || []).length < PAGE_SIZE
         }
-        endingIndicator={<></>}
+        endingIndicator={
+          <div className="flex justify-center p-2">Không còn thông báo</div>
+        }
       >
         {(notifications) =>
           notifications?.map((notification) => (
