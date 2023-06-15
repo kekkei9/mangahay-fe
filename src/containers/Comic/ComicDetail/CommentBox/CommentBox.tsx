@@ -4,12 +4,7 @@ import { formatDateTimeHour } from "@/utils/date";
 import useSWR from "swr";
 import { Comic } from "@/types/Comic";
 import { Response } from "@/types/Response.type";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux";
 import { ToastContext } from "@/contexts/ToastContext";
-import { authErrorToastBody } from "../ComicInfo/ComicInteractPanel/toastBody";
-import { useRouter } from "next/router";
-import { ToastMessage } from "primereact/toast";
 
 interface ICommentBoxProps {
   comic: Comic;
