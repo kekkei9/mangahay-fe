@@ -13,39 +13,28 @@ import { ToastMessage } from "primereact/toast";
 
 interface ICommentBoxProps {
   comic: Comic;
-  onClickReport: (id:string) => void;
+  onClickReport: (id: string) => void;
 }
 
 const CommentBox = ({ comic, onClickReport }: ICommentBoxProps) => {
-  const router = useRouter();
   const [comment, setComment] = useState("");
 
   const { data: commentResponse } = useSWR<Response<any>>(
     `/api/comment/${comic.id}/comments`
   );
 
-  const { isAuthUser } = useSelector(
-    (state: RootState) => state.authentication
-  );
-  const { toastRef } = useContext(ToastContext);
+  const { toastRef, checkAuth } = useContext(ToastContext);
 
-  const handlePost = async (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    if (!isAuthUser) {
-      toastRef?.current?.show(
-        authErrorToastBody(() => router.push("/auth/signin")) as ToastMessage
-      );
-      return false;
-    }
+  const handlePostComment = async () => {
+    checkAuth();
     try {
       await postComment(comic.id, comment);
       setComment("");
     } catch (error) {
       toastRef?.current?.show({
         severity: "error",
-        detail: "ERROR",
-        summary: "ERROR",
+        detail: "Bình luận thất bại",
+        summary: "Bình luận",
       });
     }
   };
@@ -66,7 +55,7 @@ const CommentBox = ({ comic, onClickReport }: ICommentBoxProps) => {
           />
           <button
             className="bg-gray-300 hover:bg-slate-300 text-white font-medium py-2 px-4"
-            onClick={handlePost}
+            onClick={handlePostComment}
           >
             POST
           </button>
@@ -87,7 +76,7 @@ const CommentBox = ({ comic, onClickReport }: ICommentBoxProps) => {
               <div className="flex justify-end mt-2">
                 <button
                   className="text-gray-500 font-medium"
-                  onClick={()=>onClickReport(cmt.id)}
+                  onClick={() => onClickReport(cmt.id)}
                 >
                   Report
                 </button>

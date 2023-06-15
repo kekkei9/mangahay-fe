@@ -4,12 +4,9 @@ import styles from "./ChapterSpeedDial.module.scss";
 import { Tooltip } from "primereact/tooltip";
 import { Chapter } from "@/types/Chapter";
 import { useRouter } from "next/router";
-import { useContext, useRef, useState } from "react";
-import { Dialog } from "primereact/dialog";
+import { useContext } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
-import { Toast, ToastMessage } from "primereact/toast";
-import { authErrorToastBody } from "../../ComicDetail/ComicInfo/ComicInteractPanel/toastBody";
 import { ToastContext } from "@/contexts/ToastContext";
 
 interface IChapterSpeedDialProps {

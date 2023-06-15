@@ -58,7 +58,9 @@ const ChapterPage = () => {
             <div className="w-full border-t border-black py-2 comment-section">
               <CommentBox
                 comic={comicResponse.result?.comic}
-                onClickReport={() => setReportModalData({})}
+                onClickReport={(id: string) =>
+                  setReportModalData({ type: "comment", id: id })
+                }
               />
             </div>
           </>
