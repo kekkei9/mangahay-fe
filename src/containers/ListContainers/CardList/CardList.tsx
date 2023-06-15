@@ -5,6 +5,9 @@ import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import InfiniteScroll from "../InfiniteScroll";
 import CardListWrapper from "@/components/CardListWrapper";
+import { breakpointDataMapper } from "@/utils/breakpoint";
+import useBreakpoint from "@/hooks/useBreakpoint";
+import { pageSizeMapper } from "./pageSizeMapper";
 
 type Props<T> = {
   title?: string;
@@ -13,14 +16,15 @@ type Props<T> = {
   fetchUrl: (index: number, pageSize: number) => string;
 };
 
-const PAGE_SIZE = 10;
 const INITIAL_SIZE = 1;
 
 const CardList = <T,>({ children, title, className, fetchUrl }: Props<T>) => {
   const [isAutoScroll, setIsAutoScroll] = useState<boolean>(false);
+  const breakpoint = useBreakpoint();
+  const pageSize = breakpointDataMapper(pageSizeMapper, breakpoint);
 
   const swr = useSWRInfinite<Response<T[]>>(
-    (index) => fetchUrl(index, PAGE_SIZE),
+    (index) => fetchUrl(index, pageSize),
     {
       initialSize: INITIAL_SIZE,
     }
@@ -30,7 +34,7 @@ const CardList = <T,>({ children, title, className, fetchUrl }: Props<T>) => {
     <CardListWrapper
       isAutoScroll={isAutoScroll}
       setIsAutoScroll={setIsAutoScroll}
-      isEmpty={!swr.data?.[0].result}
+      isEmpty={!swr.data?.[0].result && !swr.isLoading}
       className={className}
       title={title}
     >
@@ -46,9 +50,9 @@ const CardList = <T,>({ children, title, className, fetchUrl }: Props<T>) => {
           dataWrapper={dataWrapper}
           isReachingEnd={(swr: SWRInfiniteResponse<Response<T[]>, any>) =>
             swr.data?.[0]?.result?.length === 0 ||
-            (swr.data?.[swr.data?.length - 1].result || []).length < PAGE_SIZE
+            (swr.data?.[swr.data?.length - 1].result || []).length < pageSize
           }
-          loadingIndicator={<LoadingSkeleton.ComicList />}
+          loadingIndicator={<LoadingSkeleton.ComicList listSize={pageSize} />}
           endingIndicator=""
         >
           {typeof children === "function"
@@ -59,9 +63,9 @@ const CardList = <T,>({ children, title, className, fetchUrl }: Props<T>) => {
         <PaginationView
           swr={swr}
           dataWrapper={dataWrapper}
-          pageSize={PAGE_SIZE}
+          pageSize={pageSize}
           totalRecords={swr.data?.[0].total || 0}
-          loadingIndicator={<LoadingSkeleton.ComicList />}
+          loadingIndicator={<LoadingSkeleton.ComicList listSize={pageSize} />}
         >
           {children}
         </PaginationView>

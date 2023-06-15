@@ -2,14 +2,18 @@ import { Skeleton } from "primereact/skeleton";
 
 interface ILoadingSkeletonProps {
   className?: string;
+  listSize?: number;
 }
 
-const LoadingSkeleton = ({ className }: ILoadingSkeletonProps) => {
+const LoadingSkeleton = ({
+  className,
+  listSize = 10,
+}: ILoadingSkeletonProps) => {
   return (
     <div
       className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6 gap-4 ${className}`}
     >
-      {[...Array(10)].map((_, index) => (
+      {[...Array(listSize)].map((_, index) => (
         <div key={index}>
           <div className="flex gap-2">
             <Skeleton className="!bg-[#dfdfdf]" size="4rem" />

@@ -29,6 +29,9 @@ const SearchBox = ({ value }: ISearchBoxProps) => {
           swr.data?.[0]?.result?.length === 0 ||
           (swr.data?.[swr.data?.length - 1].result || []).length < PAGE_SIZE
         }
+        endingIndicator={
+          <div className="flex justify-center p-4">Không còn truyện</div>
+        }
       >
         {(comics) =>
           comics?.map((comic) => (

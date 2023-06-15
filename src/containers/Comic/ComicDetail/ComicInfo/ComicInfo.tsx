@@ -39,7 +39,7 @@ const ComicInfo = ({ comic, mutateComic }: IComicInfoProps) => {
             )}
           </div>
 
-          <div className={classes.detailinfo__right}>
+          <div className={`${classes.detailinfo__right} max-md:!p-5`}>
             {comic?.name ? (
               <div className={classes.detailinfo__name}>{comic.name}</div>
             ) : (
