@@ -26,7 +26,7 @@ const CardListWrapper = ({
       <div className="text-xl xs:text-2xl md:text-3xl font-bold">{title}</div>
       <div
         onClick={() => setIsAutoScroll((prev) => !prev)}
-        className="toggle-list-icon cursor-pointer"
+        className="toggle-list-icon cursor-pointer hidden md:block"
         data-pr-tooltip={isAutoScroll ? "Xem theo trang" : "Xem vô hạn"}
       >
         <i

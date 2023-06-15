@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PaginationView from "../PaginationView";
 import { Response } from "@/types/Response.type";
 import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import InfiniteScroll from "../InfiniteScroll";
 import CardListWrapper from "@/components/CardListWrapper";
-import { breakpointDataMapper } from "@/utils/breakpoint";
+import { breakpointDataMapper, isMobile } from "@/utils/breakpoint";
 import useBreakpoint from "@/hooks/useBreakpoint";
 import { pageSizeMapper } from "./pageSizeMapper";
 
@@ -29,6 +29,12 @@ const CardList = <T,>({ children, title, className, fetchUrl }: Props<T>) => {
       initialSize: INITIAL_SIZE,
     }
   );
+
+  useEffect(() => {
+    if (isMobile(breakpoint)) {
+      setIsAutoScroll(true);
+    }
+  }, [breakpoint]);
 
   const dataWrapper = ({ children }: { children: React.ReactNode }) => (
     <CardListWrapper

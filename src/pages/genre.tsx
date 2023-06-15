@@ -16,7 +16,7 @@ const defaultGenreNumber = {
   sm: 12,
   md: 15,
   lg: 20,
-  xl: 25,
+  xl: 24,
   "2xl": 30,
 };
 
