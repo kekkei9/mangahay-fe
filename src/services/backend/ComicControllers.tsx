@@ -2,7 +2,7 @@ import axiosClient from "@/services/backend/axiosClient";
 
 export const likeComic = async ({ id, slug }: any) => {
   try {
-    const responsePost = await axiosClient.post("/api/user/comic?action=like", {
+    await axiosClient.post("/api/user/comic?action=like", {
       id_comic: id,
     });
 
@@ -19,9 +19,7 @@ export const likeComic = async ({ id, slug }: any) => {
 
 export const unLikeComic = async ({ id, slug }: any) => {
   try {
-    const responseDelete = await axiosClient.delete(
-      `/api/user/comic?id_comic=${id}&action=like`
-    );
+    await axiosClient.delete(`/api/user/comic?id_comic=${id}&action=like`);
     const response = await axiosClient.get(
       `/api/comic/${slug}/increment?field=like&jump=-1`
     );
@@ -34,12 +32,9 @@ export const unLikeComic = async ({ id, slug }: any) => {
 
 export const followComic = async ({ id, slug }: any) => {
   try {
-    const responsePost = await axiosClient.post(
-      "/api/user/comic?action=follow",
-      {
-        id_comic: id,
-      }
-    );
+    await axiosClient.post("/api/user/comic?action=follow", {
+      id_comic: id,
+    });
 
     const response = await axiosClient.get(
       `/api/comic/${slug}/increment?field=follow&jump=1`
@@ -52,9 +47,7 @@ export const followComic = async ({ id, slug }: any) => {
 
 export const unFollowComic = async ({ id, slug }: any) => {
   try {
-    const responseDelete = await axiosClient.delete(
-      `/api/user/comic?id_comic=${id}&action=follow`
-    );
+    await axiosClient.delete(`/api/user/comic?id_comic=${id}&action=follow`);
 
     const response = await axiosClient.get(
       `/api/comic/${slug}/increment?field=follow&jump=-1`

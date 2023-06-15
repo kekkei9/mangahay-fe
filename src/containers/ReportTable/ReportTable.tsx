@@ -25,29 +25,27 @@ const ReportTable = ({ items, onClose }: IReportTableProps) => {
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    const dataReport = {
-      type: reportModalData?.type,
-      detail_report: description,
-      errors: Array.from(selectedItems, (index: number) => items?.[index]),
-      id_object: reportModalData?.id,
-      link: `/${reportModalData?.type}/${reportModalData?.id}`,
-    };
     try {
-      console.log(dataReport);
-      const data = await postReport(dataReport);
+      await postReport({
+        type: reportModalData?.type,
+        detail_report: description,
+        errors: Array.from(selectedItems, (index: number) => items?.[index]),
+        id_object: reportModalData?.id,
+        link: `/${reportModalData?.type}/${reportModalData?.id}`,
+      });
+
       toastRef?.current?.show({
         severity: "success",
-        summary: "Báo cáo thành công",
-        detail: "Báo cáo",
+        summary: "Báo cáo",
+        detail: "Báo cáo thành công",
       });
     } catch (err) {
       toastRef?.current?.show({
         severity: "error",
-        summary: "Báo cáo thất bại",
-        detail: "Báo cáo",
+        summary: "Báo cáo",
+        detail: "Báo cáo thất bại",
       });
     }
-
     onClose();
   };
 
