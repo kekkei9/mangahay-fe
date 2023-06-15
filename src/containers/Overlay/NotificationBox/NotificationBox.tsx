@@ -31,7 +31,7 @@ const NotificationBox = () => {
         {(notifications) =>
           notifications?.map((notification) => (
             <NotificationComponent
-              key={1}
+              key={notification.thumb}
               notification={notification as Notification}
               onClick={handleNotificationClick}
             />
