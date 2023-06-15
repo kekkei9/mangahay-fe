@@ -3,18 +3,24 @@ import { Notification } from "@/types/Notification";
 import NotificationComponent from "@/components/Overlay/Notification";
 import InfiniteScroll from "@/containers/ListContainers/InfiniteScroll";
 import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite";
+import { useRouter } from "next/router";
+import { markAsRead } from "@/services/backend/NotificationController";
 
-const handleNotificationClick = () => {};
-
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 5;
 
 const NotificationBox = () => {
+  const router = useRouter();
+
+  const handleNotificationClick = async (notification: Notification) => {
+    await markAsRead(notification.id);
+    router.push(notification.redirect_url);
+  };
   const swrNotification = useSWRInfinite<Response<Notification[]>>(
     (index) => `/api/user/notifies?limit=${PAGE_SIZE}&page=${index + 1}`
   );
 
   return (
-    <div className="notification-box max-h-[250px] w-full md:w-[14rem] overflow-auto">
+    <div className="notification-box max-h-[250px] w-full md:w-[20rem] overflow-auto">
       <InfiniteScroll
         swr={swrNotification}
         dataWrapper={({ children }) => <div>{children}</div>}

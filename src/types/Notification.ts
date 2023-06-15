@@ -1,7 +1,11 @@
 export type Notification = {
-    title: string,
-    createdAt: string,
-    body:string,
-    thumb: string,
-    isRead: boolean,
+  body: string;
+  createdAt: string;
+  id: number;
+  id_user: number;
+  is_read: boolean;
+  redirect_url: string;
+  thumb: string;
+  title: string;
+  updatedAt: string;
 };

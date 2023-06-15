@@ -24,26 +24,24 @@ export const formatDateTimeHour = (dateString: string) => {
   return formattedDateTime;
 };
 
-export const timeDiff = (time: string)=>{
+export const timeDiff = (time: string) => {
   const currentTime = new Date();
   const targetTime = new Date(time);
 
   // Tính khoảng cách thời gian
   const timeDiff = currentTime.getTime() - targetTime.getTime();
-  const seconds = Math.floor(timeDiff / 1000); 
-  const minutes = Math.floor(timeDiff / (1000 * 60)); 
-  const hours = Math.floor(timeDiff / (1000 * 60 * 60)); 
+  const seconds = Math.floor(timeDiff / 1000);
+  const minutes = Math.floor(timeDiff / (1000 * 60));
+  const hours = Math.floor(timeDiff / (1000 * 60 * 60));
   const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-  console.log('Test time',seconds,minutes,hours,days)
 
-  if(days > 0){
-    return days + " ngày trước"
-  }else if(hours >0){
-    return hours + " giờ trước"
-  }else if(minutes >0){
-    return minutes + " phút trước"
-  }else{
-    return seconds + " giây trước"
+  if (days > 0) {
+    return days + " ngày trước";
+  } else if (hours > 0) {
+    return hours + " giờ trước";
+  } else if (minutes > 0) {
+    return minutes + " phút trước";
+  } else {
+    return seconds + " giây trước";
   }
-
-}
+};

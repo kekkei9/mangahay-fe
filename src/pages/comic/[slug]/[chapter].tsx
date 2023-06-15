@@ -9,7 +9,7 @@ import LoadingSkeleton from "@/components/LoadingSkeleton";
 import Image from "next/image";
 import ChapterSpeedDialContainer from "@/containers/Comic/Chapter/ChapterSpeedDial";
 import { useContext, useEffect, useState } from "react";
-import { appendToHistory } from "@/service/backend/ChapterController";
+import { appendToHistory } from "@/services/backend/ChapterController";
 import CommentBox from "@/containers/Comic/ComicDetail/CommentBox";
 import { ToastContext } from "@/contexts/ToastContext";
 

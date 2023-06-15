@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { postComment } from "@/service/backend/CommentControllers";
+import { postComment } from "@/services/backend/CommentControllers";
 import { formatDateTimeHour } from "@/utils/date";
 import useSWR from "swr";
 import { Comic } from "@/types/Comic";

@@ -1,5 +1,5 @@
 import { ToastContext } from "@/contexts/ToastContext";
-import { postReport } from "@/service/backend/ReportControllers";
+import { postReport } from "@/services/backend/ReportControllers";
 import React, { useContext, useState } from "react";
 
 interface IReportTableProps {

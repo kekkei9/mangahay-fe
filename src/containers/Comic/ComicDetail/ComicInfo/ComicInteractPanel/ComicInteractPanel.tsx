@@ -12,7 +12,7 @@ import {
   likeComic,
   unFollowComic,
   unLikeComic,
-} from "@/service/backend/ComicControllers";
+} from "@/services/backend/ComicControllers";
 import { PrimeIcons } from "primereact/api";
 import { Chapter } from "@/types/Chapter";
 import { ToastContext } from "@/contexts/ToastContext";
