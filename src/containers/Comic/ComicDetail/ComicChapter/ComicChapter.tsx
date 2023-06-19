@@ -3,19 +3,24 @@ import { Comic } from "@/types/Comic";
 import { formatDate } from "@/utils/date";
 import { normalizeChapterArray } from "@/utils/normalizeData";
 import Link from "next/link";
+import useSWR from "swr";
+import { Response } from "@/types/Response.type";
 
 interface IComicChapterProps {
   comic?: Comic;
-  chapters?: Chapter[];
 }
 
-const ComicChapter = ({ comic, chapters }: IComicChapterProps) => {
+const ComicChapter = ({ comic }: IComicChapterProps) => {
+  const { data: chaptersResponse } = useSWR<Response<Chapter[]>>(
+    `/api/comic/chapter/${comic?.id}`
+  );
+
   return (
     <div className="p-4 bg-white shadow-md">
       <h2 className="text-lg font-medium mb-4">Chapter List</h2>
       <div className="max-h-96 scrollbar-thin scrollbar-thumb-yellow-200 scrollbar-track-gray-200 overflow-y-scroll">
         <ul className="py-2 ">
-          {normalizeChapterArray(chapters)?.map((chap: any) => (
+          {chaptersResponse?.result?.map((chap: any) => (
             <li
               key={chap.name}
               className="flex justify-between py-2 border-b border-gray-200"

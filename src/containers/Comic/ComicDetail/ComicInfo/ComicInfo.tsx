@@ -11,12 +11,7 @@ import { Chapter } from "@/types/Chapter";
 
 interface IComicInfoProps {
   comic?: Comic;
-  mutateComic?: KeyedMutator<
-    Response<{
-      chapters: Chapter[];
-      comic: Comic;
-    }>
-  >;
+  mutateComic?: KeyedMutator<Response<Comic>>;
 }
 
 const ComicInfo = ({ comic, mutateComic }: IComicInfoProps) => {

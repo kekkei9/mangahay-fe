@@ -19,12 +19,7 @@ import { ToastContext } from "@/contexts/ToastContext";
 
 interface IComicInteractPanelProps {
   comic?: Comic;
-  mutateComic?: KeyedMutator<
-    Response<{
-      chapters: Chapter[];
-      comic: Comic;
-    }>
-  >;
+  mutateComic?: KeyedMutator<Response<Comic>>;
 }
 
 const ComicInteractPanel = ({
