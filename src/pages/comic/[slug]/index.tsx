@@ -45,7 +45,7 @@ const ComicPage = () => {
               setReportModalData({ type: "comment", id: id })
             }
           />
-          {comicResponse.result?.comic?.authors?.length && (
+          {!!comicResponse.result?.comic?.authors?.length && (
             <ComicRelate comic={comicResponse.result?.comic} />
           )}
         </div>
