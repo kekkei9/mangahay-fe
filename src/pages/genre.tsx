@@ -65,7 +65,14 @@ const GenrePage = () => {
                 }`}
                 onClick={() => {
                   setSelectedGenre(genre);
-                  router.push(`/genre?genre=${genre}`);
+                  router.push(
+                    {
+                      pathname: router.pathname,
+                      query: { ...router.query, genre },
+                    },
+                    undefined,
+                    { shallow: true }
+                  );
                 }}
               >
                 {genre.toLocaleUpperCase()}

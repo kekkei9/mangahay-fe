@@ -28,6 +28,7 @@ const PaginationView = <T,>({
   const breakpoint = useBreakpoint();
 
   useEffect(() => {
+    if (!router.isReady) return;
     if (!isMobile(breakpoint) && router.query.page) {
       const currentPage = +(router.query.page as string);
       swr.setSize(currentPage);
@@ -52,7 +53,7 @@ const PaginationView = <T,>({
             router.push(
               {
                 pathname: router.pathname,
-                query: { page: e.page + 1 },
+                query: { ...router.query, page: e.page + 1 },
               },
               undefined,
               { shallow: true }
