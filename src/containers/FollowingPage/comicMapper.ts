@@ -34,4 +34,6 @@ export const followingComicToComicMapper = ({
   thumb: comics_thumb,
   updatedAt: comics_updatedAt,
   view: comics_view,
+  newest_chapter_name: undefined,
+  newest_chapter_slug: undefined,
 });
