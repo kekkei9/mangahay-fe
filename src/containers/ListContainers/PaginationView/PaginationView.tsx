@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Paginator } from "primereact/paginator";
 import { SWRInfiniteResponse } from "swr/infinite";
 import { Response } from "@/types/Response.type";
+import { useRouter } from "next/router";
+import { isMobile } from "@/utils/breakpoint";
+import useBreakpoint from "@/hooks/useBreakpoint";
 
 export type Props<T> = {
   swr: SWRInfiniteResponse<Response<T[]>>;
@@ -21,6 +24,17 @@ const PaginationView = <T,>({
   loadingIndicator,
 }: Props<T>) => {
   const [first, setFirst] = useState<number>(0);
+  const router = useRouter();
+  const breakpoint = useBreakpoint();
+
+  useEffect(() => {
+    if (!isMobile(breakpoint) && router.query.page) {
+      const currentPage = +(router.query.page as string);
+      swr.setSize(currentPage);
+      setFirst((currentPage - 1) * pageSize);
+    }
+  }, [breakpoint, router.isReady]);
+
   return (
     <>
       <DataWrapper>
@@ -35,6 +49,14 @@ const PaginationView = <T,>({
           rows={pageSize}
           totalRecords={totalRecords}
           onPageChange={(e: any) => {
+            router.push(
+              {
+                pathname: router.pathname,
+                query: { page: e.page + 1 },
+              },
+              undefined,
+              { shallow: true }
+            );
             swr.setSize(e.page + 1);
             setFirst(e.first);
           }}

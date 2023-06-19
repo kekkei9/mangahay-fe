@@ -8,6 +8,7 @@ import CardListWrapper from "@/components/CardListWrapper";
 import { breakpointDataMapper, isMobile } from "@/utils/breakpoint";
 import useBreakpoint from "@/hooks/useBreakpoint";
 import { pageSizeMapper } from "./pageSizeMapper";
+import { useRouter } from "next/router";
 
 type Props<T> = {
   title?: string;
@@ -21,6 +22,7 @@ const INITIAL_SIZE = 1;
 const CardList = <T,>({ children, title, className, fetchUrl }: Props<T>) => {
   const [isAutoScroll, setIsAutoScroll] = useState<boolean>(false);
   const breakpoint = useBreakpoint();
+
   const pageSize = breakpointDataMapper(pageSizeMapper, breakpoint);
 
   const swr = useSWRInfinite<Response<T[]>>(
