@@ -22,11 +22,7 @@ const ChapterSpeedDial = ({
 }: IChapterSpeedDialProps) => {
   const router = useRouter();
 
-  const { isAuthUser } = useSelector(
-    (state: RootState) => state.authentication
-  );
-
-  const { toastRef, checkAuth } = useContext(ToastContext);
+  const { checkAuth } = useContext(ToastContext);
 
   const mappedDialItems = dialItems.map((item) => {
     let additionalAction: () => void = () => {};
@@ -44,19 +40,9 @@ const ChapterSpeedDial = ({
           element?.scrollIntoView({ behavior: "smooth" });
         };
         break;
-      case "Chương kế tiếp":
-        additionalAction = () =>
-          chapter?.nextChapter &&
-          router.push(
-            `/comic/${chapter?.comicInfo?.slug}/${chapter?.nextChapter?.slug}`
-          );
-        break;
-      case "Chương trước":
+      case "Quay về đầu trang":
         additionalAction = () => {
-          if (chapter?.prevChapter)
-            router.push(
-              `/comic/${chapter?.comicInfo?.slug}/${chapter?.prevChapter?.slug}`
-            );
+          window?.scrollTo({ top: 0, behavior: "smooth" });
         };
     }
 

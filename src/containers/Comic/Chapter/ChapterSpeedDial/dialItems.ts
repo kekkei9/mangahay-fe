@@ -13,11 +13,7 @@ export const dialItems = [
     icon: PrimeIcons.COMMENTS,
   },
   {
-    label: "Chương trước",
-    icon: PrimeIcons.CHEVRON_LEFT,
-  },
-  {
-    label: "Chương kế tiếp",
-    icon: PrimeIcons.CHEVRON_RIGHT,
+    label: "Quay về đầu trang",
+    icon: PrimeIcons.ARROW_UP,
   },
 ];
