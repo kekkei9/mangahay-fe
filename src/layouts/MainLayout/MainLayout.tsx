@@ -59,7 +59,7 @@ const MainLayout: React.FC<IProps> = ({ children }) => {
           onClose={() => setReportModalData({})}
         />
       </Dialog>
-      {router.pathname === "/comic/[slug]/[chapter]" ? (
+      {router.pathname === "/comic/[slug]/[...chapter]" ? (
         <main>{children}</main>
       ) : (
         <>

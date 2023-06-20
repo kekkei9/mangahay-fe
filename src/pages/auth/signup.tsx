@@ -45,13 +45,19 @@ const SinUpPage = () => {
 
   const onSubmit = async (formData: any) => {
     try {
-      await signUpAPI(formData);
-    } catch (e: any) {
-      const { message, success } = e.response.data;
-      if (success) {
+      const result = await signUpAPI(formData);
+      toastRef?.current?.show({
+        severity: "info",
+        summary: "Đăng kí",
+        detail: "Đã gửi email xác nhận",
+        life: 3000,
+      });
+      if (result.data.result) {
         router.push("/auth/signin");
         return;
       }
+    } catch (e: any) {
+      const { message, success } = e.response.data;
       toastRef?.current?.show({
         severity: "error",
         summary: "Đăng kí thất bại",

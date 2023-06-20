@@ -10,7 +10,7 @@ const FollowingPage = () => {
   return (
     <div className="following-comics">
       <CardListContainer
-        title="Tất cả truyện"
+        title="Truyện đang theo dõi"
         fetchUrl={(index, pageSize) =>
           `/api/user/comic/following?limit=${pageSize}&page=${index + 1}`
         }

@@ -51,17 +51,14 @@ const ChapterSpeedDial = ({
 
   return (
     <>
-      <Tooltip
-        target=".speeddial-bottom-right .p-speeddial-action"
-        position="left"
-      />
+      <Tooltip target=".speeddial-bottom-right .p-speeddial-action" />
       <SpeedDial
         model={mappedDialItems}
         direction="up"
         transitionDelay={50}
         showIcon="pi pi-bars text-white"
         hideIcon="pi pi-times text-white"
-        className={`speeddial-bottom-right ${styles["custom-chapter-speed-dial"]} ${className}`}
+        className={`speeddial-bottom-left ${styles["custom-chapter-speed-dial"]} ${className}`}
       />
     </>
   );

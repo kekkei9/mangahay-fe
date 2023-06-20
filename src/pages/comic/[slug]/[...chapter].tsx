@@ -17,27 +17,31 @@ const ChapterPage = () => {
   const router = useRouter();
 
   const { setReportModalData } = useContext(ToastContext);
-  const { data: comicResponse } = useSWR<
-    Response<{ chapters: Chapter[]; comic: Comic }>
-  >(router.isReady ? `/api/comic/${router.query.slug}` : null);
 
-  const currentChapter = chapterMapper(
-    router.query.chapter as string,
-    comicResponse?.result?.chapters,
-    comicResponse?.result?.comic
-  ) as Chapter;
+  const { data: comicResponse } = useSWR<Response<Comic>>(
+    router.isReady && router.query?.slug
+      ? `/api/comic/${router.query.slug}`
+      : null
+  );
+  const { data: chapterResponse } = useSWR<Response<Chapter>>(
+    router.isReady && router.query?.chapter
+      ? `/api/chapter/get/${router.query.chapter?.[1]}`
+      : null
+  );
 
   useEffect(() => {
-    appendToHistory(currentChapter);
-  }, [currentChapter]);
+    appendToHistory(chapterResponse?.result);
+  }, [chapterResponse?.result]);
+
+  const currentChapter = chapterResponse?.result;
 
   return (
     <>
       <ChapterSpeedDialContainer
         onClickReport={() =>
-          setReportModalData({ type: "chapter", id: currentChapter.id })
+          setReportModalData({ type: "chapter", id: currentChapter?.id })
         }
-        className="!fixed bottom-10 right-10"
+        className="!fixed bottom-10 max-md:left-10 md:right-10"
         chapter={currentChapter}
       />
       <ChapterNav chapter={currentChapter} />
@@ -57,7 +61,7 @@ const ChapterPage = () => {
             ))}
             <div className="w-full border-t border-black py-2 comment-section">
               <CommentBox
-                comic={comicResponse.result?.comic}
+                comic={comicResponse.result}
                 onClickReport={(id: string) =>
                   setReportModalData({ type: "comment", id: id })
                 }

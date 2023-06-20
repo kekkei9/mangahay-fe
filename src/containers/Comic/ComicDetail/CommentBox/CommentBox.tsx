@@ -21,7 +21,7 @@ const CommentBox = ({ comic, onClickReport }: ICommentBoxProps) => {
   const { toastRef, checkAuth } = useContext(ToastContext);
 
   const handlePostComment = async () => {
-    checkAuth();
+    if (!checkAuth()) return;
     try {
       await postComment(comic.id, comment);
       setComment("");

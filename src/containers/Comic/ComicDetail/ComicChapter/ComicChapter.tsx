@@ -26,7 +26,7 @@ const ComicChapter = ({ comic }: IComicChapterProps) => {
               className="flex justify-between py-2 border-b border-gray-200"
             >
               <Link
-                href={`/comic/${comic?.slug}/${chap.slug}`}
+                href={`/comic/${comic?.slug}/${chap.slug}/${chap.id}`}
                 className="text-black visited:text-slate-300"
               >
                 {chap.name}
