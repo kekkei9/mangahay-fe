@@ -61,12 +61,15 @@ const ComicPreviewCard = ({
       </div>
       {data?.newest_chapter_name && (
         <div
-          onClick={() => onClickChapter && onClickChapter(data)}
-          className="cursor-pointer mt-2 flex gap-2 items-center ml-2"
+          onClick={(e) => {
+            e.preventDefault();
+            onClickChapter && onClickChapter(data);
+          }}
+          className="cursor-pointer mt-2 flex gap-4 italic font-semibold justify-between items-center"
         >
-          <div className="italic font-semibold flex justify-between w-full">
-            <div className="text-mangahay-400">Mới! </div>
-            <div className="text-slate-500 ">{data?.newest_chapter_name}</div>
+          <div className="text-mangahay-400">Mới!</div>
+          <div className="text-slate-500 line-clamp-1">
+            {data?.newest_chapter_name}
           </div>
         </div>
       )}

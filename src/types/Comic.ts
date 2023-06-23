@@ -31,6 +31,7 @@ export type Comic = {
   view: number;
   newest_chapter_name?: string;
   newest_chapter_slug?: string;
+  newest_chapter_id?: number;
 };
 
 export type FollowingComic = {

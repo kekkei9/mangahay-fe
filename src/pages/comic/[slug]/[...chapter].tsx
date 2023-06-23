@@ -4,7 +4,6 @@ import { Comic } from "@/types/Comic";
 import { useRouter } from "next/router";
 import { Response } from "@/types/Response.type";
 import useSWR from "swr";
-import { chapterMapper } from "@/containers/Comic/Chapter/chapterMapper";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import Image from "next/image";
 import ChapterSpeedDialContainer from "@/containers/Comic/Chapter/ChapterSpeedDial";
@@ -24,8 +23,8 @@ const ChapterPage = () => {
       : null
   );
   const { data: chapterResponse } = useSWR<Response<Chapter>>(
-    router.isReady && router.query?.chapter
-      ? `/api/chapter/get/${router.query.chapter?.[1]}`
+    comicResponse?.result?.id && router.isReady && router.query?.chapter
+      ? `/api/chapter/get/${comicResponse?.result?.id}/${router.query.chapter?.[1]}`
       : null
   );
 

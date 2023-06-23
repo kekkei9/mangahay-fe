@@ -22,7 +22,9 @@ export default function Home() {
             onClick={(data) => data?.id && router.push(`comic/${data?.slug}`)}
             onClickChapter={(data) =>
               data?.id &&
-              router.push(`comic/${data.slug}/${data.newest_chapter_slug}`)
+              router.push(
+                `comic/${data.slug}/${data.newest_chapter_slug}/${data.newest_chapter_id}`
+              )
             }
           />
         )}
