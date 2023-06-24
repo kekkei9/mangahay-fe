@@ -20,6 +20,12 @@ export default function Home() {
           <ComicCard.Preview
             data={comic as Comic}
             onClick={(data) => data?.id && router.push(`comic/${data?.slug}`)}
+            onClickChapter={(data) =>
+              data?.id &&
+              router.push(
+                `comic/${data.slug}/${data.newest_chapter_slug}/${data.newest_chapter_id}`
+              )
+            }
           />
         )}
       </CardListContainer>

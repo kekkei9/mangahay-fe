@@ -16,7 +16,7 @@ const defaultGenreNumber = {
   sm: 12,
   md: 15,
   lg: 20,
-  xl: 25,
+  xl: 24,
   "2xl": 30,
 };
 
@@ -65,7 +65,14 @@ const GenrePage = () => {
                 }`}
                 onClick={() => {
                   setSelectedGenre(genre);
-                  router.push(`/genre?genre=${genre}`);
+                  router.push(
+                    {
+                      pathname: router.pathname,
+                      query: { ...router.query, genre },
+                    },
+                    undefined,
+                    { shallow: true }
+                  );
                 }}
               >
                 {genre.toLocaleUpperCase()}

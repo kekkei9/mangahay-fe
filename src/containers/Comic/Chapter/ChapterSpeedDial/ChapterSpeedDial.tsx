@@ -4,17 +4,14 @@ import styles from "./ChapterSpeedDial.module.scss";
 import { Tooltip } from "primereact/tooltip";
 import { Chapter } from "@/types/Chapter";
 import { useRouter } from "next/router";
-import { useContext, useRef, useState } from "react";
-import { Dialog } from "primereact/dialog";
+import { useContext } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
-import { Toast, ToastMessage } from "primereact/toast";
-import { authErrorToastBody } from "../../ComicDetail/ComicInfo/ComicInteractPanel/toastBody";
 import { ToastContext } from "@/contexts/ToastContext";
 
 interface IChapterSpeedDialProps {
   className?: string;
-  chapter?: Chapter;
+  chapter?: Partial<Chapter>;
   onClickReport: () => void;
 }
 
@@ -25,11 +22,7 @@ const ChapterSpeedDial = ({
 }: IChapterSpeedDialProps) => {
   const router = useRouter();
 
-  const { isAuthUser } = useSelector(
-    (state: RootState) => state.authentication
-  );
-
-  const { toastRef, checkAuth } = useContext(ToastContext);
+  const { checkAuth } = useContext(ToastContext);
 
   const mappedDialItems = dialItems.map((item) => {
     let additionalAction: () => void = () => {};
@@ -47,19 +40,9 @@ const ChapterSpeedDial = ({
           element?.scrollIntoView({ behavior: "smooth" });
         };
         break;
-      case "Chương kế tiếp":
-        additionalAction = () =>
-          chapter?.nextChapter &&
-          router.push(
-            `/comic/${chapter?.comicInfo?.slug}/${chapter?.nextChapter?.slug}`
-          );
-        break;
-      case "Chương trước":
+      case "Quay về đầu trang":
         additionalAction = () => {
-          if (chapter?.prevChapter)
-            router.push(
-              `/comic/${chapter?.comicInfo?.slug}/${chapter?.prevChapter?.slug}`
-            );
+          window?.scrollTo({ top: 0, behavior: "smooth" });
         };
     }
 
@@ -68,17 +51,14 @@ const ChapterSpeedDial = ({
 
   return (
     <>
-      <Tooltip
-        target=".speeddial-bottom-right .p-speeddial-action"
-        position="left"
-      />
+      <Tooltip target=".speeddial-bottom-right .p-speeddial-action" />
       <SpeedDial
         model={mappedDialItems}
         direction="up"
         transitionDelay={50}
         showIcon="pi pi-bars text-white"
         hideIcon="pi pi-times text-white"
-        className={`speeddial-bottom-right ${styles["custom-chapter-speed-dial"]} ${className}`}
+        className={`speeddial-bottom-left ${styles["custom-chapter-speed-dial"]} ${className}`}
       />
     </>
   );

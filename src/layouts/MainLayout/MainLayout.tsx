@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import AuthPageLayout from "../AuthPageLayout";
 import MainNavBar from "@/containers/NavBar/MainNavBar";
-import { ToastContext } from "@/contexts/ToastContext";
+import { ReportData, ToastContext } from "@/contexts/ToastContext";
 import { useRef, useState } from "react";
 import { Toast, ToastMessage } from "primereact/toast";
 import { ScrollTop } from "primereact/scrolltop";
@@ -11,6 +11,7 @@ import { reportItemsMapper } from "@/containers/ReportTable/reportItemsMapper";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
 import { authErrorToastBody } from "@/containers/Comic/ComicDetail/ComicInfo/ComicInteractPanel/toastBody";
+import ScrollTopComponent from "@/components/ScrollTop";
 interface IProps {
   children: any;
 }
@@ -18,9 +19,7 @@ interface IProps {
 const MainLayout: React.FC<IProps> = ({ children }) => {
   const router = useRouter();
   const toastRef = useRef<Toast>(null);
-  const [isReportOpen, setIsReportOpen] = useState<false | "comment" | "comic">(
-    false
-  );
+  const [reportModalData, setReportModalData] = useState<ReportData>({});
 
   const { isAuthUser } = useSelector(
     (state: RootState) => state.authentication
@@ -40,28 +39,28 @@ const MainLayout: React.FC<IProps> = ({ children }) => {
     <ToastContext.Provider
       value={{
         toastRef: toastRef,
-        isReportOpen: isReportOpen,
-        setIsReportOpen: setIsReportOpen,
+        reportModalData: reportModalData,
+        setReportModalData: setReportModalData,
         checkAuth: checkAuth,
       }}
     >
       <Toast ref={toastRef} />
 
       <Dialog
-        onHide={() => setIsReportOpen(false)}
-        visible={!!isReportOpen}
+        onHide={() => setReportModalData({})}
+        visible={!!reportModalData?.type}
         header={<div className="text-2xl font-semibold ml-4">Report</div>}
       >
         <ReportTable
-          id={1}
-          type={isReportOpen.toString()}
           items={
-            reportItemsMapper[isReportOpen as keyof typeof reportItemsMapper]
+            reportItemsMapper[
+              reportModalData?.type as keyof typeof reportItemsMapper
+            ]
           }
-          onClose={() => setIsReportOpen(false)}
+          onClose={() => setReportModalData({})}
         />
       </Dialog>
-      {router.pathname === "/comic/[slug]/[chapter]" ? (
+      {router.pathname === "/comic/[slug]/[...chapter]" ? (
         <main>{children}</main>
       ) : (
         <>
@@ -70,10 +69,11 @@ const MainLayout: React.FC<IProps> = ({ children }) => {
             {router.asPath.includes("/auth") ? (
               <AuthPageLayout>{children}</AuthPageLayout>
             ) : (
-              <div className="p-4 xs:p-10">
-                {children}
-                <ScrollTop />
-              </div>
+              <>
+                <div className="p-4 xs:p-10 relative">{children}</div>
+                {router.basePath !== "/comic/[slug]/[...chapter]" &&
+                  typeof window !== "undefined" && <ScrollTopComponent />}
+              </>
             )}
           </main>
         </>

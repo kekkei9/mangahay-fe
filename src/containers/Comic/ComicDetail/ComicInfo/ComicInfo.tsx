@@ -11,19 +11,14 @@ import { Chapter } from "@/types/Chapter";
 
 interface IComicInfoProps {
   comic?: Comic;
-  mutateComic?: KeyedMutator<
-    Response<{
-      chapters: Chapter[];
-      comic: Comic;
-    }>
-  >;
+  mutateComic?: KeyedMutator<Response<Comic>>;
 }
 
 const ComicInfo = ({ comic, mutateComic }: IComicInfoProps) => {
   return (
     <>
       <div className={classes.comicdetail__header}>
-        <div className="main-image w-full h-[32rem] relative overflow-hidden">
+        <div className="main-image w-full h-[32rem] absolute md:relative overflow-hidden ">
           <img
             className="w-full h-full object-cover object-left-top filter blur-lg webkit-filter blur-md"
             src={comic?.thumb}
@@ -39,7 +34,7 @@ const ComicInfo = ({ comic, mutateComic }: IComicInfoProps) => {
             )}
           </div>
 
-          <div className={classes.detailinfo__right}>
+          <div className={`${classes.detailinfo__right} max-md:!p-5`}>
             {comic?.name ? (
               <div className={classes.detailinfo__name}>{comic.name}</div>
             ) : (

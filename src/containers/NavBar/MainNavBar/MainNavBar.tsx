@@ -12,10 +12,6 @@ import NavLink from "@/components/NavBar/MainNavBar/NavLink";
 const MainNavBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  //for preventing hydration
-  const [isClient, setIsClient] = useState<boolean>(false);
-  useEffect(() => setIsClient(true), []);
-
   return (
     <>
       <Sidebar
@@ -49,7 +45,7 @@ const MainNavBar = () => {
             <SearchPanelContainer />
           </div>
 
-          {isClient && <UserPanelContainer />}
+          <UserPanelContainer />
 
           <i
             className={`${PrimeIcons.BARS} !text-xl !text-mangahay-200 !block xs:!hidden`}

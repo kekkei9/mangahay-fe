@@ -1,51 +1,35 @@
 import { useContext, useState } from "react";
-import { postComment } from "@/service/backend/CommentControllers";
+import { postComment } from "@/services/backend/CommentControllers";
 import { formatDateTimeHour } from "@/utils/date";
 import useSWR from "swr";
 import { Comic } from "@/types/Comic";
 import { Response } from "@/types/Response.type";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux";
 import { ToastContext } from "@/contexts/ToastContext";
-import { authErrorToastBody } from "../ComicInfo/ComicInteractPanel/toastBody";
-import { useRouter } from "next/router";
-import { ToastMessage } from "primereact/toast";
 
 interface ICommentBoxProps {
   comic: Comic;
-  onClickReport: () => void;
+  onClickReport: (id: string) => void;
 }
 
 const CommentBox = ({ comic, onClickReport }: ICommentBoxProps) => {
-  const router = useRouter();
   const [comment, setComment] = useState("");
 
   const { data: commentResponse } = useSWR<Response<any>>(
     `/api/comment/${comic.id}/comments`
   );
 
-  const { isAuthUser } = useSelector(
-    (state: RootState) => state.authentication
-  );
-  const { toastRef } = useContext(ToastContext);
+  const { toastRef, checkAuth } = useContext(ToastContext);
 
-  const handlePost = async (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    if (!isAuthUser) {
-      toastRef?.current?.show(
-        authErrorToastBody(() => router.push("/auth/signin")) as ToastMessage
-      );
-      return false;
-    }
+  const handlePostComment = async () => {
+    if (!checkAuth()) return;
     try {
       await postComment(comic.id, comment);
       setComment("");
     } catch (error) {
       toastRef?.current?.show({
         severity: "error",
-        detail: "ERROR",
-        summary: "ERROR",
+        detail: "Bình luận thất bại",
+        summary: "Bình luận",
       });
     }
   };
@@ -66,7 +50,7 @@ const CommentBox = ({ comic, onClickReport }: ICommentBoxProps) => {
           />
           <button
             className="bg-gray-300 hover:bg-slate-300 text-white font-medium py-2 px-4"
-            onClick={handlePost}
+            onClick={handlePostComment}
           >
             POST
           </button>
@@ -87,7 +71,7 @@ const CommentBox = ({ comic, onClickReport }: ICommentBoxProps) => {
               <div className="flex justify-end mt-2">
                 <button
                   className="text-gray-500 font-medium"
-                  onClick={onClickReport}
+                  onClick={() => onClickReport(cmt.id)}
                 >
                   Report
                 </button>

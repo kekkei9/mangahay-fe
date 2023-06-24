@@ -4,58 +4,72 @@ import { Comic } from "@/types/Comic";
 import { useRouter } from "next/router";
 import { Response } from "@/types/Response.type";
 import useSWR from "swr";
-import { chapterMapper } from "@/containers/Comic/Chapter/chapterMapper";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import Image from "next/image";
 import ChapterSpeedDialContainer from "@/containers/Comic/Chapter/ChapterSpeedDial";
 import { useContext, useEffect, useState } from "react";
-import { appendToHistory } from "@/service/backend/ChapterController";
+import { appendToHistory } from "@/services/backend/ChapterController";
 import CommentBox from "@/containers/Comic/ComicDetail/CommentBox";
 import { ToastContext } from "@/contexts/ToastContext";
 
 const ChapterPage = () => {
   const router = useRouter();
 
-  const { setIsReportOpen } = useContext(ToastContext);
-  const { data: comicResponse } = useSWR<
-    Response<{ chapters: Chapter[]; comic: Comic }>
-  >(router.isReady ? `/api/comic/${router.query.slug}` : null);
+  const { setReportModalData } = useContext(ToastContext);
 
-  const currentChapter = chapterMapper(
-    router.query.chapter as string,
-    comicResponse?.result?.chapters,
-    comicResponse?.result?.comic
-  ) as Chapter;
+  const { data: comicResponse } = useSWR<Response<Comic>>(
+    router.isReady && router.query?.slug
+      ? `/api/comic/${router.query.slug}`
+      : null
+  );
+  const { data: chapterResponse } = useSWR<
+    Response<{ cur: Chapter; next?: Chapter; pre?: Chapter }>
+  >(
+    comicResponse?.result?.id && router.isReady && router.query?.chapter
+      ? `/api/chapter/get/${comicResponse?.result?.id}/${router.query.chapter?.[1]}`
+      : null
+  );
+
+  const currentChapter = {
+    ...chapterResponse?.result?.cur,
+    nextChapter: chapterResponse?.result?.next,
+    prevChapter: chapterResponse?.result?.pre,
+  };
 
   useEffect(() => {
-    appendToHistory(currentChapter);
-  }, [currentChapter]);
+    appendToHistory(chapterResponse?.result?.cur, comicResponse?.result);
+  }, [chapterResponse, comicResponse]);
 
   return (
     <>
       <ChapterSpeedDialContainer
-        onClickReport={() => setIsReportOpen("comic")}
-        className="!fixed bottom-10 right-10"
+        onClickReport={() =>
+          setReportModalData({ type: "chapter", id: currentChapter?.id })
+        }
+        className="!fixed bottom-10 max-md:left-10 md:right-10"
         chapter={currentChapter}
       />
-      <ChapterNav chapter={currentChapter} />
+      <ChapterNav chapter={currentChapter} comic={comicResponse?.result} />
       <div className="w-4/5 mx-auto flex items-center flex-col pt-20 bg-white">
-        {comicResponse?.result && currentChapter ? (
+        {comicResponse?.result && currentChapter.images ? (
           <>
-            {currentChapter.images.map((image: any, index: any) => (
+            {currentChapter?.images?.map((image: any, index: any) => (
               <div key={index} className="relative w-full aspect-[2/3]">
                 <Image
                   src={image}
                   alt={`Comic Image ${index + 1}`}
                   fill
+                  sizes="80vw"
                   className="object-contain"
                 />
               </div>
             ))}
             <div className="w-full border-t border-black py-2 comment-section">
               <CommentBox
-                comic={comicResponse.result?.comic}
-                onClickReport={() => setIsReportOpen("comment")}
+                comic={comicResponse.result}
+                onClickReport={(id: string) =>
+                  setReportModalData({ type: "comment", id: id })
+                }
               />
             </div>
           </>

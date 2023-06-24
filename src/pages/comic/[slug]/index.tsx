@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { Response } from "@/types/Response.type";
 import { Comic } from "@/types/Comic";
 import { Chapter } from "@/types/Chapter";
-import ComicChapter from "@/components/Comic/ComicDetail/ComicChapter";
+import ComicChapter from "@/containers/Comic/ComicDetail/ComicChapter";
 import ComicRelate from "@/containers/Comic/ComicDetail/ComicRelate";
 import { useContext, useEffect, useRef } from "react";
 import axiosClient from "@/services/backend/axiosClient";
@@ -15,10 +15,10 @@ import { ToastContext } from "@/contexts/ToastContext";
 const ComicPage = () => {
   const router = useRouter();
 
-  const { setIsReportOpen } = useContext(ToastContext);
-  const { data: comicResponse, mutate } = useSWR<
-    Response<{ chapters: Chapter[]; comic: Comic }>
-  >(router.isReady ? `/api/comic/${router.query.slug}` : null);
+  const { setReportModalData } = useContext(ToastContext);
+  const { data: comicResponse, mutate } = useSWR<Response<Comic>>(
+    router.isReady ? `/api/comic/${router.query.slug}` : null
+  );
 
   useEffect(() => {
     axiosClient.get(
@@ -31,20 +31,16 @@ const ComicPage = () => {
     <>
       {comicResponse?.result ? (
         <div className="flex flex-col gap-4">
-          <ComicInfo
-            comic={comicResponse?.result?.comic}
-            mutateComic={mutate}
-          />
-          <ComicChapter
-            comic={comicResponse?.result?.comic}
-            chapters={comicResponse.result?.chapters}
-          />
+          <ComicInfo comic={comicResponse?.result} mutateComic={mutate} />
+          <ComicChapter comic={comicResponse?.result} />
           <CommentBox
-            comic={comicResponse?.result?.comic}
-            onClickReport={() => setIsReportOpen("comic")}
+            comic={comicResponse?.result}
+            onClickReport={(id: string) =>
+              setReportModalData({ type: "comment", id: id })
+            }
           />
-          {comicResponse.result?.comic?.authors?.length && (
-            <ComicRelate comic={comicResponse.result?.comic} />
+          {!!comicResponse.result?.authors?.length && (
+            <ComicRelate comic={comicResponse.result} />
           )}
         </div>
       ) : (

@@ -26,7 +26,7 @@ const CardListWrapper = ({
       <div className="text-xl xs:text-2xl md:text-3xl font-bold">{title}</div>
       <div
         onClick={() => setIsAutoScroll((prev) => !prev)}
-        className="toggle-list-icon cursor-pointer"
+        className="toggle-list-icon cursor-pointer hidden md:block"
         data-pr-tooltip={isAutoScroll ? "Xem theo trang" : "Xem vô hạn"}
       >
         <i
@@ -40,7 +40,7 @@ const CardListWrapper = ({
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6 gap-4">
       {children}
     </div>
-    {isEmpty && (
+    {isEmpty && typeof window !== "undefined" && (
       <div className="w-full flex flex-col items-center">
         <div className="relative w-1/5 aspect-square">
           <Image

@@ -19,7 +19,7 @@ const HistoryPage = () => {
             data={chapter as HistoryChapter}
             onClickComic={(data) => router.push(`comic/${data?.comic_slug}`)}
             onClickChapter={(data) =>
-              router.push(`comic/${data?.comic_slug}/${data?.chapter_slug}`)
+              router.push(`comic/${data?.comic_slug}/${data?.chapter_slug}/`)
             }
           />
         )}
