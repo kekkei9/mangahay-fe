@@ -11,7 +11,7 @@ import { ToastContext } from "@/contexts/ToastContext";
 
 interface IChapterSpeedDialProps {
   className?: string;
-  chapter?: Chapter;
+  chapter?: Partial<Chapter>;
   onClickReport: () => void;
 }
 

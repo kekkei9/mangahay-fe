@@ -1,11 +1,12 @@
 import axiosClient from "@/services/backend/axiosClient";
 import { Chapter } from "@/types/Chapter";
+import { Comic } from "@/types/Comic";
 
-export const appendToHistory = async (chapter?: Chapter) => {
-  if (!chapter || !chapter?.comicInfo) return;
+export const appendToHistory = async (chapter?: Chapter, comic?: Comic) => {
+  if (!chapter || !comic) return;
   try {
     await axiosClient.post("/api/user/history", {
-      id_comic: chapter.comicInfo.id,
+      id_comic: comic.id,
       id_chapter: chapter.id,
     });
   } catch (e) {

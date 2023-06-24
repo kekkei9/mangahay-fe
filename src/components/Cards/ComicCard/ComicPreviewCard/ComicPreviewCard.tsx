@@ -62,7 +62,7 @@ const ComicPreviewCard = ({
       {data?.newest_chapter_name && (
         <div
           onClick={(e) => {
-            e.preventDefault();
+            e.stopPropagation();
             onClickChapter && onClickChapter(data);
           }}
           className="cursor-pointer mt-2 flex gap-4 italic font-semibold justify-between items-center"

@@ -24,7 +24,7 @@ const ComicRelate = ({ comic }: IComicRelateProps) => {
         {(comic) => (
           <ComicCard.Preview
             data={comic as Comic}
-            onClick={(data) => data?.id && router.push(`comic/${data?.slug}`)}
+            onClick={(data) => data?.id && router.push(`/comic/${data?.slug}`)}
           />
         )}
       </CardListContainer>

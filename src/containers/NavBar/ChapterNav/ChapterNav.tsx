@@ -9,10 +9,11 @@ import { Sidebar } from "primereact/sidebar";
 import SideBar from "@/components/NavBar/MainNavBar/SideBar";
 
 interface IChapterNavProps {
-  chapter?: Chapter;
+  chapter?: Partial<Chapter>;
+  comic?: Comic;
 }
 
-const ChapterNav = ({ chapter }: IChapterNavProps) => {
+const ChapterNav = ({ chapter, comic }: IChapterNavProps) => {
   const [showNavbar, setShowNavbar] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -63,15 +64,15 @@ const ChapterNav = ({ chapter }: IChapterNavProps) => {
             </div>
           </Link>
           <Link
-            href={`/comic/${chapter?.comicInfo?.slug}`}
+            href={`/comic/${comic?.slug}`}
             className="text-white font-medium text-lg max-w-xs line-clamp-1 ml-4"
           >
-            {chapter?.comicInfo?.name}
+            {comic?.name}
           </Link>
         </div>
         <div className="flex items-center justify-center gap-2">
           <a
-            href={`/comic/${chapter?.comicInfo?.slug}/${chapter?.prevChapter?.slug}`}
+            href={`/comic/${comic?.slug}/${chapter?.prevChapter?.slug}/${chapter?.prevChapter?.id}`}
             className={`${
               chapter?.prevChapter?.slug
                 ? "text-white "
@@ -84,7 +85,7 @@ const ChapterNav = ({ chapter }: IChapterNavProps) => {
             {chapter?.name}
           </span>
           <a
-            href={`/comic/${chapter?.comicInfo?.slug}/${chapter?.nextChapter?.slug}`}
+            href={`/comic/${comic?.slug}/${chapter?.nextChapter?.slug}/${chapter?.nextChapter?.id}`}
             className={`${
               chapter?.nextChapter?.slug
                 ? "text-white "

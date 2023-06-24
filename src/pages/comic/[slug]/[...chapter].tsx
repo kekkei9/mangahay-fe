@@ -22,17 +22,23 @@ const ChapterPage = () => {
       ? `/api/comic/${router.query.slug}`
       : null
   );
-  const { data: chapterResponse } = useSWR<Response<Chapter>>(
+  const { data: chapterResponse } = useSWR<
+    Response<{ cur: Chapter; next?: Chapter; pre?: Chapter }>
+  >(
     comicResponse?.result?.id && router.isReady && router.query?.chapter
       ? `/api/chapter/get/${comicResponse?.result?.id}/${router.query.chapter?.[1]}`
       : null
   );
 
-  useEffect(() => {
-    appendToHistory(chapterResponse?.result);
-  }, [chapterResponse?.result]);
+  const currentChapter = {
+    ...chapterResponse?.result?.cur,
+    nextChapter: chapterResponse?.result?.next,
+    prevChapter: chapterResponse?.result?.pre,
+  };
 
-  const currentChapter = chapterResponse?.result;
+  useEffect(() => {
+    appendToHistory(chapterResponse?.result?.cur, comicResponse?.result);
+  }, [chapterResponse, comicResponse]);
 
   return (
     <>
@@ -43,11 +49,11 @@ const ChapterPage = () => {
         className="!fixed bottom-10 max-md:left-10 md:right-10"
         chapter={currentChapter}
       />
-      <ChapterNav chapter={currentChapter} />
+      <ChapterNav chapter={currentChapter} comic={comicResponse?.result} />
       <div className="w-4/5 mx-auto flex items-center flex-col pt-20 bg-white">
-        {comicResponse?.result && currentChapter ? (
+        {comicResponse?.result && currentChapter.images ? (
           <>
-            {currentChapter.images.map((image: any, index: any) => (
+            {currentChapter?.images?.map((image: any, index: any) => (
               <div key={index} className="relative w-full aspect-[2/3]">
                 <Image
                   src={image}
