@@ -13,20 +13,6 @@ const axiosClient = axios.create({
   },
 });
 
-//TODO
-//set client base URL again
-// axiosClient.interceptors.request.use(
-//   function (config: AxiosRequestConfig) {
-//     // Do something before request is sent
-
-//     return config;
-//   },
-//   function (error) {
-//     // Do something with request error
-//     return Promise.reject(error);
-//   }
-// );
-
 // Add a response interceptor
 axiosClient.interceptors.response.use(
   function (response: AxiosResponse) {
@@ -42,7 +28,11 @@ axiosClient.interceptors.response.use(
       originalRequest.url === "/api/auth/refresh-token" &&
       error?.response?.status === 500
     ) {
-      await signOutAPI();
+      try {
+        await signOutAPI();
+      } catch (e) {
+        console.error(e);
+      }
       store.dispatch(logoutHandler() as any);
       delete axiosClient.defaults.headers.common.Authorization;
       return axios(originalRequest);
