@@ -35,9 +35,6 @@ const ChapterNav = ({ chapter, comic }: IChapterNavProps) => {
     };
   }, []);
 
-  const [isClient, setIsClient] = useState(false);
-  useEffect(() => setIsClient(true), []);
-
   return (
     <>
       <Sidebar
@@ -95,15 +92,13 @@ const ChapterNav = ({ chapter, comic }: IChapterNavProps) => {
             <i className={PrimeIcons.CHEVRON_RIGHT} />
           </a>
         </div>
-        {isClient && (
-          <div className="flex justify-end gap-4">
-            <UserPanelContainer />
-            <i
-              className={`${PrimeIcons.BARS} !text-xl !text-mangahay-200 !block xs:!hidden`}
-              onClick={() => setIsSidebarOpen(true)}
-            />
-          </div>
-        )}
+        <div className="flex justify-end gap-4">
+          <UserPanelContainer />
+          <i
+            className={`${PrimeIcons.BARS} !text-xl !text-mangahay-200 !block xs:!hidden`}
+            onClick={() => setIsSidebarOpen(true)}
+          />
+        </div>
       </nav>
     </>
   );

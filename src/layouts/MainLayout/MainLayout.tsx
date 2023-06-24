@@ -71,9 +71,8 @@ const MainLayout: React.FC<IProps> = ({ children }) => {
             ) : (
               <>
                 <div className="p-4 xs:p-10 relative">{children}</div>
-                {router.basePath !== "/comic/[slug]/[...chapter]" && (
-                  <ScrollTopComponent />
-                )}
+                {router.basePath !== "/comic/[slug]/[...chapter]" &&
+                  typeof window !== "undefined" && <ScrollTopComponent />}
               </>
             )}
           </main>

@@ -1,7 +1,6 @@
 import { Chapter } from "@/types/Chapter";
 import { Comic } from "@/types/Comic";
 import { formatDate } from "@/utils/date";
-import { normalizeChapterArray } from "@/utils/normalizeData";
 import Link from "next/link";
 import useSWR from "swr";
 import { Response } from "@/types/Response.type";
