@@ -11,6 +11,7 @@ import { reportItemsMapper } from "@/containers/ReportTable/reportItemsMapper";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
 import { authErrorToastBody } from "@/containers/Comic/ComicDetail/ComicInfo/ComicInteractPanel/toastBody";
+import ScrollTopComponent from "@/components/ScrollTop";
 interface IProps {
   children: any;
 }
@@ -68,10 +69,12 @@ const MainLayout: React.FC<IProps> = ({ children }) => {
             {router.asPath.includes("/auth") ? (
               <AuthPageLayout>{children}</AuthPageLayout>
             ) : (
-              <div className="p-4 xs:p-10">
-                {children}
-                <ScrollTop />
-              </div>
+              <>
+                <div className="p-4 xs:p-10 relative">{children}</div>
+                {router.basePath !== "/comic/[slug]/[...chapter]" && (
+                  <ScrollTopComponent />
+                )}
+              </>
             )}
           </main>
         </>
