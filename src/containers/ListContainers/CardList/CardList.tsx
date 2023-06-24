@@ -9,6 +9,7 @@ import { breakpointDataMapper, isMobile } from "@/utils/breakpoint";
 import useBreakpoint from "@/hooks/useBreakpoint";
 import { pageSizeMapper } from "./pageSizeMapper";
 import { useRouter } from "next/router";
+import { isEmptySWR } from "@/utils/swr";
 
 type Props<T> = {
   title?: string;
@@ -42,7 +43,7 @@ const CardList = <T,>({ children, title, className, fetchUrl }: Props<T>) => {
     <CardListWrapper
       isAutoScroll={isAutoScroll}
       setIsAutoScroll={setIsAutoScroll}
-      isEmpty={!swr.data?.[0].result && !swr.isLoading}
+      isEmpty={isEmptySWR(swr)}
       className={className}
       title={title}
     >

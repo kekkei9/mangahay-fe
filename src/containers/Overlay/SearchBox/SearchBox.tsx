@@ -5,6 +5,7 @@ import { Response } from "@/types/Response.type";
 import { useRouter } from "next/router";
 import useSWRInfinite, { SWRInfiniteResponse } from "swr/infinite";
 import Image from "next/image";
+import { isEmptySWR } from "@/utils/swr";
 
 const PAGE_SIZE = 5;
 interface ISearchBoxProps {
@@ -23,9 +24,7 @@ const SearchBox = ({ value }: ISearchBoxProps) => {
 
   return (
     <div className="search-box-container max-w-[24rem] max-h-[20rem] overflow-y-auto">
-      {!swr.data?.[0].result?.length &&
-      !swr.isLoading &&
-      typeof window !== "undefined" ? (
+      {isEmptySWR(swr) ? (
         <div className="w-full flex flex-col items-center">
           <div className="relative w-3/5 aspect-square">
             <Image
