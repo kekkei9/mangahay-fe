@@ -41,10 +41,6 @@ const GenrePage = () => {
     fetchGenres();
   }, [router.isReady, router.query.genre]);
 
-  const { data: filterComicResponse, isLoading } = useSWR<Response<Comic[]>>(
-    `/api/comic/search?comic_name=&filter_state=&filter_author=&filter_genre=${selectedGenre}&filter_sort=az`
-  );
-
   const displayGenres = isShowMore
     ? genres
     : genres?.slice(
