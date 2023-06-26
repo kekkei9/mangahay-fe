@@ -35,6 +35,7 @@ const SideBar = ({ onClickNav }: ISideBarProps) => {
           </div>
           <CustomNavLink href="/account" label="Tài khoản" />
           <CustomNavLink href="/following" label="Truyện đang theo dõi" />
+          <CustomNavLink href="/history" label="Truyện đã xem" />
           <div
             onClick={() => {
               dispatch(logoutHandler() as any);
