@@ -41,11 +41,6 @@ const UserPanel = ({ className }: IUserPanelProps) => {
       icon: PrimeIcons.CHECK_SQUARE,
     },
     {
-      label: "Lịch sử xem truyện",
-      command: () => router.push("/history"),
-      icon: PrimeIcons.HISTORY,
-    },
-    {
       label: "Đăng xuất",
       command: () => {
         dispatch(logoutHandler() as any);

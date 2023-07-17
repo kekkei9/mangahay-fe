@@ -10,6 +10,7 @@ export type Chapter = {
 };
 
 export type HistoryChapter = {
+  chapter_id: number;
   chapter_name: string;
   chapter_slug: string;
   comic_id: number;

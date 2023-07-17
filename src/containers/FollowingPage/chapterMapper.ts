@@ -5,6 +5,7 @@ export const chapterToHistoryChapterMapper = (
   chapter: Chapter,
   comic: Comic
 ): HistoryChapter => ({
+  chapter_id: chapter.id,
   chapter_name: chapter.name,
   chapter_slug: chapter.slug,
   comic_id: comic.id,

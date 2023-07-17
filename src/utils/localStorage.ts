@@ -13,8 +13,16 @@ export const getLocalComicHistory = (page: number, pageSize: number) =>
 export const appendToLocalHistory = (historyChapter: HistoryChapter) => {
   if (!isClient) return;
   const currentHistory = getAllLocalComicHistory();
-  localStorage.setItem(
-    LOCAL_HISTORY_KEY,
-    JSON.stringify([historyChapter, ...currentHistory])
+  const currentComicIndex = currentHistory.findIndex(
+    (chapter) => chapter.comic_id === historyChapter.comic_id
   );
+
+  let changedHistory = [...currentHistory];
+  if (currentComicIndex >= 0) {
+    changedHistory[currentComicIndex] = historyChapter;
+  } else {
+    changedHistory = [historyChapter, ...currentHistory];
+  }
+
+  localStorage.setItem(LOCAL_HISTORY_KEY, JSON.stringify(changedHistory));
 };
