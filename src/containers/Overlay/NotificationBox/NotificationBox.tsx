@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { markAsRead } from "@/services/backend/NotificationController";
 import Image from "next/image";
 import { isEmptySWR } from "@/utils/swr";
+import { fetcher } from "@/services/backend/axiosClient";
 
 const PAGE_SIZE = 5;
 
@@ -18,7 +19,9 @@ const NotificationBox = () => {
     router.push(notification.redirect_url);
   };
   const swr = useSWRInfinite<Response<Notification[]>>(
-    (index) => `/api/user/notifies?limit=${PAGE_SIZE}&page=${index + 1}`
+    (index) => `/api/user/notifies?limit=${PAGE_SIZE}&page=${index + 1}`,
+    fetcher,
+    { refreshInterval: 1000 }
   );
 
   return (

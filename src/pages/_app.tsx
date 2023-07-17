@@ -47,7 +47,7 @@ export default function App({
     <ErrorBoundary>
       <SWRConfig
         value={{
-          refreshInterval: 3000,
+          refreshInterval: 10000,
           fetcher: fetcher,
         }}
       >
