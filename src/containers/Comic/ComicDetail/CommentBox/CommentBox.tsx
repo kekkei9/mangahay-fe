@@ -5,6 +5,7 @@ import useSWR from "swr";
 import { Comic } from "@/types/Comic";
 import { Response } from "@/types/Response.type";
 import { ToastContext } from "@/contexts/ToastContext";
+import { Button } from "primereact/button";
 
 interface ICommentBoxProps {
   comic: Comic;
@@ -13,8 +14,9 @@ interface ICommentBoxProps {
 
 const CommentBox = ({ comic, onClickReport }: ICommentBoxProps) => {
   const [comment, setComment] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const { data: commentResponse } = useSWR<Response<any>>(
+  const { data: commentResponse, mutate } = useSWR<Response<any>>(
     `/api/comment/${comic.id}/comments`
   );
 
@@ -23,7 +25,10 @@ const CommentBox = ({ comic, onClickReport }: ICommentBoxProps) => {
   const handlePostComment = async () => {
     if (!checkAuth()) return;
     try {
+      setLoading(true);
       await postComment(comic.id, comment);
+      mutate();
+      setLoading(false);
       setComment("");
     } catch (error) {
       toastRef?.current?.show({
@@ -46,14 +51,16 @@ const CommentBox = ({ comic, onClickReport }: ICommentBoxProps) => {
             rows={3}
             placeholder="Write your comment here"
             value={comment}
-            onChange={(e) => setComment(e.target.value)}
+            onChange={(e) => setComment(e.target.value.trim())}
           />
-          <button
-            className="bg-gray-300 hover:bg-slate-300 text-white font-medium py-2 px-4"
+          <Button
+            className="!rounded-sm !gap-2"
             onClick={handlePostComment}
+            disabled={!comment}
+            loading={loading}
           >
             POST
-          </button>
+          </Button>
         </div>
         <div className="space-y-4 mt-4">
           {commentResponse?.result?.map((cmt: any) => (
