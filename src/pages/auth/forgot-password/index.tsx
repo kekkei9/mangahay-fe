@@ -42,7 +42,7 @@ const ForgotPasswordPage = () => {
         </span>
 
         {isSent && (
-          <div className="font-semibold text-red-400">
+          <div className="font-semibold text-slate-400">
             Email đã được gửi, vui lòng kiểm tra
           </div>
         )}

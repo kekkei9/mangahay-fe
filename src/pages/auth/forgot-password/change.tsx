@@ -4,25 +4,14 @@ import { InputText } from "primereact/inputtext";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { changePasswordAPI } from "@/services/backend/AuthController";
-
-const changePasswordFormFields = [
-  {
-    icon: PrimeIcons.KEY,
-    placeholder: "Mật khẩu",
-    name: "password",
-  },
-  {
-    icon: PrimeIcons.KEY,
-    placeholder: "Nhập lại mật khẩu",
-    name: "retypePassword",
-  },
-];
+import { Password } from "primereact/password";
 
 const ChangePasswordPage = () => {
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -46,29 +35,37 @@ const ChangePasswordPage = () => {
   return (
     <>
       <div className="font-bold text-2xl self-start">Xác nhận đổi mật khẩu</div>
-      <form
-        className="flex flex-col gap-5 w-full"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        {changePasswordFormFields.map(({ icon, name, placeholder }, index) => (
-          <span className="p-input-icon-left" key={index}>
-            <i className={icon} />
-            <InputText
-              {...register(name, {
-                required: true,
-                validate: (val: string) => {
-                  if (name !== "retypePassword") return true;
-                  if (watch("password") !== val) {
-                    return "Your passwords do not match";
-                  }
-                },
-              })}
-              placeholder={placeholder}
-              className={errors?.[name] && "p-invalid"}
-              name={name}
-            />
-          </span>
-        ))}
+      <form className="flex flex-col w-full" onSubmit={handleSubmit(onSubmit)}>
+        <Password
+          toggleMask
+          placeholder="Mật khẩu"
+          className="w-full"
+          onInput={(e: any) => setValue("password", e.target.value)}
+          {...register("password", {
+            required: { message: "Bạn cần nhập mật khẩu!", value: true },
+          })}
+        />
+        <div className="text-red-500 p-2">
+          {errors?.["password"]?.message as string}
+        </div>
+
+        <Password
+          {...register("retypePassword", {
+            required: { message: "Bạn cần nhập lại mật khẩu!", value: true },
+            validate: (val: string) => {
+              if (watch("password") !== val) {
+                return "Mật khẩu nhập lại không đúng!";
+              }
+            },
+          })}
+          toggleMask
+          placeholder="Nhập lại mật khẩu"
+          className="w-full"
+          onInput={(e: any) => setValue("retypePassword", e.target.value)}
+        />
+        <div className="text-red-500 p-2">
+          {errors?.["retypePassword"]?.message as string}
+        </div>
         <Button
           className="rounded-xl !bg-mangahay-700 flex justify-center"
           type="submit"

@@ -11,14 +11,19 @@ import { setAuthToken } from "@/services/backend/axiosClient";
 import { Toast } from "primereact/toast";
 import { useContext, useRef } from "react";
 import { ToastContext } from "@/contexts/ToastContext";
+import { Password } from "primereact/password";
 
 const SignInPage = () => {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm();
   const dispatch = useDispatch();
   const router = useRouter();
 
   const { toastRef } = useContext(ToastContext);
-
   const onSubmit = async (formData: any) => {
     try {
       const {
@@ -43,28 +48,32 @@ const SignInPage = () => {
   return (
     <>
       <div className="font-bold text-2xl self-start">Đăng nhập để tiếp tục</div>
-      <form
-        className="flex flex-col gap-5 w-full"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <span className="p-input-icon-left">
+      <form className="flex flex-col w-full" onSubmit={handleSubmit(onSubmit)}>
+        <span className="p-input-icon-left w-full">
           <i className={PrimeIcons.ENVELOPE} />
           <InputText
-            {...register("email", { required: true })}
+            {...register("email", {
+              required: { message: "Bạn cần nhập email!", value: true },
+            })}
             placeholder="Email đăng nhập"
             className="w-full"
-            name="email"
           />
         </span>
-        <span className="p-input-icon-left">
-          <i className={PrimeIcons.KEY} />
-          <InputText
-            {...register("password", { required: true })}
-            placeholder="Mật khẩu"
-            className="w-full"
-            name="password"
-          />
-        </span>
+        <div className="text-red-500 p-2">
+          {errors?.["email"]?.message as string}
+        </div>
+        <Password
+          toggleMask
+          placeholder="Mật khẩu"
+          className="w-full"
+          onInput={(e: any) => setValue("password", e.target.value)}
+          {...register("password", {
+            required: { message: "Bạn cần nhập mật khẩu!", value: true },
+          })}
+        />
+        <div className="text-red-500 p-2">
+          {errors?.["password"]?.message as string}
+        </div>
         <Button
           className="rounded-xl !bg-mangahay-700 flex justify-center"
           type="submit"
