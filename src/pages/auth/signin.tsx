@@ -32,6 +32,12 @@ const SignInPage = () => {
       if (result) {
         setAuthToken(result.access_token);
 
+        toastRef?.current?.show({
+          severity: "success",
+          summary: "Đăng nhập",
+          detail: "Đăng nhập thành công",
+        });
+
         dispatch(loginStorageHandler(result) as any);
         if (!router.query.redirectUrl) return;
         router.push(router.query.redirectUrl as string);

@@ -1,10 +1,11 @@
 import { PrimeIcons } from "primereact/api";
 import { Button } from "primereact/button";
-import { InputText } from "primereact/inputtext";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { changePasswordAPI } from "@/services/backend/AuthController";
 import { Password } from "primereact/password";
+import { useContext } from "react";
+import { ToastContext } from "@/contexts/ToastContext";
 
 const ChangePasswordPage = () => {
   const {
@@ -16,6 +17,7 @@ const ChangePasswordPage = () => {
   } = useForm();
 
   const router = useRouter();
+  const { toastRef } = useContext(ToastContext);
 
   const onSubmit = async (formData: any) => {
     try {
@@ -23,12 +25,22 @@ const ChangePasswordPage = () => {
         formData.password,
         router.query.token as string
       );
+      toastRef?.current?.show({
+        detail: "Đổi mật khẩu thành công",
+        summary: "Đổi mật khẩu",
+        severity: "success",
+      });
 
       if (res.data.success) {
         router.push("/auth/signin");
       }
     } catch (e) {
       console.error(e);
+      toastRef?.current?.show({
+        detail: "Đổi mật khẩu thất bại",
+        summary: "Đổi mật khẩu",
+        severity: "error",
+      });
     }
   };
 
