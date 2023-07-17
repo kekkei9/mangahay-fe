@@ -45,7 +45,15 @@ const MainNavBar = () => {
             <SearchPanelContainer />
           </div>
 
-          <UserPanelContainer />
+          <div className="flex justify-between md:justify-end items-center gap-4">
+            <Link href="/history">
+              <i
+                className={`${PrimeIcons.HISTORY} !text-xl !text-mangahay-500`}
+              />
+            </Link>
+
+            <UserPanelContainer />
+          </div>
 
           <i
             className={`${PrimeIcons.BARS} !text-xl !text-mangahay-200 !block xs:!hidden`}

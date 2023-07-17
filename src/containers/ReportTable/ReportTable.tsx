@@ -50,7 +50,7 @@ const ReportTable = ({ items, onClose }: IReportTableProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-[40vw]">
+    <form onSubmit={handleSubmit} className="w-[80vw] md:w-[40vw]">
       <div className="space-y-2 p-4">
         {items?.map((item: any, index: any) => (
           <div key={index} className="flex items-center">

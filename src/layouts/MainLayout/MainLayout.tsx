@@ -25,10 +25,14 @@ const MainLayout: React.FC<IProps> = ({ children }) => {
     (state: RootState) => state.authentication
   );
 
-  const checkAuth = () => {
+  const checkAuth = (redirectUrl?: string) => {
     if (!isAuthUser) {
       toastRef?.current?.show(
-        authErrorToastBody(() => router.push("/auth/signin")) as ToastMessage
+        authErrorToastBody(() =>
+          router.push(
+            "/auth/signin" + (redirectUrl ? `?redirectUrl=${redirectUrl}` : "")
+          )
+        ) as ToastMessage
       );
       return false;
     }

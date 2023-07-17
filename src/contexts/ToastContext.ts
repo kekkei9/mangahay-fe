@@ -10,7 +10,7 @@ export const ToastContext = createContext<{
   toastRef: RefObject<Toast> | null;
   reportModalData: ReportData;
   setReportModalData: Dispatch<SetStateAction<ReportData>>;
-  checkAuth: () => boolean;
+  checkAuth: (redirectUrl?: string) => boolean;
 }>({
   toastRef: null,
   reportModalData: {},

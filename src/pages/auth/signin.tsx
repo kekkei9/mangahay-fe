@@ -15,6 +15,7 @@ import { ToastContext } from "@/contexts/ToastContext";
 const SignInPage = () => {
   const { register, handleSubmit } = useForm();
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const { toastRef } = useContext(ToastContext);
 
@@ -27,6 +28,8 @@ const SignInPage = () => {
         setAuthToken(result.access_token);
 
         dispatch(loginStorageHandler(result) as any);
+        if (!router.query.redirectUrl) return;
+        router.push(router.query.redirectUrl as string);
       }
     } catch (e: any) {
       toastRef?.current?.show({

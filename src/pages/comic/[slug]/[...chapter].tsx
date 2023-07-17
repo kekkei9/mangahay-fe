@@ -11,11 +11,13 @@ import { useContext, useEffect, useState } from "react";
 import { appendToHistory } from "@/services/backend/ChapterController";
 import CommentBox from "@/containers/Comic/ComicDetail/CommentBox";
 import { ToastContext } from "@/contexts/ToastContext";
+import { appendToLocalHistory } from "@/utils/localStorage";
+import { chapterToHistoryChapterMapper } from "@/containers/FollowingPage/chapterMapper";
 
 const ChapterPage = () => {
   const router = useRouter();
 
-  const { setReportModalData } = useContext(ToastContext);
+  const { setReportModalData, checkAuth } = useContext(ToastContext);
 
   const { data: comicResponse } = useSWR<Response<Comic>>(
     router.isReady && router.query?.slug
@@ -37,6 +39,13 @@ const ChapterPage = () => {
   };
 
   useEffect(() => {
+    if (!chapterResponse || !comicResponse) return;
+    appendToLocalHistory(
+      chapterToHistoryChapterMapper(
+        chapterResponse?.result?.cur,
+        comicResponse?.result
+      )
+    );
     appendToHistory(chapterResponse?.result?.cur, comicResponse?.result);
   }, [chapterResponse, comicResponse]);
 
@@ -68,6 +77,7 @@ const ChapterPage = () => {
               <CommentBox
                 comic={comicResponse.result}
                 onClickReport={(id: string) =>
+                  checkAuth(router.asPath) &&
                   setReportModalData({ type: "comment", id: id })
                 }
               />

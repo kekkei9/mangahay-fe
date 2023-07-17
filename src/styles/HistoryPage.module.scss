@@ -1,0 +1,11 @@
+.custom-tab-view {
+  :global {
+    .p-tabview-nav {
+      background-color: transparent !important;
+      justify-content: center;
+    }
+    .p-tabview-panels {
+      background-color: transparent !important;
+    }
+  }
+}
