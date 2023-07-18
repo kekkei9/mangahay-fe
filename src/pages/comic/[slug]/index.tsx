@@ -36,7 +36,8 @@ const ComicPage = () => {
           <CommentBox
             comic={comicResponse?.result}
             onClickReport={(id: string) =>
-              checkAuth(router.asPath) && setReportModalData({ type: "comment", id: id })
+              checkAuth(router.asPath) &&
+              setReportModalData({ type: "comment", id: id })
             }
           />
           {!!comicResponse.result?.authors?.length && (

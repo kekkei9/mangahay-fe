@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { loginStorageHandler } from "@/redux/authentication/authentication.action";
 import { setAuthToken } from "@/services/backend/axiosClient";
 import { Toast } from "primereact/toast";
-import { useContext, useRef } from "react";
+import { useContext, useRef, useState } from "react";
 import { ToastContext } from "@/contexts/ToastContext";
 import { Password } from "primereact/password";
 
@@ -22,9 +22,11 @@ const SignInPage = () => {
   } = useForm();
   const dispatch = useDispatch();
   const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const { toastRef } = useContext(ToastContext);
   const onSubmit = async (formData: any) => {
+    setLoading(true);
     try {
       const {
         data: { result },
@@ -49,6 +51,7 @@ const SignInPage = () => {
         detail: e.response.data.message,
       });
     }
+    setLoading(false);
   };
 
   return (
@@ -83,6 +86,7 @@ const SignInPage = () => {
         <Button
           className="rounded-xl !bg-mangahay-700 flex justify-center"
           type="submit"
+          loading={loading}
         >
           <div className="flex gap-3 items-center text-white">
             <div className="text-white font-bold">Đăng nhập</div>
@@ -90,9 +94,15 @@ const SignInPage = () => {
           </div>
         </Button>
       </form>
-      <div className="flex gap-10 font-bold">
-        <Link className="cursor-pointer text-mangahay-500" href="/auth/signup">
-          Tạo tài khoản mới
+      <div className="flex gap-4 md:gap-10 font-bold">
+        <Link href="/auth/signup">
+          <div className="cursor-pointer">
+            <span className="text-mangahay-500">Tạo tài khoản </span>
+            <span className="hidden md:inline-block text-mangahay-500">
+              {" "}
+              mới
+            </span>
+          </div>
         </Link>
         <Link
           className="cursor-pointer text-mangahay-500"

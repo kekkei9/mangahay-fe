@@ -36,7 +36,9 @@ const NotificationBox = () => {
               className="object-contain"
             />
           </div>
-          <div className="font-semibold text-2xl">Không có thông báo</div>
+          <div className="font-semibold text-2xl text-center">
+            Không có thông báo
+          </div>
         </div>
       ) : (
         <InfiniteScroll
@@ -49,7 +51,9 @@ const NotificationBox = () => {
             (swr.data?.[swr.data?.length - 1].result || []).length < PAGE_SIZE
           }
           endingIndicator={
-            <div className="flex justify-center p-2">Không còn thông báo</div>
+            <div className="flex justify-center p-2 text-center">
+              Không còn thông báo
+            </div>
           }
         >
           {(notifications) =>

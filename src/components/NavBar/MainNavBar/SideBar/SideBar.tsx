@@ -5,6 +5,8 @@ import NavLink from "../NavLink";
 import { Divider } from "primereact/divider";
 import { useRouter } from "next/router";
 import { navList } from "@/containers/NavBar/MainNavBar/navList";
+import { useContext } from "react";
+import { ToastContext } from "@/contexts/ToastContext";
 
 interface ISideBarProps {
   onClickNav?: () => void;
@@ -17,6 +19,7 @@ const SideBar = ({ onClickNav }: ISideBarProps) => {
   const { isAuthUser, user } = useSelector(
     (state: RootState) => state.authentication
   );
+  const { toastRef } = useContext(ToastContext);
 
   const CustomNavLink = (props: any) => (
     <NavLink {...props} onClick={() => onClickNav && onClickNav()} />
@@ -38,6 +41,11 @@ const SideBar = ({ onClickNav }: ISideBarProps) => {
           <div
             onClick={() => {
               dispatch(logoutHandler() as any);
+              toastRef?.current?.show({
+                summary: "Đăng xuất",
+                detail: "Đăng xuất thành công",
+                severity: "success",
+              });
               router.push("/");
             }}
           >

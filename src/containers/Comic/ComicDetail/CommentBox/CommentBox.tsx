@@ -6,6 +6,7 @@ import { Comic } from "@/types/Comic";
 import { Response } from "@/types/Response.type";
 import { ToastContext } from "@/contexts/ToastContext";
 import { Button } from "primereact/button";
+import { useRouter } from "next/router";
 
 interface ICommentBoxProps {
   comic: Comic;
@@ -15,6 +16,7 @@ interface ICommentBoxProps {
 const CommentBox = ({ comic, onClickReport }: ICommentBoxProps) => {
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const { data: commentResponse, mutate } = useSWR<Response<any>>(
     `/api/comment/${comic.id}/comments`
@@ -23,7 +25,7 @@ const CommentBox = ({ comic, onClickReport }: ICommentBoxProps) => {
   const { toastRef, checkAuth } = useContext(ToastContext);
 
   const handlePostComment = async () => {
-    if (!checkAuth()) return;
+    if (!checkAuth(router.asPath)) return;
     try {
       setLoading(true);
       await postComment(comic.id, comment);
@@ -47,14 +49,13 @@ const CommentBox = ({ comic, onClickReport }: ICommentBoxProps) => {
           <textarea
             id="comment"
             name="comment"
-            className="form-input bg-gray-100 w-full block border-gray-400 py-2 px-3 focus:border-transparent"
+            className="form-input bg-gray-100 flex-1 border-gray-400 py-2 px-3 focus:border-transparent"
             rows={3}
             placeholder="Write your comment here"
-            value={comment}
             onChange={(e) => setComment(e.target.value.trim())}
           />
           <Button
-            className="!rounded-sm !gap-2"
+            className="!rounded-sm"
             onClick={handlePostComment}
             disabled={!comment}
             loading={loading}

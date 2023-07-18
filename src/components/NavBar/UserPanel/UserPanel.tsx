@@ -1,7 +1,7 @@
 import { logoutHandler } from "@/redux/authentication/authentication.action";
 import { Menu } from "primereact/menu";
 import { OverlayPanel } from "primereact/overlaypanel";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useSWR from "swr";
 import { Response } from "@/types/Response.type";
@@ -10,6 +10,7 @@ import { Button } from "primereact/button";
 import { PrimeIcons } from "primereact/api";
 import { useRouter } from "next/router";
 import { Badge } from "primereact/badge";
+import { ToastContext } from "@/contexts/ToastContext";
 
 interface IUserPanelProps {
   className?: string;
@@ -21,6 +22,7 @@ const UserPanel = ({ className }: IUserPanelProps) => {
   const { isAuthUser, user } = useSelector(
     (state: any) => state.authentication
   );
+  const { toastRef } = useContext(ToastContext);
 
   const menuRef = useRef<Menu>(null);
   const notificationRef = useRef<OverlayPanel>(null);
@@ -44,6 +46,11 @@ const UserPanel = ({ className }: IUserPanelProps) => {
       label: "Đăng xuất",
       command: () => {
         dispatch(logoutHandler() as any);
+        toastRef?.current?.show({
+          summary: "Đăng xuất",
+          detail: "Đăng xuất thành công",
+          severity: "success",
+        });
         router.push("/");
       },
       icon: PrimeIcons.SIGN_OUT,
